@@ -68,28 +68,32 @@ export default function SettleUpModal() {
       : friends.find((f) => f.id === payeeId)?.name ?? "Select";
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] w-full max-w-md">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b bg-[#5bc5a7] text-white rounded-t-lg">
-          <h2 className="font-semibold">{t("settle.title")}</h2>
-          <button onClick={closeSettleUp}>
-            <X size={20} />
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(0,0,0,0.06)]">
+          <h2 className="font-semibold text-[var(--color-text)] tracking-tight">
+            {t("settle.title")}
+          </h2>
+          <button
+            onClick={closeSettleUp}
+            className="p-1 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-tertiary)] transition-colors"
+          >
+            <X size={18} />
           </button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Payment direction */}
-          <div className="flex items-center justify-center gap-4">
-            {/* Payer */}
+          <div className="flex items-center justify-center gap-5">
             <div className="text-center">
-              <div className="w-14 h-14 rounded-full bg-[#5bc5a7]/20 flex items-center justify-center text-lg font-bold text-[#5bc5a7] mx-auto mb-1">
+              <div className="w-14 h-14 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-lg font-semibold text-[var(--color-primary)] mx-auto mb-2">
                 {payerName[0]?.toUpperCase()}
               </div>
               <select
                 value={payerId}
                 onChange={(e) => setPayerId(e.target.value)}
-                className="text-sm border rounded px-2 py-1 max-w-[120px]"
+                className="text-sm border border-[rgba(0,0,0,0.12)] rounded-xl px-2.5 py-1.5 max-w-[120px] bg-[var(--color-bg)]"
               >
                 <option value={currentUserId}>{currentUserName}</option>
                 {friends.map((f) => (
@@ -100,17 +104,16 @@ export default function SettleUpModal() {
               </select>
             </div>
 
-            <ArrowRight size={24} className="text-[#5bc5a7]" />
+            <ArrowRight size={22} className="text-[var(--color-text-tertiary)]" />
 
-            {/* Payee */}
             <div className="text-center">
-              <div className="w-14 h-14 rounded-full bg-[#ff652f]/20 flex items-center justify-center text-lg font-bold text-[#ff652f] mx-auto mb-1">
+              <div className="w-14 h-14 rounded-full bg-[var(--color-positive)]/10 flex items-center justify-center text-lg font-semibold text-[var(--color-positive)] mx-auto mb-2">
                 {payeeName[0]?.toUpperCase()}
               </div>
               <select
                 value={payeeId}
                 onChange={(e) => setPayeeId(e.target.value)}
-                className="text-sm border rounded px-2 py-1 max-w-[120px]"
+                className="text-sm border border-[rgba(0,0,0,0.12)] rounded-xl px-2.5 py-1.5 max-w-[120px] bg-[var(--color-bg)]"
               >
                 <option value="">--</option>
                 {friends
@@ -129,7 +132,7 @@ export default function SettleUpModal() {
 
           {/* Amount */}
           <div className="flex gap-2 items-center justify-center">
-            <span className="text-lg font-medium text-gray-500">{currency}</span>
+            <span className="text-lg font-medium text-[var(--color-text-tertiary)]">{currency}</span>
             <input
               type="number"
               value={amount}
@@ -137,58 +140,56 @@ export default function SettleUpModal() {
               placeholder="0.00"
               step="0.01"
               min="0"
-              className="border rounded px-3 py-2 text-3xl font-bold text-center w-48 focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-3xl font-semibold text-center w-48 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
 
           {/* Date */}
           <div>
-            <label className="text-sm text-gray-500 block mb-1">{t("settle.date")}</label>
+            <label className="text-sm text-[var(--color-text-secondary)] block mb-1.5">{t("settle.date")}</label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full border rounded px-3 py-1.5 text-sm"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             />
           </div>
 
           {/* Group */}
-          <div>
-            <select
-              value={groupId ?? ""}
-              onChange={(e) => setGroupId(e.target.value || null)}
-              className="w-full border rounded px-3 py-1.5 text-sm"
-            >
-              <option value="">{t("expense.noGroup")}</option>
-              {groups.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={groupId ?? ""}
+            onChange={(e) => setGroupId(e.target.value || null)}
+            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+          >
+            <option value="">{t("expense.noGroup")}</option>
+            {groups.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.name}
+              </option>
+            ))}
+          </select>
 
           {/* Notes */}
           <textarea
             placeholder={t("expense.notes")}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm h-16 focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm h-16 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
           />
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 px-4 py-3 border-t">
+        <div className="flex justify-end gap-2.5 px-5 py-4 border-t border-[rgba(0,0,0,0.06)]">
           <button
             onClick={closeSettleUp}
-            className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded"
+            className="px-5 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.04)] rounded-xl transition-colors"
           >
             {t("expense.cancel")}
           </button>
           <button
             onClick={handleSave}
             disabled={saving || !payeeId || !amount || parseFloat(amount) <= 0}
-            className="px-4 py-2 text-sm bg-[#5bc5a7] text-white rounded font-medium hover:bg-[#4ab393] disabled:opacity-50"
+            className="px-5 py-2 text-sm bg-[var(--color-primary)] text-white rounded-xl font-medium hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-all duration-200"
           >
             {saving ? "..." : t("expense.save")}
           </button>

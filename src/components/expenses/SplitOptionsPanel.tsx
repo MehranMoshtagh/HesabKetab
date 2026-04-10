@@ -66,20 +66,20 @@ export default function SplitOptionsPanel({
   const remaining = totalAmount - getTotalAssigned();
 
   return (
-    <div className="border rounded-lg p-3 bg-gray-50 space-y-3">
-      <div className="text-sm font-medium text-[#333]">{t("title")}</div>
+    <div className="border border-[rgba(0,0,0,0.06)] rounded-2xl p-4 bg-[var(--color-bg)] space-y-3">
+      <div className="text-sm font-medium text-[var(--color-text)]">{t("title")}</div>
 
       {/* Split type tabs */}
-      <div className="flex gap-1 border-b pb-2">
+      <div className="flex gap-1 border-b border-[rgba(0,0,0,0.06)] pb-3">
         {tabs.map((tab) => (
           <button
             key={tab.type}
             onClick={() => setSplitType(tab.type)}
             className={cn(
-              "flex-1 text-center py-1.5 rounded text-xs font-medium transition-colors",
+              "flex-1 text-center py-1.5 rounded-lg text-xs font-medium transition-all duration-200",
               splitType === tab.type
-                ? "bg-[#5bc5a7] text-white"
-                : "bg-white text-gray-500 hover:bg-gray-100"
+                ? "bg-[var(--color-primary)] text-white"
+                : "bg-white text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.03)]"
             )}
           >
             <div className="text-base">{tab.icon}</div>
@@ -90,8 +90,7 @@ export default function SplitOptionsPanel({
       {/* Participants list */}
       <div className="space-y-2">
         {participants.map((p, i) => (
-          <div key={p.userId} className="flex items-center gap-2">
-            {/* Include checkbox (for EQUAL) */}
+          <div key={p.userId} className="flex items-center gap-2.5">
             {splitType === "EQUAL" && (
               <input
                 type="checkbox"
@@ -103,11 +102,10 @@ export default function SplitOptionsPanel({
               />
             )}
 
-            <span className="text-sm flex-1 truncate">{p.name}</span>
+            <span className="text-sm flex-1 truncate text-[var(--color-text)]">{p.name}</span>
 
-            {/* Value input */}
             {splitType === "EQUAL" && (
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-[var(--color-text-secondary)]">
                 ${p.included ? equalShare.toFixed(2) : "0.00"}
               </span>
             )}
@@ -124,7 +122,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border rounded px-2 py-1 text-sm text-end"
+                className="w-24 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
 
@@ -142,9 +140,9 @@ export default function SplitOptionsPanel({
                   placeholder="0"
                   min="0"
                   max="100"
-                  className="w-16 border rounded px-2 py-1 text-sm text-end"
+                  className="w-16 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
                 />
-                <span className="text-sm text-gray-400">%</span>
+                <span className="text-sm text-[var(--color-text-tertiary)]">%</span>
               </div>
             )}
 
@@ -160,7 +158,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="1"
                 min="0"
-                className="w-16 border rounded px-2 py-1 text-sm text-end"
+                className="w-16 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
 
@@ -176,19 +174,18 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border rounded px-2 py-1 text-sm text-end"
+                className="w-24 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
           </div>
         ))}
       </div>
 
-      {/* Remaining / Total */}
       {(splitType === "EXACT" || splitType === "ADJUSTMENT") && (
         <div
           className={cn(
             "text-xs text-end",
-            Math.abs(remaining) < 0.01 ? "text-green-600" : "text-red-500"
+            Math.abs(remaining) < 0.01 ? "text-[var(--color-positive)]" : "text-[var(--color-negative)]"
           )}
         >
           {Math.abs(remaining) < 0.01
@@ -202,8 +199,8 @@ export default function SplitOptionsPanel({
           className={cn(
             "text-xs text-end",
             Math.abs(getTotalAssigned() - 100) < 0.01
-              ? "text-green-600"
-              : "text-red-500"
+              ? "text-[var(--color-positive)]"
+              : "text-[var(--color-negative)]"
           )}
         >
           {Math.abs(getTotalAssigned() - 100) < 0.01
@@ -214,7 +211,7 @@ export default function SplitOptionsPanel({
 
       <button
         onClick={onClose}
-        className="w-full text-center text-sm text-[#5bc5a7] font-medium py-1 hover:underline"
+        className="w-full text-center text-sm text-[var(--color-primary)] font-medium py-1.5 hover:opacity-70 transition-opacity"
       >
         Done
       </button>

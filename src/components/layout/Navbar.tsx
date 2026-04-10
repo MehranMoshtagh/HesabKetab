@@ -2,7 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
-import { Bell, ChevronDown, Globe, LogOut, Settings, User } from "lucide-react";
+import { Bell, ChevronDown, Globe, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import type { Locale } from "@/i18n/config";
@@ -32,77 +32,65 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#5bc5a7] text-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[rgba(0,0,0,0.06)]">
+      <div className="max-w-7xl mx-auto px-4 h-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/dashboard" className="text-xl font-bold tracking-tight">
+        <Link
+          href="/dashboard"
+          className="text-base font-semibold text-[var(--color-text)] tracking-tight"
+        >
           {t("app.name")}
         </Link>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {/* Language toggle */}
           <button
             onClick={toggleLocale}
-            className="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/20 text-sm"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-sm text-[var(--color-text-secondary)] transition-all duration-200"
             title={t("nav.language")}
           >
-            <Globe size={16} />
-            <span>{locale === "en" ? "فا" : "EN"}</span>
+            <Globe size={15} />
+            <span className="text-xs">{locale === "en" ? "فا" : "EN"}</span>
           </button>
 
           {/* Notifications */}
-          <button className="relative p-1 rounded hover:bg-white/20">
-            <Bell size={20} />
+          <button className="relative p-2 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-secondary)] transition-all duration-200">
+            <Bell size={18} />
           </button>
 
           {/* User menu */}
-          {session?.user ? (
+          {session?.user && (
             <div ref={menuRef} className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/20"
+                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-[rgba(0,0,0,0.04)] transition-all duration-200"
               >
-                <div className="w-7 h-7 rounded-full bg-white/30 flex items-center justify-center text-sm font-medium">
+                <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/12 flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
                   {session.user.name?.[0]?.toUpperCase() || "U"}
                 </div>
-                <ChevronDown size={14} />
+                <ChevronDown size={12} className="text-[var(--color-text-tertiary)]" />
               </button>
 
               {menuOpen && (
-                <div className="absolute end-0 mt-1 w-48 bg-white rounded-md shadow-lg text-[#333] py-1 z-50">
+                <div className="absolute end-0 mt-2 w-48 bg-white rounded-xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] py-1 z-50">
                   <Link
                     href="/account/settings"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-sm"
+                    className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[rgba(0,0,0,0.03)] text-sm text-[var(--color-text)] transition-colors"
                     onClick={() => setMenuOpen(false)}
                   >
-                    <Settings size={14} />
+                    <Settings size={15} className="text-[var(--color-text-secondary)]" />
                     {t("nav.settings")}
                   </Link>
                   <button
                     onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-                    className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100 text-sm"
+                    className="flex items-center gap-2.5 w-full px-4 py-2.5 hover:bg-[rgba(0,0,0,0.03)] text-sm text-[var(--color-text)] transition-colors"
                   >
-                    <LogOut size={14} />
+                    <LogOut size={15} className="text-[var(--color-text-secondary)]" />
                     {t("nav.logOut")}
                   </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/login"
-                className="px-3 py-1 rounded text-sm hover:bg-white/20"
-              >
-                {t("auth.logIn")}
-              </Link>
-              <Link
-                href="/signup"
-                className="px-3 py-1 rounded bg-white text-[#5bc5a7] text-sm font-medium"
-              >
-                {t("auth.signUp")}
-              </Link>
             </div>
           )}
         </div>

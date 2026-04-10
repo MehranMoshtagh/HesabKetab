@@ -66,14 +66,14 @@ export default function GroupDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-lg shadow-sm p-4 animate-pulse h-20" />
-        <div className="bg-white rounded-lg shadow-sm p-4 animate-pulse h-60" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-20 bg-[rgba(0,0,0,0.04)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-60 bg-[rgba(0,0,0,0.04)]" />
       </div>
     );
   }
 
   if (!data) {
-    return <div className="text-center py-8 text-gray-400">{t("common.error")}</div>;
+    return <div className="text-center py-8 text-[var(--color-text-tertiary)]">{t("common.error")}</div>;
   }
 
   const byMonth: Record<string, ExpenseItem[]> = {};
@@ -88,15 +88,15 @@ export default function GroupDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-[#5bc5a7]/20 flex items-center justify-center text-lg">
+              <div className="w-12 h-12 rounded-lg bg-[var(--color-primary)]/8 flex items-center justify-center text-lg">
                 👥
               </div>
               <div>
-                <h1 className="text-lg font-bold text-[#333]">{data.name}</h1>
-                <p className="text-sm text-gray-500">
+                <h1 className="text-lg font-semibold text-[var(--color-text)]">{data.name}</h1>
+                <p className="text-sm text-[var(--color-text-secondary)]">
                   {data.members.length}{" "}
                   {data.members.length === 1 ? "member" : "members"}
                 </p>
@@ -105,23 +105,23 @@ export default function GroupDetailPage() {
             <div className="flex gap-2 items-center">
               <button
                 onClick={() => openAddExpense({ groupId })}
-                className="flex items-center gap-1 bg-[#ff652f] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#e5551f]"
+                className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
               >
                 <Plus size={14} />
                 {t("dashboard.addExpense")}
               </button>
               <button
                 onClick={() => openSettleUp({ groupId })}
-                className="flex items-center gap-1 bg-[#5bc5a7] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#4ab393]"
+                className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
               >
                 <HandCoins size={14} />
                 {t("dashboard.settleUp")}
               </button>
               <Link
                 href={`/groups/${groupId}/edit`}
-                className="p-1.5 rounded hover:bg-gray-100"
+                className="p-1.5 rounded hover:bg-[rgba(0,0,0,0.03)]"
               >
-                <Settings size={16} className="text-gray-400" />
+                <Settings size={16} className="text-[var(--color-text-tertiary)]" />
               </Link>
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function GroupDetailPage() {
             return (
               <div key={month} className="mb-4">
                 <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-lg shadow-sm divide-y">
+                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
                   {expenses.map((exp) => (
                     <ExpenseListItem key={exp.id} expense={exp} />
                   ))}
@@ -145,7 +145,7 @@ export default function GroupDetailPage() {
           })}
 
         {data.expenses.length === 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-400 text-sm">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
             {t("dashboard.noExpenses")}
           </div>
         )}
@@ -153,11 +153,11 @@ export default function GroupDetailPage() {
 
       {/* Right panel — group balances */}
       <div className="w-64 hidden lg:block space-y-4">
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("group.groupBalances")}
           </h3>
-          <p className="text-xs text-gray-400 mb-3">
+          <p className="text-xs text-[var(--color-text-tertiary)] mb-3">
             {balances?.simplifyEnabled
               ? t("group.simplifyOn")
               : t("group.simplifyOff")}
@@ -168,20 +168,20 @@ export default function GroupDetailPage() {
             {balances?.members.map((m) => (
               <div key={m.userId} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+                  <div className="w-6 h-6 rounded-full bg-[rgba(0,0,0,0.04)] flex items-center justify-center text-xs font-semibold">
                     {m.name[0]?.toUpperCase()}
                   </div>
-                  <span className="text-sm text-[#333] truncate max-w-[100px]">
+                  <span className="text-sm text-[var(--color-text)] truncate max-w-[100px]">
                     {m.name}
                   </span>
                 </div>
                 <span
                   className={`text-sm font-medium ${
                     m.balance > 0
-                      ? "text-[#5bc5a7]"
+                      ? "text-[var(--color-positive)]"
                       : m.balance < 0
-                      ? "text-[#ff652f]"
-                      : "text-gray-400"
+                      ? "text-[var(--color-negative)]"
+                      : "text-[var(--color-text-tertiary)]"
                   }`}
                 >
                   {m.balance > 0
@@ -196,24 +196,24 @@ export default function GroupDetailPage() {
 
           {/* Simplified debts */}
           {balances?.simplified && balances.simplified.length > 0 && (
-            <div className="border-t pt-3">
-              <h4 className="text-xs font-semibold text-gray-500 mb-2">
+            <div className="border-t border-[rgba(0,0,0,0.06)] pt-3">
+              <h4 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
                 {t("group.viewDetails")}
               </h4>
               <div className="space-y-2">
                 {balances.simplified.map((d, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-1 text-xs text-[#333]"
+                    className="flex items-center gap-1 text-xs text-[var(--color-text)]"
                   >
-                    <span className="font-medium text-[#ff652f]">
+                    <span className="font-medium text-[var(--color-negative)]">
                       {d.fromName}
                     </span>
-                    <ArrowRight size={10} className="text-gray-400" />
-                    <span className="font-medium text-[#5bc5a7]">
+                    <ArrowRight size={10} className="text-[var(--color-text-tertiary)]" />
+                    <span className="font-medium text-[var(--color-positive)]">
                       {d.toName}
                     </span>
-                    <span className="ms-auto font-bold">
+                    <span className="ms-auto font-semibold">
                       ${d.amount.toFixed(2)}
                     </span>
                   </div>

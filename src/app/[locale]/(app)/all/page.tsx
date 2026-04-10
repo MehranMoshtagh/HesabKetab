@@ -69,20 +69,20 @@ export default function AllExpensesPage() {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-[#333]">
+        <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
           {t("nav.allExpenses")}
         </h1>
         <div className="flex gap-2">
           <button
             onClick={() => openAddExpense()}
-            className="flex items-center gap-1 bg-[#ff652f] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#e5551f]"
+            className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
           >
             <Plus size={14} />
             {t("dashboard.addExpense")}
           </button>
           <button
             onClick={() => openSettleUp()}
-            className="flex items-center gap-1 bg-[#5bc5a7] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#4ab393]"
+            className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
           >
             <HandCoins size={14} />
             {t("dashboard.settleUp")}
@@ -95,12 +95,12 @@ export default function AllExpensesPage() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-lg shadow-sm p-4 animate-pulse h-16"
+              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-16 bg-[rgba(0,0,0,0.04)]"
             />
           ))}
         </div>
       ) : expenses.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           {t("dashboard.noExpenses")}
         </div>
       ) : (
@@ -112,12 +112,12 @@ export default function AllExpensesPage() {
               return (
                 <div key={month} className="mb-4">
                   <MonthHeader monthKey={month} />
-                  <div className="bg-white rounded-lg shadow-sm divide-y">
+                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
                     {monthExpenses.map((exp) => (
                       <div key={exp.id} className="relative">
                         <ExpenseListItem expense={exp} />
                         {exp.group && (
-                          <span className="absolute top-1 end-1 text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">
+                          <span className="absolute top-1 end-1 text-[10px] bg-[rgba(0,0,0,0.04)] text-[var(--color-text-secondary)] px-1.5 py-0.5 rounded">
                             {exp.group.name}
                           </span>
                         )}
@@ -134,18 +134,18 @@ export default function AllExpensesPage() {
               <button
                 onClick={() => fetchExpenses(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="flex items-center gap-1 text-sm text-[#5bc5a7] disabled:text-gray-300"
+                className="flex items-center gap-1 text-sm text-[var(--color-primary)] disabled:text-[var(--color-text-tertiary)]"
               >
                 <ChevronLeft size={16} />
                 Previous
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-[var(--color-text-secondary)]">
                 Page {pagination.page} of {pagination.totalPages}
               </span>
               <button
                 onClick={() => fetchExpenses(pagination.page + 1)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="flex items-center gap-1 text-sm text-[#5bc5a7] disabled:text-gray-300"
+                className="flex items-center gap-1 text-sm text-[var(--color-primary)] disabled:text-[var(--color-text-tertiary)]"
               >
                 Next
                 <ChevronRight size={16} />

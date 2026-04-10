@@ -45,15 +45,12 @@ export default function AddExpenseModal() {
   const [recurringInterval, setRecurringInterval] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Selected participants for the expense
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>(
     addExpenseContext.friendId ? [addExpenseContext.friendId] : []
   );
 
-  // Payer: who paid
   const [payerId, setPayerId] = useState(session?.user?.id ?? "");
 
-  // Participants = current user + selected friends
   const currentUserId = session?.user?.id ?? "";
   const currentUserName = session?.user?.name ?? "You";
 
@@ -80,7 +77,6 @@ export default function AddExpenseModal() {
   const [participants, setParticipants] =
     useState<Participant[]>(allParticipants);
 
-  // Recalculate participants when friends change
   const updateParticipants = useCallback(
     (friendIds: string[]) => {
       setSelectedFriendIds(friendIds);
@@ -115,7 +111,6 @@ export default function AddExpenseModal() {
     updateParticipants(next);
   };
 
-  // Calculate split amounts based on split type
   const computeShares = () => {
     const total = parseFloat(amount) || 0;
     const included = participants.filter((p) => p.included);
@@ -140,7 +135,6 @@ export default function AddExpenseModal() {
       }));
     }
 
-    // EXACT and ADJUSTMENT use amounts directly
     return included;
   };
 
@@ -200,20 +194,25 @@ export default function AddExpenseModal() {
   if (!isAddExpenseOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b bg-[#5bc5a7] text-white rounded-t-lg">
-          <h2 className="font-semibold">{t("expense.addExpense")}</h2>
-          <button onClick={closeAddExpense}>
-            <X size={20} />
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(0,0,0,0.06)]">
+          <h2 className="font-semibold text-[var(--color-text)] tracking-tight">
+            {t("expense.addExpense")}
+          </h2>
+          <button
+            onClick={closeAddExpense}
+            className="p-1 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-tertiary)] transition-colors"
+          >
+            <X size={18} />
           </button>
         </div>
 
-        <div className="p-4 space-y-4">
+        <div className="p-5 space-y-5">
           {/* With you and: */}
           <div>
-            <label className="text-sm text-gray-500 mb-1 block">
+            <label className="text-sm text-[var(--color-text-secondary)] mb-2 block">
               {t("expense.withYouAnd")}
             </label>
             <div className="flex flex-wrap gap-2">
@@ -222,10 +221,10 @@ export default function AddExpenseModal() {
                   key={f.id}
                   onClick={() => toggleFriend(f.id)}
                   className={cn(
-                    "px-3 py-1 rounded-full text-sm border transition-colors",
+                    "px-3.5 py-1.5 rounded-full text-sm border transition-all duration-200",
                     selectedFriendIds.includes(f.id)
-                      ? "bg-[#5bc5a7] text-white border-[#5bc5a7]"
-                      : "bg-white text-[#333] border-gray-300 hover:border-[#5bc5a7]"
+                      ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
+                      : "bg-white text-[var(--color-text)] border-[rgba(0,0,0,0.12)] hover:border-[var(--color-primary)]"
                   )}
                 >
                   {f.name}
@@ -238,7 +237,7 @@ export default function AddExpenseModal() {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setShowCategoryPicker(!showCategoryPicker)}
-              className="text-2xl w-10 h-10 flex items-center justify-center rounded border hover:bg-gray-50"
+              className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl border border-[rgba(0,0,0,0.08)] hover:bg-[rgba(0,0,0,0.02)] transition-colors"
             >
               📄
             </button>
@@ -247,7 +246,7 @@ export default function AddExpenseModal() {
               placeholder={t("expense.description")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
 
@@ -265,7 +264,7 @@ export default function AddExpenseModal() {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setShowCurrencyPicker(true)}
-              className="px-3 py-2 border rounded text-sm font-medium text-gray-600 hover:bg-gray-50"
+              className="px-3.5 py-2.5 border border-[rgba(0,0,0,0.12)] rounded-xl text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.02)] transition-colors"
             >
               {getCurrencySymbol(currency)}
             </button>
@@ -276,18 +275,16 @@ export default function AddExpenseModal() {
               onChange={(e) => setAmount(e.target.value)}
               step="0.01"
               min="0"
-              className="flex-1 border rounded px-3 py-2 text-2xl font-bold text-center focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-2xl font-semibold text-center bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
 
           {/* Paid by / Split */}
-          <div className="text-center text-sm text-gray-600">
+          <div className="text-center text-sm text-[var(--color-text-secondary)]">
             {t("expense.paidBy")}{" "}
             <button
-              onClick={() => {
-                /* TODO: payer picker */
-              }}
-              className="text-[#5bc5a7] font-medium underline"
+              onClick={() => {}}
+              className="text-[var(--color-primary)] font-medium"
             >
               {payerId === currentUserId
                 ? t("expense.you")
@@ -296,13 +293,12 @@ export default function AddExpenseModal() {
             {t("expense.split")}{" "}
             <button
               onClick={() => setShowSplitPanel(!showSplitPanel)}
-              className="text-[#5bc5a7] font-medium underline"
+              className="text-[var(--color-primary)] font-medium"
             >
               {t("expense.equally")}
             </button>
           </div>
 
-          {/* Split options panel */}
           {showSplitPanel && (
             <SplitOptionsPanel
               participants={participants}
@@ -315,36 +311,34 @@ export default function AddExpenseModal() {
           )}
 
           {/* Date */}
-          <div className="flex items-center gap-2">
-            <Calendar size={16} className="text-gray-400" />
+          <div className="flex items-center gap-2.5">
+            <Calendar size={15} className="text-[var(--color-text-tertiary)]" />
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="border rounded px-3 py-1.5 text-sm"
+              className="border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2 text-sm bg-[var(--color-bg)]"
             />
           </div>
 
           {/* Group selector */}
-          <div>
-            <select
-              value={groupId ?? ""}
-              onChange={(e) => setGroupId(e.target.value || null)}
-              className="w-full border rounded px-3 py-1.5 text-sm"
-            >
-              <option value="">{t("expense.noGroup")}</option>
-              {groups.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={groupId ?? ""}
+            onChange={(e) => setGroupId(e.target.value || null)}
+            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+          >
+            <option value="">{t("expense.noGroup")}</option>
+            {groups.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.name}
+              </option>
+            ))}
+          </select>
 
-          {/* Notes/Image toggle */}
+          {/* Notes toggle */}
           <button
             onClick={() => setShowNotes(!showNotes)}
-            className="text-sm text-gray-500 flex items-center gap-1 hover:text-[#5bc5a7]"
+            className="text-sm text-[var(--color-text-secondary)] flex items-center gap-1.5 hover:text-[var(--color-primary)] transition-colors"
           >
             <Image size={14} />
             {t("expense.addImageNotes")}
@@ -355,14 +349,14 @@ export default function AddExpenseModal() {
               placeholder={t("expense.notes")}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm h-20 focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm h-20 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           )}
 
           {/* Recurring */}
-          <div className="flex items-center gap-2">
-            <Repeat size={14} className="text-gray-400" />
-            <label className="text-sm text-gray-600 flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
+            <Repeat size={14} className="text-[var(--color-text-tertiary)]" />
+            <label className="text-sm text-[var(--color-text-secondary)] flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={isRecurring}
@@ -375,7 +369,7 @@ export default function AddExpenseModal() {
               <select
                 value={recurringInterval ?? ""}
                 onChange={(e) => setRecurringInterval(e.target.value)}
-                className="border rounded px-2 py-1 text-xs"
+                className="border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-xs bg-[var(--color-bg)]"
               >
                 <option value="WEEKLY">{t("common.weekly")}</option>
                 <option value="BIWEEKLY">{t("common.biweekly")}</option>
@@ -387,24 +381,23 @@ export default function AddExpenseModal() {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 px-4 py-3 border-t">
+        <div className="flex justify-end gap-2.5 px-5 py-4 border-t border-[rgba(0,0,0,0.06)]">
           <button
             onClick={closeAddExpense}
-            className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded"
+            className="px-5 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.04)] rounded-xl transition-colors"
           >
             {t("expense.cancel")}
           </button>
           <button
             onClick={handleSave}
             disabled={saving || !description.trim() || !amount || selectedFriendIds.length === 0}
-            className="px-4 py-2 text-sm bg-[#5bc5a7] text-white rounded font-medium hover:bg-[#4ab393] disabled:opacity-50"
+            className="px-5 py-2 text-sm bg-[var(--color-primary)] text-white rounded-xl font-medium hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-all duration-200"
           >
             {saving ? "..." : t("expense.save")}
           </button>
         </div>
       </div>
 
-      {/* Currency picker modal */}
       {showCurrencyPicker && (
         <CurrencyPicker
           selected={currency}

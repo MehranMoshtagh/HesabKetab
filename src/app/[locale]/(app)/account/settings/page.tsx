@@ -106,7 +106,7 @@ export default function AccountSettingsPage() {
     return (
       <div className="max-w-2xl mx-auto space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-lg shadow-sm p-6 animate-pulse h-40" />
+          <div key={i} className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-40 bg-[rgba(0,0,0,0.04)]" />
         ))}
       </div>
     );
@@ -114,69 +114,69 @@ export default function AccountSettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-xl font-bold text-[#333]">{t("title")}</h1>
+      <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">{t("title")}</h1>
 
       {/* Profile Section */}
-      <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-4">
+        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">
           {t("yourAccount")}
         </h2>
 
         {/* Avatar */}
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-[#5bc5a7]/20 flex items-center justify-center text-2xl font-bold text-[#5bc5a7]">
+          <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-2xl font-semibold text-[var(--color-primary)]">
             {name[0]?.toUpperCase() ?? "U"}
           </div>
-          <button className="text-sm text-[#5bc5a7] hover:underline">
+          <button className="text-sm text-[var(--color-primary)] hover:underline">
             {t("avatar")}
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("name")}
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("email")}
             </label>
             <input
               type="email"
               value={profile?.email ?? ""}
               disabled
-              className="w-full border rounded px-3 py-2 text-sm bg-gray-50 text-gray-500"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text-secondary)]"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("phone")}
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("defaultCurrency")}
             </label>
             <select
               value={defaultCurrency}
               onChange={(e) => setDefaultCurrency(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               {currencies.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -187,13 +187,13 @@ export default function AccountSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("timezone")}
             </label>
             <select
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               {Intl.supportedValuesOf("timeZone").map((tz) => (
                 <option key={tz} value={tz}>
@@ -204,13 +204,13 @@ export default function AccountSettingsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
               {t("language")}
             </label>
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full border rounded px-3 py-2 text-sm"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               <option value="en">English</option>
               <option value="fa">فارسی</option>
@@ -220,20 +220,20 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Notifications */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
           {t("notifications")}
         </h2>
 
         {/* Header */}
         <div className="flex items-center justify-end gap-8 mb-2 pe-1">
-          <span className="text-xs text-gray-500">📧</span>
-          <span className="text-xs text-gray-500">📱</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">📧</span>
+          <span className="text-xs text-[var(--color-text-secondary)]">📱</span>
         </div>
 
         {/* Group: Groups & Friends */}
         <div className="mb-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
             {t("notifGroupsFriends")}
           </h3>
           {notifKeys
@@ -243,7 +243,7 @@ export default function AccountSettingsPage() {
                 key={n.key}
                 className="flex items-center justify-between py-1.5"
               >
-                <span className="text-sm text-[#333]">{t(n.key)}</span>
+                <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
                   <input
                     type="checkbox"
@@ -264,7 +264,7 @@ export default function AccountSettingsPage() {
 
         {/* Group: Expenses */}
         <div className="mb-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
             {t("notifExpenses")}
           </h3>
           {notifKeys
@@ -274,7 +274,7 @@ export default function AccountSettingsPage() {
                 key={n.key}
                 className="flex items-center justify-between py-1.5"
               >
-                <span className="text-sm text-[#333]">{t(n.key)}</span>
+                <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
                   <input
                     type="checkbox"
@@ -295,7 +295,7 @@ export default function AccountSettingsPage() {
 
         {/* Group: News */}
         <div>
-          <h3 className="text-xs font-semibold text-gray-400 uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
             {t("notifNews")}
           </h3>
           {notifKeys
@@ -305,7 +305,7 @@ export default function AccountSettingsPage() {
                 key={n.key}
                 className="flex items-center justify-between py-1.5"
               >
-                <span className="text-sm text-[#333]">{t(n.key)}</span>
+                <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
                   <input
                     type="checkbox"
@@ -326,25 +326,25 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Export & Advanced */}
-      <div className="bg-white rounded-lg shadow-sm p-6 space-y-3">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-3">
         <div className="flex items-center gap-3">
           <a
             href="/api/export/json"
             download
-            className="text-sm text-[#5bc5a7] hover:underline"
+            className="text-sm text-[var(--color-primary)] hover:underline"
           >
             {t("downloadBackup")}
           </a>
-          <span className="text-gray-300">|</span>
+          <span className="text-[var(--color-text-tertiary)]">|</span>
           <a
             href="/api/export/csv"
             download
-            className="text-sm text-[#5bc5a7] hover:underline"
+            className="text-sm text-[var(--color-primary)] hover:underline"
           >
             Export CSV
           </a>
         </div>
-        <div className="border-t pt-3">
+        <div className="border-t border-[rgba(0,0,0,0.06)] pt-3">
           <button className="text-sm text-red-500 hover:underline">
             {t("deleteAccount")}
           </button>
@@ -356,7 +356,7 @@ export default function AccountSettingsPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-6 py-2.5 bg-[#5bc5a7] text-white rounded-lg font-medium text-sm hover:bg-[#4ab393] disabled:opacity-50"
+          className="bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
         >
           {saving ? "..." : t("save")}
         </button>

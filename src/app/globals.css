@@ -8,19 +8,28 @@
 }
 
 :root {
-  --color-brand: #5bc5a7;
-  --color-brand-dark: #4ab393;
-  --color-orange: #ff652f;
-  --color-gray: #999999;
-  --color-light-gray: #eeeeee;
-  --color-dark-text: #333333;
-  --color-positive: #5bc5a7;
-  --color-negative: #ff652f;
+  --color-primary: #0071E3;
+  --color-primary-hover: #0077ED;
+  --color-surface: #FFFFFF;
+  --color-bg: #F5F5F7;
+  --color-text: #1D1D1F;
+  --color-text-secondary: #86868B;
+  --color-text-tertiary: #AEAEB2;
+  --color-border: rgba(0, 0, 0, 0.06);
+  --color-positive: #34C759;
+  --color-negative: #FF3B30;
+  --color-glass: rgba(255, 255, 255, 0.72);
+  --color-glass-border: rgba(255, 255, 255, 0.18);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
-  color: var(--color-dark-text);
+  font-family: Inter, "SF Pro Display", system-ui, -apple-system, sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 [dir="rtl"] body,
@@ -39,12 +48,24 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Smooth transitions */
+/* Smooth interactions */
 * {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Scrollbar styling */
+/* Focus ring — Apple-style */
+:focus-visible {
+  outline: 3px solid rgba(0, 113, 227, 0.4);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 113, 227, 0.15);
+}
+
+/* Scrollbar — minimal */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -52,9 +73,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: rgba(0, 0, 0, 0.12);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: rgba(0, 0, 0, 0.2);
 }

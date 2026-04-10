@@ -43,42 +43,42 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
 
   let rightLabel = "";
   let rightAmount = "";
-  let rightColor = "text-gray-500";
+  let rightColor = "text-[var(--color-text-secondary)]";
 
   if (expense.isPayment) {
     const payer = expense.payers[0];
     const payee = expense.shares[0];
     rightLabel = `${payer?.user.name} → ${payee?.user.name}`;
     rightAmount = `$${parseFloat(expense.amount).toFixed(2)}`;
-    rightColor = "text-[#5bc5a7]";
+    rightColor = "text-[var(--color-positive)]";
   } else if (userPaid && parseFloat(userPaid.amount) > 0) {
     const lentAmount =
       parseFloat(userPaid.amount) - parseFloat(userShare?.amount ?? "0");
     if (lentAmount > 0) {
       rightLabel = "you lent";
       rightAmount = `$${lentAmount.toFixed(2)}`;
-      rightColor = "text-[#5bc5a7]";
+      rightColor = "text-[var(--color-positive)]";
     } else {
       rightLabel = "you borrowed";
       rightAmount = `$${Math.abs(lentAmount).toFixed(2)}`;
-      rightColor = "text-[#ff652f]";
+      rightColor = "text-[var(--color-negative)]";
     }
   } else if (userShare) {
     rightLabel = "you borrowed";
     rightAmount = `$${parseFloat(userShare.amount).toFixed(2)}`;
-    rightColor = "text-[#ff652f]";
+    rightColor = "text-[var(--color-negative)]";
   }
 
   return (
     <div>
       <div
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
+        className="flex items-center gap-3 px-4 py-3 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 cursor-pointer rounded-xl"
       >
         {/* Date */}
         <div className="text-center w-10 shrink-0">
-          <div className="text-xs text-gray-400 uppercase">{monthAbbr}</div>
-          <div className="text-lg font-bold text-[#333]">{day}</div>
+          <div className="text-[10px] text-[var(--color-text-tertiary)] uppercase">{monthAbbr}</div>
+          <div className="text-lg font-semibold text-[var(--color-text)]">{day}</div>
         </div>
 
         {/* Category icon */}
@@ -88,11 +88,11 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
 
         {/* Description */}
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-medium text-[#333] truncate">
+          <div className="text-sm font-medium text-[var(--color-text)] truncate">
             {expense.description}
           </div>
           {userPaid && !expense.isPayment && (
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-[var(--color-text-tertiary)]">
               you paid ${parseFloat(userPaid.amount).toFixed(2)}
             </div>
           )}
@@ -100,22 +100,19 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
 
         {/* Right side */}
         <div className="text-end shrink-0">
-          <div className={`text-xs ${rightColor}`}>{rightLabel}</div>
-          <div className={`text-sm font-bold ${rightColor}`}>{rightAmount}</div>
+          <div className={`text-[11px] ${rightColor}`}>{rightLabel}</div>
+          <div className={`text-sm font-semibold ${rightColor}`}>{rightAmount}</div>
         </div>
 
-        {/* Comment indicator */}
         {expense._count.comments > 0 && (
-          <MessageCircle size={14} className="text-gray-300 shrink-0" />
+          <MessageCircle size={13} className="text-[var(--color-text-tertiary)] shrink-0" />
         )}
 
-        {/* Expand chevron */}
-        <div className="shrink-0 text-gray-300">
-          {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        <div className="shrink-0 text-[var(--color-text-tertiary)]">
+          {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
         </div>
       </div>
 
-      {/* Expanded detail */}
       {expanded && (
         <ExpenseDetail
           expenseId={expense.id}

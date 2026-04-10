@@ -113,27 +113,27 @@ export default function ActivityPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#333] mb-4">{t("activity.title")}</h1>
+      <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("activity.title")}</h1>
 
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-lg shadow-sm p-3 animate-pulse h-14"
+              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-3 animate-pulse h-14 bg-[rgba(0,0,0,0.04)]"
             />
           ))}
         </div>
       ) : activities.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           No recent activity.
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm divide-y">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
           {activities.map((act) => (
             <div
               key={act.id}
-              className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+              className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(0,0,0,0.03)] transition-colors"
             >
               {/* Icon */}
               <div className="text-lg mt-0.5 shrink-0">
@@ -142,15 +142,15 @@ export default function ActivityPage() {
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-[#333]">{formatActivity(act)}</p>
+                <p className="text-sm text-[var(--color-text)]">{formatActivity(act)}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-[var(--color-text-tertiary)]">
                     {formatDate(act.createdAt)}
                   </span>
                   {act.group && (
                     <Link
                       href={`/groups/${act.group.id}`}
-                      className="text-xs text-[#5bc5a7] hover:underline"
+                      className="text-xs text-[var(--color-primary)] hover:underline"
                     >
                       {act.group.name}
                     </Link>
@@ -164,7 +164,7 @@ export default function ActivityPage() {
                 act.expense.deletedAt && (
                   <button
                     onClick={() => handleRestore(act.expense!.id)}
-                    className="flex items-center gap-1 text-xs text-[#5bc5a7] hover:underline shrink-0"
+                    className="flex items-center gap-1 text-xs text-[var(--color-primary)] hover:underline shrink-0"
                   >
                     <RotateCcw size={12} />
                     {t("expense.undeleteExpense")}

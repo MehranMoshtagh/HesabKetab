@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { findSubcategory } from "@/lib/categories";
 
 interface Comment {
@@ -77,7 +77,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
   };
 
   if (loading) {
-    return <div className="p-4 animate-pulse h-32 bg-gray-50" />;
+    return <div className="p-5 animate-pulse h-32 bg-[var(--color-bg)] rounded-xl" />;
   }
 
   if (!expense) return null;
@@ -90,22 +90,22 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
   });
 
   return (
-    <div className="bg-gray-50 border-t px-4 py-4 space-y-4">
+    <div className="bg-[var(--color-bg)] border-t border-[rgba(0,0,0,0.06)] px-5 py-5 space-y-5">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <span className="text-3xl">{cat?.subcategory.icon ?? "📄"}</span>
           <div>
-            <h3 className="text-base font-bold text-[#333]">
+            <h3 className="text-base font-semibold text-[var(--color-text)]">
               {expense.description}
             </h3>
-            <p className="text-lg font-bold text-[#333]">
+            <p className="text-lg font-semibold text-[var(--color-text)]">
               ${parseFloat(expense.amount).toFixed(2)}
-              <span className="text-xs text-gray-400 ms-1">
+              <span className="text-xs text-[var(--color-text-tertiary)] ms-1">
                 {expense.currency}
               </span>
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[var(--color-text-tertiary)]">
               {t("expense.detail.addedBy", {
                 name: expense.createdBy.name,
                 date: createdDate,
@@ -113,33 +113,31 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={handleDelete}
-            className="p-1.5 rounded hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
-            title={t("expense.deleteExpense")}
-          >
-            <Trash2 size={16} />
-          </button>
-        </div>
+        <button
+          onClick={handleDelete}
+          className="p-2 rounded-xl hover:bg-[var(--color-negative)]/8 text-[var(--color-text-tertiary)] hover:text-[var(--color-negative)] transition-all duration-200"
+          title={t("expense.deleteExpense")}
+        >
+          <Trash2 size={16} />
+        </button>
       </div>
 
       {/* Who paid / Who owes */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-5">
         <div>
-          <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">
+          <h4 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2.5">
             {t("expense.detail.whoPaid")}
           </h4>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {expense.payers.map((p) => (
               <div key={p.userId} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#5bc5a7]/20 flex items-center justify-center text-[10px] font-bold text-[#5bc5a7]">
+                  <div className="w-6 h-6 rounded-full bg-[var(--color-positive)]/12 flex items-center justify-center text-[10px] font-semibold text-[var(--color-positive)]">
                     {p.user.name[0]?.toUpperCase()}
                   </div>
-                  <span className="text-sm text-[#333]">{p.user.name}</span>
+                  <span className="text-sm text-[var(--color-text)]">{p.user.name}</span>
                 </div>
-                <span className="text-sm font-medium text-[#333]">
+                <span className="text-sm font-medium text-[var(--color-text)]">
                   ${parseFloat(p.amount).toFixed(2)}
                 </span>
               </div>
@@ -148,19 +146,19 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">
+          <h4 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2.5">
             {t("expense.detail.whoOwes")}
           </h4>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {expense.shares.map((s) => (
               <div key={s.userId} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#ff652f]/15 flex items-center justify-center text-[10px] font-bold text-[#ff652f]">
+                  <div className="w-6 h-6 rounded-full bg-[var(--color-negative)]/10 flex items-center justify-center text-[10px] font-semibold text-[var(--color-negative)]">
                     {s.user.name[0]?.toUpperCase()}
                   </div>
-                  <span className="text-sm text-[#333]">{s.user.name}</span>
+                  <span className="text-sm text-[var(--color-text)]">{s.user.name}</span>
                 </div>
-                <span className="text-sm font-medium text-[#ff652f]">
+                <span className="text-sm font-medium text-[var(--color-negative)]">
                   ${parseFloat(s.amount).toFixed(2)}
                 </span>
               </div>
@@ -171,34 +169,34 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
 
       {/* Notes */}
       {expense.notes && (
-        <div className="bg-white rounded p-3 text-sm text-gray-600 border">
+        <div className="bg-white rounded-xl p-3.5 text-sm text-[var(--color-text-secondary)] border border-[rgba(0,0,0,0.06)]">
           {expense.notes}
         </div>
       )}
 
       {/* Comments */}
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">
+        <h4 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2.5">
           {t("expense.detail.notesAndComments")}
         </h4>
 
         {expense.comments.length > 0 && (
-          <div className="space-y-2 mb-3">
+          <div className="space-y-2.5 mb-3">
             {expense.comments.map((c) => (
-              <div key={c.id} className="flex gap-2">
-                <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+              <div key={c.id} className="flex gap-2.5">
+                <div className="w-6 h-6 rounded-full bg-[rgba(0,0,0,0.06)] flex items-center justify-center text-[10px] font-semibold text-[var(--color-text-secondary)] shrink-0 mt-0.5">
                   {c.user.name[0]?.toUpperCase()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-medium text-[#333]">
+                    <span className="text-xs font-medium text-[var(--color-text)]">
                       {c.user.name}
                     </span>
-                    <span className="text-[10px] text-gray-400">
+                    <span className="text-[10px] text-[var(--color-text-tertiary)]">
                       {new Date(c.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="text-sm text-[#333]">{c.content}</p>
+                  <p className="text-sm text-[var(--color-text)]">{c.content}</p>
                 </div>
               </div>
             ))}
@@ -211,7 +209,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder={t("expense.detail.addComment")}
-            className="flex-1 border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+            className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             onKeyDown={(e) => {
               if (e.key === "Enter") handlePostComment();
             }}
@@ -219,7 +217,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
           <button
             onClick={handlePostComment}
             disabled={posting || !newComment.trim()}
-            className="px-3 py-1.5 bg-[#5bc5a7] text-white rounded text-sm font-medium hover:bg-[#4ab393] disabled:opacity-50"
+            className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-all duration-200"
           >
             {t("expense.detail.post")}
           </button>

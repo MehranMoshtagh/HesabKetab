@@ -30,22 +30,22 @@ export default function CurrencyPicker({
   });
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-sm max-h-[70vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] w-full max-w-sm max-h-[70vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b">
-          <h3 className="font-semibold text-[#333]">Currency</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(0,0,0,0.06)]">
+          <h3 className="font-semibold text-[var(--color-text)] tracking-tight">Currency</h3>
+          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-tertiary)] transition-colors">
             <X size={18} />
           </button>
         </div>
 
         {/* Search */}
-        <div className="px-4 py-2 border-b">
+        <div className="px-5 py-3 border-b border-[rgba(0,0,0,0.06)]">
           <div className="relative">
             <Search
               size={14}
-              className="absolute start-2 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]"
             />
             <input
               type="text"
@@ -53,7 +53,7 @@ export default function CurrencyPicker({
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search currencies..."
               autoFocus
-              className="w-full ps-7 pe-3 py-1.5 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="w-full ps-8 pe-3 py-2 border border-[rgba(0,0,0,0.12)] rounded-xl text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
         </div>
@@ -67,23 +67,23 @@ export default function CurrencyPicker({
                 onSelect(c.code);
                 onClose();
               }}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 text-start hover:bg-gray-50 transition-colors ${
-                c.code === selected ? "bg-[#5bc5a7]/10" : ""
+              className={`w-full flex items-center gap-3 px-5 py-2.5 text-start hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 ${
+                c.code === selected ? "bg-[var(--color-primary)]/6" : ""
               }`}
             >
               <span className="text-base font-medium w-8 text-center">
                 {c.symbol}
               </span>
               <div className="flex-1">
-                <div className="text-sm font-medium text-[#333]">
+                <div className="text-sm font-medium text-[var(--color-text)]">
                   {c.code}
                 </div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-[var(--color-text-tertiary)]">
                   {locale === "fa" ? c.nameFa : c.name}
                 </div>
               </div>
               {c.code === selected && (
-                <span className="text-[#5bc5a7] text-sm">✓</span>
+                <span className="text-[var(--color-primary)] text-sm">✓</span>
               )}
             </button>
           ))}

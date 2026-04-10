@@ -52,14 +52,14 @@ export default function FriendDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-lg shadow-sm p-4 animate-pulse h-20" />
-        <div className="bg-white rounded-lg shadow-sm p-4 animate-pulse h-40" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-20 bg-[rgba(0,0,0,0.04)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-40 bg-[rgba(0,0,0,0.04)]" />
       </div>
     );
   }
 
   if (!data) {
-    return <div className="text-center py-8 text-gray-400">{t("common.error")}</div>;
+    return <div className="text-center py-8 text-[var(--color-text-tertiary)]">{t("common.error")}</div>;
   }
 
   // Group expenses by month
@@ -71,7 +71,7 @@ export default function FriendDetailPage() {
     byMonth[key].push(exp);
   }
 
-  const balanceColor = balance > 0 ? "text-[#5bc5a7]" : balance < 0 ? "text-[#ff652f]" : "text-gray-500";
+  const balanceColor = balance > 0 ? "text-[var(--color-positive)]" : balance < 0 ? "text-[var(--color-negative)]" : "text-[var(--color-text-secondary)]";
   const balanceLabel =
     balance > 0
       ? `${data.friend.name} ${t("common.owes")} $${balance.toFixed(2)}`
@@ -83,20 +83,20 @@ export default function FriendDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4 flex items-center justify-between">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#5bc5a7]/20 flex items-center justify-center text-lg font-bold text-[#5bc5a7]">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-lg font-semibold text-[var(--color-primary)]">
               {data.friend.name[0]?.toUpperCase()}
             </div>
             <div>
-              <h1 className="text-lg font-bold text-[#333]">{data.friend.name}</h1>
-              <p className="text-sm text-gray-500">{data.friend.email}</p>
+              <h1 className="text-lg font-semibold text-[var(--color-text)]">{data.friend.name}</h1>
+              <p className="text-sm text-[var(--color-text-secondary)]">{data.friend.email}</p>
             </div>
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => openAddExpense({ friendId })}
-              className="flex items-center gap-1 bg-[#ff652f] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#e5551f]"
+              className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
             >
               <Plus size={14} />
               {t("dashboard.addExpense")}
@@ -105,7 +105,7 @@ export default function FriendDetailPage() {
               onClick={() =>
                 openSettleUp({ friendId, friendName: data.friend.name })
               }
-              className="flex items-center gap-1 bg-[#5bc5a7] text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-[#4ab393]"
+              className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
             >
               <HandCoins size={14} />
               {t("dashboard.settleUp")}
@@ -121,7 +121,7 @@ export default function FriendDetailPage() {
             return (
               <div key={month} className="mb-4">
                 <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-lg shadow-sm divide-y">
+                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
                   {expenses.map((exp) => (
                     <ExpenseListItem key={exp.id} expense={exp} />
                   ))}
@@ -131,7 +131,7 @@ export default function FriendDetailPage() {
           })}
 
         {data.expenses.length === 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-400 text-sm">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
             {t("dashboard.noExpenses")}
           </div>
         )}
@@ -139,11 +139,11 @@ export default function FriendDetailPage() {
 
       {/* Right panel */}
       <div className="w-60 hidden lg:block">
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("friend.yourBalance")}
           </h3>
-          <p className={`text-lg font-bold ${balanceColor}`}>{balanceLabel}</p>
+          <p className={`text-lg font-semibold ${balanceColor}`}>{balanceLabel}</p>
         </div>
       </div>
     </div>

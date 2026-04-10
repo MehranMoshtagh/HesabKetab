@@ -26,7 +26,7 @@ export default function MobileNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 bg-white border-t z-50 lg:hidden safe-area-bottom">
+    <nav className="fixed bottom-0 inset-x-0 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-t border-[rgba(0,0,0,0.06)] z-50 lg:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-14">
         {items.map((item) => {
           if (item.isAction) {
@@ -36,8 +36,8 @@ export default function MobileNav() {
                 onClick={() => openAddExpense()}
                 className="flex flex-col items-center justify-center -mt-4"
               >
-                <div className="w-12 h-12 rounded-full bg-[#ff652f] text-white flex items-center justify-center shadow-lg">
-                  <Plus size={24} />
+                <div className="w-11 h-11 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(0,113,227,0.3)]">
+                  <Plus size={22} />
                 </div>
               </button>
             );
@@ -50,8 +50,8 @@ export default function MobileNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 px-2 py-1 min-w-0",
-                isActive ? "text-[#5bc5a7]" : "text-gray-400"
+                "flex flex-col items-center justify-center gap-0.5 px-2 py-1 min-w-0 transition-colors duration-200",
+                isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-tertiary)]"
               )}
             >
               <item.icon size={20} />

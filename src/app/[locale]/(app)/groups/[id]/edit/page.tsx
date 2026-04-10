@@ -81,36 +81,36 @@ export default function GroupEditPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-400">{t("common.loading")}</div>;
+    return <div className="text-center py-8 text-[var(--color-text-tertiary)]">{t("common.loading")}</div>;
   }
 
   return (
     <div className="max-w-lg mx-auto">
-      <h1 className="text-xl font-bold text-[#333] mb-4">{t("group.settings")}</h1>
+      <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("group.settings")}</h1>
 
-      <div className="bg-white rounded-lg shadow-sm p-6 space-y-6">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-6">
         {/* Group name */}
         <div>
-          <label className="block text-sm font-medium text-[#333] mb-1">
+          <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
             Group name
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
           />
         </div>
 
         {/* Group type */}
         <div>
-          <label className="block text-sm font-medium text-[#333] mb-1">
+          <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
             {t("group.groupType")}
           </label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
           >
             <option value="HOME">{t("group.types.HOME")}</option>
             <option value="TRIP">{t("group.types.TRIP")}</option>
@@ -121,25 +121,25 @@ export default function GroupEditPage() {
 
         {/* Members */}
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("group.members")}
           </h3>
           <div className="space-y-2 mb-3">
             {members.map((m) => (
               <div key={m.userId} className="flex items-center justify-between py-1">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#5bc5a7]/20 flex items-center justify-center text-xs font-bold text-[#5bc5a7]">
+                  <div className="w-8 h-8 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
                     {m.user.name[0]?.toUpperCase()}
                   </div>
                   <div>
                     <div className="text-sm font-medium">{m.user.name}</div>
-                    <div className="text-xs text-gray-400">{m.user.email}</div>
+                    <div className="text-xs text-[var(--color-text-tertiary)]">{m.user.email}</div>
                   </div>
                 </div>
                 {m.role !== "ADMIN" && (
                   <button
                     onClick={() => handleRemoveMember(m.userId)}
-                    className="text-gray-400 hover:text-red-500"
+                    className="text-[var(--color-text-tertiary)] hover:text-red-500"
                   >
                     <X size={16} />
                   </button>
@@ -153,7 +153,7 @@ export default function GroupEditPage() {
               value={newMemberEmail}
               onChange={(e) => setNewMemberEmail(e.target.value)}
               placeholder="Add by email"
-              className="flex-1 border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7]"
+              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -163,7 +163,7 @@ export default function GroupEditPage() {
             />
             <button
               onClick={handleAddMember}
-              className="px-3 py-1.5 bg-[#5bc5a7] text-white rounded text-sm"
+              className="bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl font-medium text-sm hover:bg-[var(--color-primary-hover)] transition-all duration-200"
             >
               {t("group.addPerson")}
             </button>
@@ -172,13 +172,13 @@ export default function GroupEditPage() {
 
         {/* Simplify debts */}
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-[#333]">
+          <label className="text-sm font-medium text-[var(--color-text)]">
             {t("group.simplifyDebts")}
           </label>
           <button
             onClick={() => setSimplifyDebts(!simplifyDebts)}
             className={`relative w-11 h-6 rounded-full transition-colors ${
-              simplifyDebts ? "bg-[#5bc5a7]" : "bg-gray-300"
+              simplifyDebts ? "bg-[var(--color-primary)]" : "bg-[rgba(0,0,0,0.12)]"
             }`}
           >
             <span
@@ -190,7 +190,7 @@ export default function GroupEditPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-between pt-4 border-t">
+        <div className="flex justify-between pt-4 border-t border-[rgba(0,0,0,0.06)]">
           <button
             onClick={handleDeleteGroup}
             className="flex items-center gap-1 text-red-500 text-sm hover:underline"
@@ -201,14 +201,14 @@ export default function GroupEditPage() {
           <div className="flex gap-2">
             <button
               onClick={() => router.back()}
-              className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded"
+              className="border border-[rgba(0,0,0,0.12)] text-[var(--color-text)] px-5 py-2 rounded-xl font-medium text-sm hover:bg-[rgba(0,0,0,0.03)] transition-all duration-200"
             >
               {t("expense.cancel")}
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 text-sm bg-[#5bc5a7] text-white rounded font-medium hover:bg-[#4ab393] disabled:opacity-50"
+              className="bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl font-medium text-sm hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
             >
               {saving ? "..." : t("settings.save")}
             </button>

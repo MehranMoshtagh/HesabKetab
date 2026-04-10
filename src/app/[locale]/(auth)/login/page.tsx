@@ -9,6 +9,7 @@ import { useLocale } from "next-intl";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
+  const appName = useTranslations("app");
   const locale = useLocale();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -36,18 +37,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full max-w-md">
-      <div className="bg-white rounded-lg shadow-md p-8">
+    <div className="w-full max-w-sm">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
         {/* Logo */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-[#5bc5a7]">HesabKetab</h1>
-          <p className="text-gray-500 mt-1">{t("welcomeBack")}</p>
+        <div className="text-center mb-8">
+          <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
+            {appName("name")}
+          </h1>
+          <p className="text-[var(--color-text-secondary)] text-sm mt-1">
+            {t("welcomeBack")}
+          </p>
         </div>
 
         {/* Google OAuth */}
         <button
           onClick={() => signIn("google", { callbackUrl: `/${locale}/dashboard` })}
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg px-4 py-2.5 text-sm font-medium text-[#333] hover:bg-gray-50 transition-colors mb-4"
+          className="w-full flex items-center justify-center gap-2.5 border border-[rgba(0,0,0,0.12)] rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 mb-5"
         >
           <svg viewBox="0 0 24 24" width="18" height="18">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
@@ -58,25 +63,27 @@ export default function LoginPage() {
           {t("google")}
         </button>
 
-        <div className="relative my-4">
+        <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200" />
+            <div className="w-full border-t border-[rgba(0,0,0,0.06)]" />
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-gray-500">{t("orContinueWith")}</span>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-white px-3 text-[var(--color-text-tertiary)]">
+              {t("orContinueWith")}
+            </span>
           </div>
         </div>
 
         {/* Email/Password form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg p-3">
+            <div className="bg-[#FF3B30]/8 text-[var(--color-negative)] text-sm rounded-xl p-3">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
               {t("email")}
             </label>
             <input
@@ -84,12 +91,12 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7] focus:border-transparent"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#333] mb-1">
+            <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
               {t("password")}
             </label>
             <input
@@ -97,12 +104,15 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5bc5a7] focus:border-transparent"
+              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
           <div className="text-end">
-            <Link href="/forgot-password" className="text-sm text-[#5bc5a7] hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-[var(--color-primary)] hover:underline"
+            >
               {t("forgotPassword")}
             </Link>
           </div>
@@ -110,15 +120,18 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#5bc5a7] text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-[#4ab393] transition-colors disabled:opacity-50"
+            className="w-full bg-[var(--color-primary)] text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
           >
             {loading ? "..." : t("logIn")}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-[var(--color-text-secondary)] mt-6">
           {t("dontHaveAccount")}{" "}
-          <Link href="/signup" className="text-[#5bc5a7] font-medium hover:underline">
+          <Link
+            href="/signup"
+            className="text-[var(--color-primary)] font-medium hover:underline"
+          >
             {t("signUp")}
           </Link>
         </p>

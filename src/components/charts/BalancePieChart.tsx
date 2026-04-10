@@ -15,13 +15,13 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
     return (
       <div className="text-center py-6">
         <svg viewBox="0 0 100 100" className="w-32 h-32 mx-auto">
-          <circle cx="50" cy="50" r="40" fill="#e5e7eb" />
+          <circle cx="50" cy="50" r="40" fill="rgba(0,0,0,0.04)" />
           <text
             x="50"
             y="50"
             textAnchor="middle"
             dominantBaseline="middle"
-            className="fill-gray-400"
+            className="fill-[var(--color-text-tertiary)]"
             fontSize="8"
           >
             {t("settledUp")}
@@ -34,7 +34,6 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
   const owedPct = total > 0 ? owed / total : 0;
   const owedAngle = owedPct * 360;
 
-  // SVG arc helper
   const describeArc = (
     cx: number,
     cy: number,
@@ -61,7 +60,6 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
   return (
     <div className="text-center">
       <svg viewBox="0 0 120 120" className="w-40 h-40 mx-auto">
-        {/* Owing slice (red) */}
         {owing > 0 && (
           <path
             d={
@@ -69,11 +67,10 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
                 ? describeArc(60, 60, 45, 0, 359.99)
                 : describeArc(60, 60, 45, owedAngle, 360)
             }
-            fill="#ff652f"
-            opacity={0.8}
+            fill="#FF3B30"
+            opacity={0.75}
           />
         )}
-        {/* Owed slice (green) */}
         {owed > 0 && (
           <path
             d={
@@ -81,21 +78,19 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
                 ? describeArc(60, 60, 45, 0, 359.99)
                 : describeArc(60, 60, 45, 0, owedAngle)
             }
-            fill="#5bc5a7"
-            opacity={0.8}
+            fill="#34C759"
+            opacity={0.75}
           />
         )}
-        {/* Center white circle (donut) */}
         <circle cx="60" cy="60" r="28" fill="white" />
-        {/* Net balance text */}
         <text
           x="60"
           y="57"
           textAnchor="middle"
           dominantBaseline="middle"
-          className="fill-[#333]"
+          className="fill-[var(--color-text)]"
           fontSize="7"
-          fontWeight="bold"
+          fontWeight="600"
         >
           ${Math.abs(owed - owing).toFixed(2)}
         </text>
@@ -104,24 +99,23 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
           y="67"
           textAnchor="middle"
           dominantBaseline="middle"
-          className={owed >= owing ? "fill-[#5bc5a7]" : "fill-[#ff652f]"}
+          className={owed >= owing ? "fill-[#34C759]" : "fill-[#FF3B30]"}
           fontSize="5"
         >
           {owed >= owing ? "net owed" : "net owing"}
         </text>
       </svg>
 
-      {/* Legend */}
       <div className="flex justify-center gap-6 mt-2">
-        <div className="flex items-center gap-1">
-          <div className="w-3 h-3 rounded-sm bg-[#5bc5a7]" />
-          <span className="text-xs text-gray-500">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-[#34C759]" />
+          <span className="text-xs text-[var(--color-text-secondary)]">
             {t("youAreOwed")}: ${owed.toFixed(2)}
           </span>
         </div>
-        <div className="flex items-center gap-1">
-          <div className="w-3 h-3 rounded-sm bg-[#ff652f]" />
-          <span className="text-xs text-gray-500">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-[#FF3B30]" />
+          <span className="text-xs text-[var(--color-text-secondary)]">
             {t("youOwe")}: ${owing.toFixed(2)}
           </span>
         </div>

@@ -12,10 +12,10 @@ export default function CategoryPicker({ selected, onSelect }: CategoryPickerPro
   const t = useTranslations();
 
   return (
-    <div className="border rounded-lg bg-white p-3 max-h-60 overflow-y-auto">
+    <div className="border border-[rgba(0,0,0,0.06)] rounded-2xl bg-white p-3.5 max-h-60 overflow-y-auto shadow-[var(--shadow-card)]">
       {categories.map((cat) => (
-        <div key={cat.id} className="mb-2">
-          <div className="text-xs font-semibold text-gray-500 uppercase mb-1 flex items-center gap-1">
+        <div key={cat.id} className="mb-2.5">
+          <div className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-1 flex items-center gap-1">
             <span>{cat.icon}</span>
             <span>{t(cat.nameKey)}</span>
           </div>
@@ -24,8 +24,10 @@ export default function CategoryPicker({ selected, onSelect }: CategoryPickerPro
               <button
                 key={sub.id}
                 onClick={() => onSelect(sub.id)}
-                className={`text-start px-2 py-1 rounded text-sm hover:bg-gray-100 transition-colors ${
-                  selected === sub.id ? "bg-[#5bc5a7]/10 text-[#5bc5a7] font-medium" : "text-[#333]"
+                className={`text-start px-2.5 py-1.5 rounded-lg text-sm transition-all duration-200 ${
+                  selected === sub.id
+                    ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)] font-medium"
+                    : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
                 }`}
               >
                 <span className="me-1">{sub.icon}</span>

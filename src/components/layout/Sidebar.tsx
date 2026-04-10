@@ -38,33 +38,33 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
   );
 
   return (
-    <aside className="w-60 bg-white border-e border-[#eee] min-h-[calc(100vh-3.5rem)] p-4 hidden lg:block">
+    <aside className="w-60 min-h-[calc(100vh-3rem)] p-4 hidden lg:block border-e border-[rgba(0,0,0,0.06)] bg-white/50">
       {/* Main nav */}
-      <nav className="space-y-1 mb-6">
+      <nav className="space-y-0.5 mb-8">
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded text-sm",
+              "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all duration-200",
               pathname === item.href
-                ? "bg-[#5bc5a7]/10 text-[#5bc5a7] font-medium"
-                : "text-[#333] hover:bg-gray-100"
+                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)] font-medium"
+                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
             )}
           >
-            <item.icon size={16} />
+            <item.icon size={17} />
             {item.label}
           </Link>
         ))}
       </nav>
 
       {/* Groups */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-2 px-3">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">
             {t("nav.groups")}
           </h3>
-          <Link href="/groups/new" className="text-[#5bc5a7] hover:underline text-xs">
+          <Link href="/groups/new" className="text-[var(--color-primary)] hover:opacity-70 transition-opacity">
             <Plus size={14} />
           </Link>
         </div>
@@ -73,25 +73,25 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             key={group.id}
             href={`/groups/${group.id}`}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded text-sm",
+              "flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm transition-all duration-200",
               pathname === `/groups/${group.id}`
-                ? "bg-[#5bc5a7]/10 text-[#5bc5a7]"
-                : "text-[#333] hover:bg-gray-100"
+                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)]"
+                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
             )}
           >
-            <Users size={14} />
+            <Users size={14} className="text-[var(--color-text-tertiary)]" />
             <span className="truncate">{group.name}</span>
           </Link>
         ))}
       </div>
 
       {/* Friends */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-2 px-3">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">
             {t("nav.friends")}
           </h3>
-          <Link href="/friends/add" className="text-[#5bc5a7] hover:underline text-xs">
+          <Link href="/friends/add" className="text-[var(--color-primary)] hover:opacity-70 transition-opacity">
             <Plus size={14} />
           </Link>
         </div>
@@ -100,10 +100,10 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             key={friend.id}
             href={`/friends/${friend.id}`}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded text-sm",
+              "flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm transition-all duration-200",
               pathname === `/friends/${friend.id}`
-                ? "bg-[#5bc5a7]/10 text-[#5bc5a7]"
-                : "text-[#333] hover:bg-gray-100"
+                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)]"
+                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
             )}
           >
             <span className="truncate">{friend.name}</span>
@@ -112,32 +112,32 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
       </div>
 
       {/* Invite */}
-      <div className="mb-6">
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+      <div className="mb-8 px-3">
+        <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
           {t("nav.inviteFriends")}
         </h3>
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
           <input
             type="email"
             placeholder="Email"
-            className="flex-1 text-xs border rounded px-2 py-1 text-[#333]"
+            className="flex-1 text-xs border border-[rgba(0,0,0,0.08)] rounded-lg px-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           />
-          <button className="text-xs bg-[#5bc5a7] text-white px-2 py-1 rounded">
-            <UserPlus size={14} />
+          <button className="text-xs bg-[var(--color-primary)] text-white px-2.5 py-1.5 rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors">
+            <UserPlus size={13} />
           </button>
         </div>
       </div>
 
       {/* Filter */}
-      <div>
+      <div className="px-3">
         <div className="relative">
-          <Search size={14} className="absolute start-2 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={13} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
           <input
             type="text"
             placeholder={t("nav.filterByName")}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="w-full text-xs border rounded ps-7 pe-2 py-1.5 text-[#333]"
+            className="w-full text-xs border border-[rgba(0,0,0,0.08)] rounded-lg ps-7 pe-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           />
         </div>
       </div>
