@@ -50,7 +50,10 @@ export async function POST(req: Request) {
   });
 
   if (!friendUser) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "User not found", code: "USER_NOT_FOUND" },
+      { status: 404 }
+    );
   }
 
   if (friendUser.id === userId) {

@@ -152,7 +152,12 @@
   "friend": {
     "addFriend": "Add a friend",
     "yourBalance": "YOUR BALANCE",
-    "removeFriend": "Remove friend"
+    "removeFriend": "Remove friend",
+    "addError": "Failed to add friend",
+    "notOnHesabKetab": "{email} isn't on HesabKetab yet. Send them an invitation to join!",
+    "sendInvite": "Send invitation email",
+    "inviteSent": "Invitation sent to {email}!",
+    "inviteError": "Failed to send invitation"
   },
   "activity": {
     "title": "Recent activity",

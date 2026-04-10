@@ -152,7 +152,12 @@
   "friend": {
     "addFriend": "افزودن دوست",
     "yourBalance": "مانده حساب شما",
-    "removeFriend": "حذف دوست"
+    "removeFriend": "حذف دوست",
+    "addError": "افزودن دوست با خطا مواجه شد",
+    "notOnHesabKetab": "{email} هنوز در حساب‌کتاب عضو نیست. یک دعوت‌نامه برایش بفرستید!",
+    "sendInvite": "ارسال دعوت‌نامه",
+    "inviteSent": "دعوت‌نامه به {email} ارسال شد!",
+    "inviteError": "ارسال دعوت‌نامه با خطا مواجه شد"
   },
   "activity": {
     "title": "فعالیت‌های اخیر",
