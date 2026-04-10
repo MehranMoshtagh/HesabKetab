@@ -3,6 +3,19 @@
     "name": "HesabKetab",
     "tagline": "Split expenses with friends"
   },
+  "landing": {
+    "hero": "Less stress when sharing expenses",
+    "subtitle": "Keep track of your shared expenses and balances with housemates, trips, groups, friends, and family.",
+    "getStarted": "Get started",
+    "logIn": "Log in",
+    "feature1Title": "Track balances",
+    "feature1Desc": "Keep track of shared expenses, balances, and who owes who.",
+    "feature2Title": "Organize expenses",
+    "feature2Desc": "Split expenses with any group: trips, housemates, friends, and family.",
+    "feature3Title": "Simple payments",
+    "feature3Desc": "Settle up with a friend and record any cash or online payment.",
+    "free": "Free for friends and groups"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "recentActivity": "Recent activity",
