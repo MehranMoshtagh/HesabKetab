@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/Vazirmatn-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --color-brand: #5bc5a7;
+  --color-brand-dark: #4ab393;
+  --color-orange: #ff652f;
+  --color-gray: #999999;
+  --color-light-gray: #eeeeee;
+  --color-dark-text: #333333;
+  --color-positive: #5bc5a7;
+  --color-negative: #ff652f;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: var(--color-dark-text);
+}
+
+[dir="rtl"] body,
+[lang="fa"] body {
+  font-family: "Vazirmatn", system-ui, sans-serif;
+}
+
+/* RTL adjustments */
+[dir="rtl"] .divide-x > :not(:first-child) {
+  border-left-width: 0;
+  border-right-width: 1px;
+}
+
+/* Safe area for mobile bottom nav */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Smooth transitions */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}

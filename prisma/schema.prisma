@@ -1,0 +1,304 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Language {
+  en
+  fa
+}
+
+enum GroupType {
+  HOME
+  TRIP
+  COUPLE
+  OTHER
+}
+
+enum GroupRole {
+  ADMIN
+  MEMBER
+}
+
+enum SplitType {
+  EQUAL
+  EXACT
+  PERCENTAGE
+  SHARES
+  ADJUSTMENT
+}
+
+enum RecurringInterval {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum ActivityType {
+  EXPENSE_ADDED
+  EXPENSE_EDITED
+  EXPENSE_DELETED
+  EXPENSE_RESTORED
+  PAYMENT_ADDED
+  PAYMENT_DELETED
+  COMMENT_ADDED
+  FRIEND_ADDED
+  GROUP_CREATED
+  GROUP_EDITED
+  GROUP_MEMBER_ADDED
+  GROUP_MEMBER_REMOVED
+}
+
+// ─── NextAuth Models ──────────────────────────────────────────────────────────
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Application Models ───────────────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  emailVerified   DateTime?
+  phone           String?
+  password        String?
+  avatar          String?
+  defaultCurrency String    @default("USD")
+  timezone        String    @default("UTC")
+  language        Language  @default(en)
+
+  notificationPreferences Json @default("{\"email\":{\"addedToGroup\":true,\"addedAsFriend\":true,\"expenseAdded\":true,\"expenseEdited\":true,\"commentAdded\":true,\"paymentReceived\":true,\"monthlySummary\":true},\"push\":{\"addedToGroup\":true,\"addedAsFriend\":true,\"expenseAdded\":true,\"expenseEdited\":true,\"commentAdded\":true,\"paymentReceived\":true}}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // NextAuth relations
+  accounts Account[]
+  sessions Session[]
+
+  // App relations
+  createdGroups  Group[]         @relation("GroupCreator")
+  groupMembers   GroupMember[]
+  friendships1   Friendship[]    @relation("FriendUser1")
+  friendships2   Friendship[]    @relation("FriendUser2")
+  createdExpenses Expense[]      @relation("ExpenseCreator")
+  deletedExpenses Expense[]      @relation("ExpenseDeleter")
+  expensePayers  ExpensePayer[]
+  expenseShares  ExpenseShare[]
+  comments       Comment[]
+  activities     Activity[]
+  notifications  Notification[]
+}
+
+model Group {
+  id            String    @id @default(uuid())
+  name          String
+  type          GroupType @default(OTHER)
+  coverPhoto    String?
+  simplifyDebts Boolean   @default(true)
+  createdById   String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  createdBy User          @relation("GroupCreator", fields: [createdById], references: [id])
+  members   GroupMember[]
+  expenses  Expense[]
+  activities Activity[]
+
+  @@index([createdById])
+}
+
+model GroupMember {
+  id       String    @id @default(uuid())
+  groupId  String
+  userId   String
+  role     GroupRole @default(MEMBER)
+  joinedAt DateTime  @default(now())
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+}
+
+model Friendship {
+  id      String @id @default(uuid())
+  user1Id String
+  user2Id String
+
+  createdAt DateTime @default(now())
+
+  user1 User @relation("FriendUser1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2 User @relation("FriendUser2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+model Expense {
+  id          String    @id @default(uuid())
+  description String
+  amount      Decimal   @db.Decimal(10, 2)
+  currency    String    @default("USD")
+  category    String    @default("general")
+  date        DateTime  @default(now()) @db.Date
+  groupId     String?
+  createdById String
+  notes       String?   @db.Text
+  receiptUrl  String?
+  isPayment   Boolean   @default(false)
+  splitType   SplitType @default(EQUAL)
+
+  deletedAt   DateTime?
+  deletedById String?
+
+  isRecurring       Boolean            @default(false)
+  recurringInterval RecurringInterval?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group     Group?  @relation(fields: [groupId], references: [id])
+  createdBy User    @relation("ExpenseCreator", fields: [createdById], references: [id])
+  deletedBy User?   @relation("ExpenseDeleter", fields: [deletedById], references: [id])
+
+  payers   ExpensePayer[]
+  shares   ExpenseShare[]
+  comments Comment[]
+  activities Activity[]
+
+  @@index([groupId])
+  @@index([createdById])
+  @@index([date])
+  @@index([deletedAt])
+}
+
+model ExpensePayer {
+  id        String  @id @default(uuid())
+  expenseId String
+  userId    String
+  amount    Decimal @db.Decimal(10, 2)
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, userId])
+  @@index([expenseId])
+  @@index([userId])
+}
+
+model ExpenseShare {
+  id         String   @id @default(uuid())
+  expenseId  String
+  userId     String
+  amount     Decimal  @db.Decimal(10, 2)
+  shareValue Decimal? @db.Decimal(10, 4)
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, userId])
+  @@index([expenseId])
+  @@index([userId])
+}
+
+model Comment {
+  id        String @id @default(uuid())
+  expenseId String
+  userId    String
+  content   String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expenseId])
+  @@index([userId])
+}
+
+model Activity {
+  id        String       @id @default(uuid())
+  userId    String
+  type      ActivityType
+  expenseId String?
+  groupId   String?
+  metadata  Json         @default("{}")
+
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expense Expense? @relation(fields: [expenseId], references: [id])
+  group   Group?   @relation(fields: [groupId], references: [id])
+
+  notifications Notification[]
+
+  @@index([userId])
+  @@index([expenseId])
+  @@index([groupId])
+  @@index([createdAt])
+}
+
+model Notification {
+  id         String  @id @default(uuid())
+  userId     String
+  activityId String
+  read       Boolean @default(false)
+  emailSent  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([activityId])
+}
