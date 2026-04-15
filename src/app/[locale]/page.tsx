@@ -2,7 +2,16 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Users, Receipt, HandCoins } from "lucide-react";
+import {
+  Receipt,
+  Users,
+  HandCoins,
+  FolderOpen,
+  Mail,
+  Globe,
+  ArrowRight,
+  ChevronDown,
+} from "lucide-react";
 import LandingLanguageToggle from "@/components/landing/LandingLanguageToggle";
 
 export default async function LandingPage({
@@ -24,9 +33,31 @@ function Landing({ locale }: { locale: string }) {
   const t = useTranslations("landing");
   const appName = useTranslations("app");
 
+  const features = [
+    { icon: Receipt, titleKey: "feature1Title" as const, descKey: "feature1Desc" as const },
+    { icon: Users, titleKey: "feature2Title" as const, descKey: "feature2Desc" as const },
+    { icon: HandCoins, titleKey: "feature3Title" as const, descKey: "feature3Desc" as const },
+    { icon: FolderOpen, titleKey: "feature4Title" as const, descKey: "feature4Desc" as const },
+    { icon: Mail, titleKey: "feature5Title" as const, descKey: "feature5Desc" as const },
+    { icon: Globe, titleKey: "feature6Title" as const, descKey: "feature6Desc" as const },
+  ];
+
+  const steps = [
+    { num: "1", titleKey: "step1Title" as const, descKey: "step1Desc" as const },
+    { num: "2", titleKey: "step2Title" as const, descKey: "step2Desc" as const },
+    { num: "3", titleKey: "step3Title" as const, descKey: "step3Desc" as const },
+  ];
+
+  const faqs = [
+    { qKey: "faq1Q" as const, aKey: "faq1A" as const },
+    { qKey: "faq2Q" as const, aKey: "faq2A" as const },
+    { qKey: "faq3Q" as const, aKey: "faq3A" as const },
+    { qKey: "faq4Q" as const, aKey: "faq4A" as const },
+  ];
+
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
-      {/* Navbar */}
+      {/* ─── Navbar ─── */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[rgba(0,0,0,0.06)]">
         <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
           <span className="text-[var(--color-text)] text-base font-semibold tracking-tight">
@@ -50,66 +81,247 @@ function Landing({ locale }: { locale: string }) {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-20 pb-24 px-6">
+      {/* ─── Hero ─── */}
+      <section className="pt-24 pb-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-[3.25rem] font-bold text-[var(--color-text)] mb-5 leading-tight tracking-[-0.025em]">
+          <h1 className="text-4xl md:text-[3.5rem] font-bold text-[var(--color-text)] mb-6 leading-[1.1] tracking-[-0.03em]">
             {t("hero")}
           </h1>
           <p className="text-lg md:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed">
             {t("subtitle")}
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white text-lg font-medium px-8 py-3.5 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_4px_12px_rgba(0,113,227,0.3)]"
+            >
+              {t("getStarted")}
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full border border-[rgba(0,0,0,0.12)] hover:bg-white hover:shadow-[var(--shadow-card)] transition-all duration-200"
+            >
+              {t("logIn")}
+            </Link>
+          </div>
+          <p className="mt-6 text-sm text-[var(--color-text-tertiary)]">
+            {t("trustedBy")}
+          </p>
+        </div>
+      </section>
+
+      {/* ─── App Preview Mock ─── */}
+      <section className="pb-24 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] overflow-hidden">
+            {/* Mock browser bar */}
+            <div className="h-10 bg-[var(--color-bg)] border-b border-[rgba(0,0,0,0.06)] flex items-center px-4 gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+              <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+              <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+              <div className="flex-1 mx-8">
+                <div className="bg-white rounded-lg h-6 flex items-center justify-center text-xs text-[var(--color-text-tertiary)] border border-[rgba(0,0,0,0.06)]">
+                  hesabketab.vercel.app/dashboard
+                </div>
+              </div>
+            </div>
+            {/* Mock dashboard content */}
+            <div className="p-6 md:p-8">
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
+                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">total balance</p>
+                  <p className="text-xl font-bold text-[var(--color-text)]">$0.00</p>
+                </div>
+                <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
+                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">you owe</p>
+                  <p className="text-xl font-bold text-[var(--color-negative)]">$42.50</p>
+                </div>
+                <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
+                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">you are owed</p>
+                  <p className="text-xl font-bold text-[var(--color-positive)]">$42.50</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { name: "Dinner at Olive Garden", amount: "-$18.50", color: "text-[var(--color-negative)]", cat: "Dining out" },
+                  { name: "Groceries — Whole Foods", amount: "+$24.00", color: "text-[var(--color-positive)]", cat: "Groceries" },
+                  { name: "Uber to airport", amount: "-$24.00", color: "text-[var(--color-negative)]", cat: "Transportation" },
+                ].map((item) => (
+                  <div key={item.name} className="flex items-center justify-between bg-[var(--color-bg)] rounded-xl px-4 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-[var(--color-text)]">{item.name}</p>
+                      <p className="text-xs text-[var(--color-text-tertiary)]">{item.cat}</p>
+                    </div>
+                    <span className={`text-sm font-semibold ${item.color}`}>{item.amount}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Features Grid ─── */}
+      <section className="py-24 px-6 bg-white border-y border-[rgba(0,0,0,0.06)]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-4">
+              {t("feature1Title").split(" ")[0]}{" "}
+              <span className="text-[var(--color-primary)]">
+                {t("feature1Title").split(" ").slice(1).join(" ")}
+              </span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div
+                  key={i}
+                  className="group p-6 rounded-2xl border border-[rgba(0,0,0,0.06)] hover:shadow-[var(--shadow-elevated)] hover:border-transparent transition-all duration-300"
+                >
+                  <div className="w-12 h-12 bg-[var(--color-primary)]/8 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-300">
+                    <Icon className="text-[var(--color-primary)] group-hover:text-white transition-colors duration-300" size={22} />
+                  </div>
+                  <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2 tracking-[-0.015em]">
+                    {t(f.titleKey)}
+                  </h3>
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    {t(f.descKey)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── How It Works ─── */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-3">
+              {t("howTitle")}
+            </h2>
+            <p className="text-lg text-[var(--color-text-secondary)]">
+              {t("howSubtitle")}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {steps.map((s, i) => (
+              <div key={i} className="text-center">
+                <div className="w-16 h-16 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold shadow-[0_4px_12px_rgba(0,113,227,0.3)]">
+                  {s.num}
+                </div>
+                <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2">
+                  {t(s.titleKey)}
+                </h3>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {t(s.descKey)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA Banner ─── */}
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto bg-[var(--color-text)] rounded-3xl p-12 md:p-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-[-0.025em] mb-4">
+            {t("ctaTitle")}
+          </h2>
+          <p className="text-lg text-white/60 mb-8 max-w-xl mx-auto">
+            {t("ctaSubtitle")}
+          </p>
           <Link
             href="/signup"
-            className="inline-block bg-[var(--color-primary)] text-white text-lg font-medium px-8 py-3.5 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_4px_12px_rgba(0,113,227,0.3)]"
+            className="inline-flex items-center gap-2 bg-white text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
           >
-            {t("getStarted")}
+            {t("ctaButton")}
+            <ArrowRight size={18} />
           </Link>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="max-w-5xl mx-auto px-6 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl p-8 text-center border border-[rgba(0,0,0,0.06)] shadow-[var(--shadow-card)]">
-            <div className="w-14 h-14 bg-[var(--color-primary)]/8 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Receipt className="text-[var(--color-primary)]" size={26} />
-            </div>
-            <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2 tracking-[-0.015em]">
-              {t("feature1Title")}
-            </h3>
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              {t("feature1Desc")}
-            </p>
-          </div>
-          <div className="bg-white rounded-2xl p-8 text-center border border-[rgba(0,0,0,0.06)] shadow-[var(--shadow-card)]">
-            <div className="w-14 h-14 bg-[var(--color-primary)]/8 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <Users className="text-[var(--color-primary)]" size={26} />
-            </div>
-            <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2 tracking-[-0.015em]">
-              {t("feature2Title")}
-            </h3>
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              {t("feature2Desc")}
-            </p>
-          </div>
-          <div className="bg-white rounded-2xl p-8 text-center border border-[rgba(0,0,0,0.06)] shadow-[var(--shadow-card)]">
-            <div className="w-14 h-14 bg-[var(--color-primary)]/8 rounded-2xl flex items-center justify-center mx-auto mb-5">
-              <HandCoins className="text-[var(--color-primary)]" size={26} />
-            </div>
-            <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2 tracking-[-0.015em]">
-              {t("feature3Title")}
-            </h3>
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              {t("feature3Desc")}
-            </p>
+      {/* ─── FAQ ─── */}
+      <section className="py-24 px-6 bg-white border-t border-[rgba(0,0,0,0.06)]">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
+            {t("faqTitle")}
+          </h2>
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <details
+                key={i}
+                className="group bg-[var(--color-bg)] rounded-2xl border border-[rgba(0,0,0,0.06)] overflow-hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer px-6 py-5 text-[var(--color-text)] font-medium text-base list-none">
+                  {t(faq.qKey)}
+                  <ChevronDown
+                    size={18}
+                    className="text-[var(--color-text-tertiary)] shrink-0 transition-transform duration-200 group-open:rotate-180"
+                  />
+                </summary>
+                <div className="px-6 pb-5 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {t(faq.aKey)}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="text-center text-sm text-[var(--color-text-tertiary)] py-10 border-t border-[rgba(0,0,0,0.06)]">
-        {appName("name")} &mdash; {t("free")}
+      {/* ─── Footer ─── */}
+      <footer className="border-t border-[rgba(0,0,0,0.06)] py-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <span className="text-[var(--color-text)] text-lg font-semibold tracking-tight">
+                {appName("name")}
+              </span>
+              <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+                {t("footerTagline")}
+              </p>
+            </div>
+            {/* Product */}
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+                {t("footerProduct")}
+              </p>
+              <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerFeatures")}</span></li>
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerPricing")}</span></li>
+              </ul>
+            </div>
+            {/* Support */}
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+                {t("footerSupport")}
+              </p>
+              <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("faqTitle")}</span></li>
+              </ul>
+            </div>
+            {/* Company */}
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+                {t("footerCompany")}
+              </p>
+              <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerAbout")}</span></li>
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerPrivacy")}</span></li>
+                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerTerms")}</span></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-6 border-t border-[rgba(0,0,0,0.06)] text-center text-xs text-[var(--color-text-tertiary)]">
+            {appName("name")} &mdash; {t("free")}
+          </div>
+        </div>
       </footer>
     </div>
   );
