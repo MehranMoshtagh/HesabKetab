@@ -55,7 +55,7 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Balance Summary */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 mb-5">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-5">
         <div className="grid grid-cols-3 divide-x rtl:divide-x-reverse text-center">
           <div>
             <p className="text-xs text-[var(--color-text-tertiary)] mb-1.5">{t("totalBalance")}</p>
@@ -96,13 +96,13 @@ export default function DashboardPage() {
           </button>
           <button
             onClick={() => openSettleUp()}
-            className="flex items-center gap-2 border border-[rgba(0,0,0,0.12)] text-[var(--color-text)] px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-[rgba(0,0,0,0.03)] transition-all duration-200"
+            className="flex items-center gap-2 border border-[var(--color-border-strong)] text-[var(--color-text)] px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-[var(--color-hover)] transition-all duration-200"
           >
             <HandCoins size={16} />
             {t("settleUp")}
           </button>
         </div>
-        <div className="flex bg-white rounded-xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-1">
+        <div className="flex bg-white rounded-xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-1">
           <button
             onClick={() => setView("list")}
             className={`p-1.5 rounded-lg transition-all duration-200 ${
@@ -131,7 +131,7 @@ export default function DashboardPage() {
       {/* Chart View */}
       {view === "chart" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
               Balance
             </h3>
@@ -140,13 +140,13 @@ export default function DashboardPage() {
               owing={balances?.totalOwing ?? 0}
             />
           </div>
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
               Monthly Spending
             </h3>
             <MonthlyTrend data={chartData?.monthly ?? []} />
           </div>
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 md:col-span-2">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 md:col-span-2">
             <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
               Spending by Category
             </h3>
@@ -159,7 +159,7 @@ export default function DashboardPage() {
       {view === "list" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* YOU OWE */}
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
               {t("youOweSection")}
             </h2>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                   <Link
                     key={person.userId}
                     href={`/friends/${person.userId}`}
-                    className="flex items-center justify-between hover:bg-[rgba(0,0,0,0.02)] p-2.5 rounded-xl transition-all duration-200"
+                    className="flex items-center justify-between hover:bg-[var(--color-hover)] p-2.5 rounded-xl transition-all duration-200 cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-[var(--color-negative)]/10 flex items-center justify-center text-sm font-semibold text-[var(--color-negative)]">
@@ -196,7 +196,7 @@ export default function DashboardPage() {
           </div>
 
           {/* YOU ARE OWED */}
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
               {t("youAreOwedSection")}
             </h2>
@@ -210,7 +210,7 @@ export default function DashboardPage() {
                   <Link
                     key={person.userId}
                     href={`/friends/${person.userId}`}
-                    className="flex items-center justify-between hover:bg-[rgba(0,0,0,0.02)] p-2.5 rounded-xl transition-all duration-200"
+                    className="flex items-center justify-between hover:bg-[var(--color-hover)] p-2.5 rounded-xl transition-all duration-200 cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-[var(--color-positive)]/10 flex items-center justify-center text-sm font-semibold text-[var(--color-positive)]">

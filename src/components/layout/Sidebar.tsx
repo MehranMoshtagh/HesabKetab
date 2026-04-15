@@ -38,7 +38,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
   );
 
   return (
-    <aside className="w-60 min-h-[calc(100vh-3rem)] p-4 hidden lg:block border-e border-[rgba(0,0,0,0.06)] bg-white/50">
+    <aside className="w-60 min-h-[calc(100vh-3.5rem)] p-4 hidden lg:block border-e border-[var(--color-border)] bg-white/50">
       {/* Main nav */}
       <nav className="space-y-0.5 mb-8">
         {navItems.map((item) => (
@@ -48,8 +48,8 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             className={cn(
               "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all duration-200",
               pathname === item.href
-                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)] font-medium"
-                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] font-medium"
+                : "text-[var(--color-text)] hover:bg-[var(--color-hover)]"
             )}
           >
             <item.icon size={17} />
@@ -75,8 +75,8 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             className={cn(
               "flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm transition-all duration-200",
               pathname === `/groups/${group.id}`
-                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)]"
-                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                : "text-[var(--color-text)] hover:bg-[var(--color-hover)]"
             )}
           >
             <Users size={14} className="text-[var(--color-text-tertiary)]" />
@@ -102,8 +102,8 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             className={cn(
               "flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm transition-all duration-200",
               pathname === `/friends/${friend.id}`
-                ? "bg-[var(--color-primary)]/8 text-[var(--color-primary)]"
-                : "text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.03)]"
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                : "text-[var(--color-text)] hover:bg-[var(--color-hover)]"
             )}
           >
             <span className="truncate">{friend.name}</span>
@@ -120,7 +120,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
           <input
             type="email"
             placeholder="Email"
-            className="flex-1 text-xs border border-[rgba(0,0,0,0.08)] rounded-lg px-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+            className="flex-1 text-xs border border-[var(--color-border)] rounded-lg px-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           />
           <button className="text-xs bg-[var(--color-primary)] text-white px-2.5 py-1.5 rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors">
             <UserPlus size={13} />
@@ -137,7 +137,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             placeholder={t("nav.filterByName")}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="w-full text-xs border border-[rgba(0,0,0,0.08)] rounded-lg ps-7 pe-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
+            className="w-full text-xs border border-[var(--color-border)] rounded-lg ps-7 pe-2.5 py-1.5 bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
           />
         </div>
       </div>

@@ -38,7 +38,7 @@ export default function MonthlyTrend({ data }: MonthlyTrendProps) {
                 width={barWidth}
                 height={barHeight}
                 rx={2}
-                fill="#0071E3"
+                fill="var(--color-primary)"
                 opacity={0.7}
               />
               <title>{`${label}: $${d.total.toFixed(2)}`}</title>
@@ -59,7 +59,7 @@ export default function MonthlyTrend({ data }: MonthlyTrendProps) {
           y1={chartHeight}
           x2={chartWidth + 5}
           y2={chartHeight}
-          stroke="rgba(0,0,0,0.06)"
+          stroke="var(--color-border)"
           strokeWidth="0.5"
         />
       </svg>

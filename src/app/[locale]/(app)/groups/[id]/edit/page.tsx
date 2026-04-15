@@ -88,7 +88,7 @@ export default function GroupEditPage() {
     <div className="max-w-lg mx-auto">
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("group.settings")}</h1>
 
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-6">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-6">
         {/* Group name */}
         <div>
           <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
@@ -98,7 +98,7 @@ export default function GroupEditPage() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
           />
         </div>
 
@@ -110,7 +110,7 @@ export default function GroupEditPage() {
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
           >
             <option value="HOME">{t("group.types.HOME")}</option>
             <option value="TRIP">{t("group.types.TRIP")}</option>
@@ -126,9 +126,9 @@ export default function GroupEditPage() {
           </h3>
           <div className="space-y-2 mb-3">
             {members.map((m) => (
-              <div key={m.userId} className="flex items-center justify-between py-1">
+              <div key={m.userId} className="flex items-center justify-between py-1.5 px-1 rounded-lg hover:bg-[var(--color-hover)] transition-colors duration-150">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
+                  <div className="w-8 h-8 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
                     {m.user.name[0]?.toUpperCase()}
                   </div>
                   <div>
@@ -139,7 +139,7 @@ export default function GroupEditPage() {
                 {m.role !== "ADMIN" && (
                   <button
                     onClick={() => handleRemoveMember(m.userId)}
-                    className="text-[var(--color-text-tertiary)] hover:text-red-500"
+                    className="text-[var(--color-text-tertiary)] hover:text-[var(--color-negative)]"
                   >
                     <X size={16} />
                   </button>
@@ -153,7 +153,7 @@ export default function GroupEditPage() {
               value={newMemberEmail}
               onChange={(e) => setNewMemberEmail(e.target.value)}
               placeholder="Add by email"
-              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+              className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -178,7 +178,7 @@ export default function GroupEditPage() {
           <button
             onClick={() => setSimplifyDebts(!simplifyDebts)}
             className={`relative w-11 h-6 rounded-full transition-colors ${
-              simplifyDebts ? "bg-[var(--color-primary)]" : "bg-[rgba(0,0,0,0.12)]"
+              simplifyDebts ? "bg-[var(--color-primary)]" : "bg-[var(--color-border-strong)]"
             }`}
           >
             <span
@@ -190,10 +190,10 @@ export default function GroupEditPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-between pt-4 border-t border-[rgba(0,0,0,0.06)]">
+        <div className="flex justify-between pt-4 border-t border-[var(--color-border)]">
           <button
             onClick={handleDeleteGroup}
-            className="flex items-center gap-1 text-red-500 text-sm hover:underline"
+            className="flex items-center gap-1 text-[var(--color-negative)] text-sm hover:underline transition-colors duration-150"
           >
             <Trash2 size={14} />
             {t("group.delete")}
@@ -201,7 +201,7 @@ export default function GroupEditPage() {
           <div className="flex gap-2">
             <button
               onClick={() => router.back()}
-              className="border border-[rgba(0,0,0,0.12)] text-[var(--color-text)] px-5 py-2 rounded-xl font-medium text-sm hover:bg-[rgba(0,0,0,0.03)] transition-all duration-200"
+              className="border border-[var(--color-border-strong)] text-[var(--color-text)] px-5 py-2 rounded-xl font-medium text-sm hover:bg-[var(--color-hover)] transition-all duration-200"
             >
               {t("expense.cancel")}
             </button>
@@ -210,7 +210,7 @@ export default function GroupEditPage() {
               disabled={saving}
               className="bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl font-medium text-sm hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
             >
-              {saving ? "..." : t("settings.save")}
+              {saving ? t("common.loading") : t("settings.save")}
             </button>
           </div>
         </div>

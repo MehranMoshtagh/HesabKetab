@@ -66,8 +66,8 @@ export default function GroupDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-20 bg-[rgba(0,0,0,0.04)]" />
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-60 bg-[rgba(0,0,0,0.04)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-20 bg-[var(--color-hover)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-60 bg-[var(--color-hover)]" />
       </div>
     );
   }
@@ -88,10 +88,10 @@ export default function GroupDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 mb-4">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-[var(--color-primary)]/8 flex items-center justify-center text-lg">
+              <div className="w-12 h-12 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-lg">
                 👥
               </div>
               <div>
@@ -119,7 +119,7 @@ export default function GroupDetailPage() {
               </button>
               <Link
                 href={`/groups/${groupId}/edit`}
-                className="p-1.5 rounded hover:bg-[rgba(0,0,0,0.03)]"
+                className="p-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-all duration-200"
               >
                 <Settings size={16} className="text-[var(--color-text-tertiary)]" />
               </Link>
@@ -135,7 +135,7 @@ export default function GroupDetailPage() {
             return (
               <div key={month} className="mb-4">
                 <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
+                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                   {expenses.map((exp) => (
                     <ExpenseListItem key={exp.id} expense={exp} />
                   ))}
@@ -145,7 +145,7 @@ export default function GroupDetailPage() {
           })}
 
         {data.expenses.length === 0 && (
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
             {t("dashboard.noExpenses")}
           </div>
         )}
@@ -153,7 +153,7 @@ export default function GroupDetailPage() {
 
       {/* Right panel — group balances */}
       <div className="w-64 hidden lg:block space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
           <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("group.groupBalances")}
           </h3>
@@ -166,9 +166,9 @@ export default function GroupDetailPage() {
           {/* Per-member balances */}
           <div className="space-y-2 mb-4">
             {balances?.members.map((m) => (
-              <div key={m.userId} className="flex items-center justify-between">
+              <div key={m.userId} className="flex items-center justify-between rounded-lg px-1 py-1 hover:bg-[var(--color-hover)] transition-colors duration-150">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[rgba(0,0,0,0.04)] flex items-center justify-center text-xs font-semibold">
+                  <div className="w-6 h-6 rounded-full bg-[var(--color-hover)] flex items-center justify-center text-xs font-semibold">
                     {m.name[0]?.toUpperCase()}
                   </div>
                   <span className="text-sm text-[var(--color-text)] truncate max-w-[100px]">
@@ -196,7 +196,7 @@ export default function GroupDetailPage() {
 
           {/* Simplified debts */}
           {balances?.simplified && balances.simplified.length > 0 && (
-            <div className="border-t border-[rgba(0,0,0,0.06)] pt-3">
+            <div className="border-t border-[var(--color-border)] pt-3">
               <h4 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
                 {t("group.viewDetails")}
               </h4>

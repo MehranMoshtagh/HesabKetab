@@ -13,7 +13,7 @@ export default function EmptyState({ icon = "📭", message, action }: EmptyStat
   const t = useTranslations("common");
 
   return (
-    <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-10 text-center">
+    <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-10 text-center">
       <div className="text-4xl mb-3">{icon}</div>
       <p className="text-sm text-[var(--color-text-tertiary)] mb-4">
         {message ?? t("noResults")}
@@ -21,7 +21,7 @@ export default function EmptyState({ icon = "📭", message, action }: EmptyStat
       {action && (
         <button
           onClick={action.onClick}
-          className="text-sm text-[var(--color-primary)] font-medium hover:opacity-70 transition-opacity"
+          className="text-sm text-[var(--color-primary)] font-medium hover:underline transition-all duration-200"
         >
           {action.label}
         </button>

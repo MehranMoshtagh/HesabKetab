@@ -65,7 +65,7 @@ export default function SpendingByCategory({ data }: SpendingByCategoryProps) {
                 <span className="text-xs text-[var(--color-text-tertiary)]">{pct.toFixed(0)}%</span>
               </div>
             </div>
-            <div className="h-2 bg-[rgba(0,0,0,0.04)] rounded-full overflow-hidden">
+            <div className="h-2 bg-[var(--color-hover)] rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-300"
                 style={{

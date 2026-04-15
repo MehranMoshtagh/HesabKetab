@@ -194,16 +194,16 @@ export default function AddExpenseModal() {
   if (!isAddExpenseOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] w-full max-w-lg max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
           <h2 className="font-semibold text-[var(--color-text)] tracking-tight">
             {t("expense.addExpense")}
           </h2>
           <button
             onClick={closeAddExpense}
-            className="p-1 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-tertiary)] transition-colors"
+            className="p-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-tertiary)] transition-colors"
           >
             <X size={18} />
           </button>
@@ -224,7 +224,7 @@ export default function AddExpenseModal() {
                     "px-3.5 py-1.5 rounded-full text-sm border transition-all duration-200",
                     selectedFriendIds.includes(f.id)
                       ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
-                      : "bg-white text-[var(--color-text)] border-[rgba(0,0,0,0.12)] hover:border-[var(--color-primary)]"
+                      : "bg-white text-[var(--color-text)] border-[var(--color-border-strong)] hover:border-[var(--color-primary)]"
                   )}
                 >
                   {f.name}
@@ -237,7 +237,7 @@ export default function AddExpenseModal() {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setShowCategoryPicker(!showCategoryPicker)}
-              className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl border border-[rgba(0,0,0,0.08)] hover:bg-[rgba(0,0,0,0.02)] transition-colors"
+              className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-hover)] transition-colors"
             >
               📄
             </button>
@@ -246,7 +246,7 @@ export default function AddExpenseModal() {
               placeholder={t("expense.description")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+              className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
 
@@ -264,7 +264,7 @@ export default function AddExpenseModal() {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setShowCurrencyPicker(true)}
-              className="px-3.5 py-2.5 border border-[rgba(0,0,0,0.12)] rounded-xl text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.02)] transition-colors"
+              className="px-3.5 py-2.5 border border-[var(--color-border-strong)] rounded-xl text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] transition-colors"
             >
               {getCurrencySymbol(currency)}
             </button>
@@ -275,7 +275,7 @@ export default function AddExpenseModal() {
               onChange={(e) => setAmount(e.target.value)}
               step="0.01"
               min="0"
-              className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-2xl font-semibold text-center bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+              className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-2xl font-semibold text-center bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
 
@@ -317,7 +317,7 @@ export default function AddExpenseModal() {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2 text-sm bg-[var(--color-bg)]"
+              className="border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2 text-sm bg-[var(--color-bg)]"
             />
           </div>
 
@@ -325,7 +325,7 @@ export default function AddExpenseModal() {
           <select
             value={groupId ?? ""}
             onChange={(e) => setGroupId(e.target.value || null)}
-            className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
           >
             <option value="">{t("expense.noGroup")}</option>
             {groups.map((g) => (
@@ -349,7 +349,7 @@ export default function AddExpenseModal() {
               placeholder={t("expense.notes")}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm h-20 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm h-20 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           )}
 
@@ -369,7 +369,7 @@ export default function AddExpenseModal() {
               <select
                 value={recurringInterval ?? ""}
                 onChange={(e) => setRecurringInterval(e.target.value)}
-                className="border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-xs bg-[var(--color-bg)]"
+                className="border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-xs bg-[var(--color-bg)]"
               >
                 <option value="WEEKLY">{t("common.weekly")}</option>
                 <option value="BIWEEKLY">{t("common.biweekly")}</option>
@@ -381,10 +381,10 @@ export default function AddExpenseModal() {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2.5 px-5 py-4 border-t border-[rgba(0,0,0,0.06)]">
+        <div className="flex justify-end gap-2.5 px-5 py-4 border-t border-[var(--color-border)]">
           <button
             onClick={closeAddExpense}
-            className="px-5 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.04)] rounded-xl transition-colors"
+            className="px-5 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] rounded-xl transition-colors"
           >
             {t("expense.cancel")}
           </button>
@@ -393,7 +393,12 @@ export default function AddExpenseModal() {
             disabled={saving || !description.trim() || !amount || selectedFriendIds.length === 0}
             className="px-5 py-2 text-sm bg-[var(--color-primary)] text-white rounded-xl font-medium hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-all duration-200"
           >
-            {saving ? "..." : t("expense.save")}
+            {saving ? (
+              <span className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                {t("expense.save")}
+              </span>
+            ) : t("expense.save")}
           </button>
         </div>
       </div>

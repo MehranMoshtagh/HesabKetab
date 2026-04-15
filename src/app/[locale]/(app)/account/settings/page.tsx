@@ -106,7 +106,7 @@ export default function AccountSettingsPage() {
     return (
       <div className="max-w-2xl mx-auto space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-40 bg-[rgba(0,0,0,0.04)]" />
+          <div key={i} className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-40 bg-[var(--color-hover)]" />
         ))}
       </div>
     );
@@ -117,14 +117,14 @@ export default function AccountSettingsPage() {
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">{t("title")}</h1>
 
       {/* Profile Section */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-4">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-4">
         <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">
           {t("yourAccount")}
         </h2>
 
         {/* Avatar */}
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-2xl font-semibold text-[var(--color-primary)]">
+          <div className="w-16 h-16 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-2xl font-semibold text-[var(--color-primary)]">
             {name[0]?.toUpperCase() ?? "U"}
           </div>
           <button className="text-sm text-[var(--color-primary)] hover:underline">
@@ -141,7 +141,7 @@ export default function AccountSettingsPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
@@ -153,7 +153,7 @@ export default function AccountSettingsPage() {
               type="email"
               value={profile?.email ?? ""}
               disabled
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text-secondary)]"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text-secondary)]"
             />
           </div>
 
@@ -165,7 +165,7 @@ export default function AccountSettingsPage() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
@@ -176,7 +176,7 @@ export default function AccountSettingsPage() {
             <select
               value={defaultCurrency}
               onChange={(e) => setDefaultCurrency(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               {currencies.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -193,7 +193,7 @@ export default function AccountSettingsPage() {
             <select
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               {Intl.supportedValuesOf("timeZone").map((tz) => (
                 <option key={tz} value={tz}>
@@ -210,7 +210,7 @@ export default function AccountSettingsPage() {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
             >
               <option value="en">English</option>
               <option value="fa">فارسی</option>
@@ -220,7 +220,7 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Notifications */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
         <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
           {t("notifications")}
         </h2>
@@ -326,7 +326,7 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Export & Advanced */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 space-y-3">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-3">
         <div className="flex items-center gap-3">
           <a
             href="/api/export/json"
@@ -344,8 +344,8 @@ export default function AccountSettingsPage() {
             Export CSV
           </a>
         </div>
-        <div className="border-t border-[rgba(0,0,0,0.06)] pt-3">
-          <button className="text-sm text-red-500 hover:underline">
+        <div className="border-t border-[var(--color-border)] pt-3">
+          <button className="text-sm text-[var(--color-negative)] hover:underline transition-colors duration-150">
             {t("deleteAccount")}
           </button>
         </div>
@@ -358,7 +358,7 @@ export default function AccountSettingsPage() {
           disabled={saving}
           className="bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
         >
-          {saving ? "..." : t("save")}
+          {saving ? t("saving") : t("save")}
         </button>
       </div>
     </div>

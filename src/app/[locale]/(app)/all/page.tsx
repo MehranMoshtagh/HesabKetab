@@ -95,12 +95,12 @@ export default function AllExpensesPage() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-16 bg-[rgba(0,0,0,0.04)]"
+              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-16 bg-[var(--color-hover)]"
             />
           ))}
         </div>
       ) : expenses.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           {t("dashboard.noExpenses")}
         </div>
       ) : (
@@ -112,12 +112,12 @@ export default function AllExpensesPage() {
               return (
                 <div key={month} className="mb-4">
                   <MonthHeader monthKey={month} />
-                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
+                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                     {monthExpenses.map((exp) => (
                       <div key={exp.id} className="relative">
                         <ExpenseListItem expense={exp} />
                         {exp.group && (
-                          <span className="absolute top-1 end-1 text-[10px] bg-[rgba(0,0,0,0.04)] text-[var(--color-text-secondary)] px-1.5 py-0.5 rounded">
+                          <span className="absolute top-1 end-1 text-[10px] bg-[var(--color-hover)] text-[var(--color-text-secondary)] px-1.5 py-0.5 rounded">
                             {exp.group.name}
                           </span>
                         )}

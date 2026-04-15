@@ -120,20 +120,20 @@ export default function ActivityPage() {
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-3 animate-pulse h-14 bg-[rgba(0,0,0,0.04)]"
+              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 animate-pulse h-14 bg-[var(--color-hover)]"
             />
           ))}
         </div>
       ) : activities.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           No recent activity.
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
           {activities.map((act) => (
             <div
               key={act.id}
-              className="flex items-start gap-3 px-4 py-3 hover:bg-[rgba(0,0,0,0.03)] transition-colors"
+              className="flex items-start gap-3 px-4 py-3 hover:bg-[var(--color-hover)] transition-all duration-200 cursor-default"
             >
               {/* Icon */}
               <div className="text-lg mt-0.5 shrink-0">

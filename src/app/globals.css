@@ -8,20 +8,48 @@
 }
 
 :root {
+  /* Brand */
   --color-primary: #0071E3;
   --color-primary-hover: #0077ED;
+  --color-primary-light: rgba(0, 113, 227, 0.08);
+  --color-primary-shadow: rgba(0, 113, 227, 0.3);
+
+  /* Surfaces */
   --color-surface: #FFFFFF;
   --color-bg: #F5F5F7;
+  --color-hover: rgba(0, 0, 0, 0.03);
+  --color-active: rgba(0, 0, 0, 0.06);
+  --color-glass: rgba(255, 255, 255, 0.72);
+  --color-glass-border: rgba(255, 255, 255, 0.18);
+
+  /* Typography */
   --color-text: #1D1D1F;
   --color-text-secondary: #86868B;
   --color-text-tertiary: #AEAEB2;
+
+  /* Borders */
   --color-border: rgba(0, 0, 0, 0.06);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+
+  /* Semantic */
   --color-positive: #34C759;
+  --color-positive-light: rgba(52, 199, 89, 0.08);
   --color-negative: #FF3B30;
-  --color-glass: rgba(255, 255, 255, 0.72);
-  --color-glass-border: rgba(255, 255, 255, 0.18);
+  --color-negative-light: rgba(255, 59, 48, 0.08);
+  --color-warning: #FF9500;
+  --color-warning-light: rgba(255, 149, 0, 0.08);
+
+  /* Elevation */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.06);
-  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.06);
+  --shadow-button: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  /* Sizing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
 }
 
 body {

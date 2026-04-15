@@ -66,11 +66,11 @@ export default function SplitOptionsPanel({
   const remaining = totalAmount - getTotalAssigned();
 
   return (
-    <div className="border border-[rgba(0,0,0,0.06)] rounded-2xl p-4 bg-[var(--color-bg)] space-y-3">
+    <div className="border border-[var(--color-border)] rounded-2xl p-4 bg-[var(--color-bg)] space-y-3">
       <div className="text-sm font-medium text-[var(--color-text)]">{t("title")}</div>
 
       {/* Split type tabs */}
-      <div className="flex gap-1 border-b border-[rgba(0,0,0,0.06)] pb-3">
+      <div className="flex gap-1 border-b border-[var(--color-border)] pb-3">
         {tabs.map((tab) => (
           <button
             key={tab.type}
@@ -79,7 +79,7 @@ export default function SplitOptionsPanel({
               "flex-1 text-center py-1.5 rounded-lg text-xs font-medium transition-all duration-200",
               splitType === tab.type
                 ? "bg-[var(--color-primary)] text-white"
-                : "bg-white text-[var(--color-text-secondary)] hover:bg-[rgba(0,0,0,0.03)]"
+                : "bg-white text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)]"
             )}
           >
             <div className="text-base">{tab.icon}</div>
@@ -122,7 +122,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
 
@@ -140,7 +140,7 @@ export default function SplitOptionsPanel({
                   placeholder="0"
                   min="0"
                   max="100"
-                  className="w-16 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                  className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
                 />
                 <span className="text-sm text-[var(--color-text-tertiary)]">%</span>
               </div>
@@ -158,7 +158,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="1"
                 min="0"
-                className="w-16 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
 
@@ -174,7 +174,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border border-[rgba(0,0,0,0.12)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
               />
             )}
           </div>

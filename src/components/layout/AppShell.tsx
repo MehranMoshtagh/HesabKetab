@@ -21,7 +21,7 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
           groups={groups.map((g) => ({ id: g.id, name: g.name }))}
           friends={friends.map((f) => ({ id: f.id, name: f.name }))}
         />
-        <main className="flex-1 p-5 min-h-[calc(100vh-3rem)] pb-20 lg:pb-5">
+        <main className="flex-1 p-5 lg:p-6 min-h-[calc(100vh-3.5rem)] pb-20 lg:pb-6">
           {children}
         </main>
       </div>

@@ -15,7 +15,7 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
     return (
       <div className="text-center py-6">
         <svg viewBox="0 0 100 100" className="w-32 h-32 mx-auto">
-          <circle cx="50" cy="50" r="40" fill="rgba(0,0,0,0.04)" />
+          <circle cx="50" cy="50" r="40" className="fill-[var(--color-hover)]" />
           <text
             x="50"
             y="50"
@@ -67,7 +67,7 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
                 ? describeArc(60, 60, 45, 0, 359.99)
                 : describeArc(60, 60, 45, owedAngle, 360)
             }
-            fill="#FF3B30"
+            fill="var(--color-negative)"
             opacity={0.75}
           />
         )}
@@ -78,7 +78,7 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
                 ? describeArc(60, 60, 45, 0, 359.99)
                 : describeArc(60, 60, 45, 0, owedAngle)
             }
-            fill="#34C759"
+            fill="var(--color-positive)"
             opacity={0.75}
           />
         )}
@@ -99,7 +99,7 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
           y="67"
           textAnchor="middle"
           dominantBaseline="middle"
-          className={owed >= owing ? "fill-[#34C759]" : "fill-[#FF3B30]"}
+          className={owed >= owing ? "fill-[var(--color-positive)]" : "fill-[var(--color-negative)]"}
           fontSize="5"
         >
           {owed >= owing ? "net owed" : "net owing"}
@@ -108,13 +108,13 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
 
       <div className="flex justify-center gap-6 mt-2">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-[#34C759]" />
+          <div className="w-3 h-3 rounded-sm bg-[var(--color-positive)]" />
           <span className="text-xs text-[var(--color-text-secondary)]">
             {t("youAreOwed")}: ${owed.toFixed(2)}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-[#FF3B30]" />
+          <div className="w-3 h-3 rounded-sm bg-[var(--color-negative)]" />
           <span className="text-xs text-[var(--color-text-secondary)]">
             {t("youOwe")}: ${owing.toFixed(2)}
           </span>

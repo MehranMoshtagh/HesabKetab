@@ -31,17 +31,17 @@ export default function CurrencyPicker({
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] w-full max-w-sm max-h-[70vh] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] w-full max-w-sm max-h-[70vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
           <h3 className="font-semibold text-[var(--color-text)] tracking-tight">Currency</h3>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-tertiary)] transition-colors">
+          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-tertiary)] transition-colors duration-150">
             <X size={18} />
           </button>
         </div>
 
         {/* Search */}
-        <div className="px-5 py-3 border-b border-[rgba(0,0,0,0.06)]">
+        <div className="px-5 py-3 border-b border-[var(--color-border)]">
           <div className="relative">
             <Search
               size={14}
@@ -53,7 +53,7 @@ export default function CurrencyPicker({
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search currencies..."
               autoFocus
-              className="w-full ps-8 pe-3 py-2 border border-[rgba(0,0,0,0.12)] rounded-xl text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+              className="w-full ps-8 pe-3 py-2 border border-[var(--color-border-strong)] rounded-xl text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             />
           </div>
         </div>
@@ -67,8 +67,8 @@ export default function CurrencyPicker({
                 onSelect(c.code);
                 onClose();
               }}
-              className={`w-full flex items-center gap-3 px-5 py-2.5 text-start hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 ${
-                c.code === selected ? "bg-[var(--color-primary)]/6" : ""
+              className={`w-full flex items-center gap-3 px-5 py-2.5 text-start hover:bg-[var(--color-hover)] transition-colors duration-150 cursor-pointer ${
+                c.code === selected ? "bg-[var(--color-primary-light)]" : ""
               }`}
             >
               <span className="text-base font-medium w-8 text-center">

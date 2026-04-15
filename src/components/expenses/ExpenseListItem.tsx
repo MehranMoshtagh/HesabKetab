@@ -73,7 +73,7 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
     <div>
       <div
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-3 px-4 py-3 hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 cursor-pointer rounded-xl"
+        className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-hover)] transition-all duration-200 cursor-pointer rounded-xl"
       >
         {/* Date */}
         <div className="text-center w-10 shrink-0">

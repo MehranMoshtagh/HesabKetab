@@ -26,7 +26,7 @@ export default function MobileNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-t border-[rgba(0,0,0,0.06)] z-50 lg:hidden safe-area-bottom">
+    <nav className="fixed bottom-0 inset-x-0 backdrop-blur-xl bg-[var(--color-glass)] border-t border-[var(--color-border)] z-50 lg:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-14">
         {items.map((item) => {
           if (item.isAction) {
@@ -36,7 +36,7 @@ export default function MobileNav() {
                 onClick={() => openAddExpense()}
                 className="flex flex-col items-center justify-center -mt-4"
               >
-                <div className="w-11 h-11 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shadow-[0_4px_12px_rgba(0,113,227,0.3)]">
+                <div className="w-11 h-11 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shadow-[0_4px_12px_var(--color-primary-shadow)]">
                   <Plus size={22} />
                 </div>
               </button>

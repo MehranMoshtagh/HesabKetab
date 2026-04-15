@@ -90,7 +90,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
   });
 
   return (
-    <div className="bg-[var(--color-bg)] border-t border-[rgba(0,0,0,0.06)] px-5 py-5 space-y-5">
+    <div className="bg-[var(--color-bg)] border-t border-[var(--color-border)] px-5 py-5 space-y-5">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
@@ -169,7 +169,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
 
       {/* Notes */}
       {expense.notes && (
-        <div className="bg-white rounded-xl p-3.5 text-sm text-[var(--color-text-secondary)] border border-[rgba(0,0,0,0.06)]">
+        <div className="bg-white rounded-xl p-3.5 text-sm text-[var(--color-text-secondary)] border border-[var(--color-border)]">
           {expense.notes}
         </div>
       )}
@@ -184,7 +184,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
           <div className="space-y-2.5 mb-3">
             {expense.comments.map((c) => (
               <div key={c.id} className="flex gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-[rgba(0,0,0,0.06)] flex items-center justify-center text-[10px] font-semibold text-[var(--color-text-secondary)] shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full bg-[var(--color-border)] flex items-center justify-center text-[10px] font-semibold text-[var(--color-text-secondary)] shrink-0 mt-0.5">
                   {c.user.name[0]?.toUpperCase()}
                 </div>
                 <div>
@@ -209,7 +209,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder={t("expense.detail.addComment")}
-            className="flex-1 border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+            className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             onKeyDown={(e) => {
               if (e.key === "Enter") handlePostComment();
             }}

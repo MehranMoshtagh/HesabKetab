@@ -32,8 +32,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[rgba(0,0,0,0.06)]">
-      <div className="max-w-7xl mx-auto px-4 h-12 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
+      <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/dashboard"
@@ -47,7 +47,7 @@ export default function Navbar() {
           {/* Language toggle */}
           <button
             onClick={toggleLocale}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-sm text-[var(--color-text-secondary)] transition-all duration-200"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-[var(--color-hover)] text-sm text-[var(--color-text-secondary)] transition-all duration-200"
             title={t("nav.language")}
           >
             <Globe size={15} />
@@ -55,7 +55,7 @@ export default function Navbar() {
           </button>
 
           {/* Notifications */}
-          <button className="relative p-2 rounded-lg hover:bg-[rgba(0,0,0,0.04)] text-[var(--color-text-secondary)] transition-all duration-200">
+          <button className="relative p-2 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-all duration-200">
             <Bell size={18} />
           </button>
 
@@ -64,7 +64,7 @@ export default function Navbar() {
             <div ref={menuRef} className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-[rgba(0,0,0,0.04)] transition-all duration-200"
+                className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-all duration-200"
               >
                 <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/12 flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
                   {session.user.name?.[0]?.toUpperCase() || "U"}
@@ -73,10 +73,10 @@ export default function Navbar() {
               </button>
 
               {menuOpen && (
-                <div className="absolute end-0 mt-2 w-48 bg-white rounded-xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] py-1 z-50">
+                <div className="absolute end-0 mt-2 w-48 bg-white rounded-xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] py-1 z-50">
                   <Link
                     href="/account/settings"
-                    className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[rgba(0,0,0,0.03)] text-sm text-[var(--color-text)] transition-colors"
+                    className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[var(--color-hover)] text-sm text-[var(--color-text)] transition-colors duration-150"
                     onClick={() => setMenuOpen(false)}
                   >
                     <Settings size={15} className="text-[var(--color-text-secondary)]" />
@@ -84,7 +84,7 @@ export default function Navbar() {
                   </Link>
                   <button
                     onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-                    className="flex items-center gap-2.5 w-full px-4 py-2.5 hover:bg-[rgba(0,0,0,0.03)] text-sm text-[var(--color-text)] transition-colors"
+                    className="flex items-center gap-2.5 w-full px-4 py-2.5 hover:bg-[var(--color-hover)] text-sm text-[var(--color-text)] transition-colors duration-150"
                   >
                     <LogOut size={15} className="text-[var(--color-text-secondary)]" />
                     {t("nav.logOut")}

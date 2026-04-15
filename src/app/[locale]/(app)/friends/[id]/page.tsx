@@ -52,8 +52,8 @@ export default function FriendDetailPage() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-20 bg-[rgba(0,0,0,0.04)]" />
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 animate-pulse h-40 bg-[rgba(0,0,0,0.04)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-20 bg-[var(--color-hover)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-40 bg-[var(--color-hover)]" />
       </div>
     );
   }
@@ -83,9 +83,9 @@ export default function FriendDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6 mb-4 flex items-center justify-between">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[var(--color-primary)]/8 flex items-center justify-center text-lg font-semibold text-[var(--color-primary)]">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-lg font-semibold text-[var(--color-primary)]">
               {data.friend.name[0]?.toUpperCase()}
             </div>
             <div>
@@ -121,7 +121,7 @@ export default function FriendDetailPage() {
             return (
               <div key={month} className="mb-4">
                 <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] divide-y divide-[rgba(0,0,0,0.06)]">
+                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                   {expenses.map((exp) => (
                     <ExpenseListItem key={exp.id} expense={exp} />
                   ))}
@@ -131,15 +131,15 @@ export default function FriendDetailPage() {
           })}
 
         {data.expenses.length === 0 && (
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
             {t("dashboard.noExpenses")}
           </div>
         )}
       </div>
 
       {/* Right panel */}
-      <div className="w-60 hidden lg:block">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+      <div className="w-64 hidden lg:block">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
           <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("friend.yourBalance")}
           </h3>

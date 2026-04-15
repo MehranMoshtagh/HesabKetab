@@ -82,16 +82,16 @@ export default function AddFriendPage() {
     <div className="max-w-md mx-auto">
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("friend.addFriend")}</h1>
 
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-6">
+      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-[#FF3B30]/8 text-[var(--color-negative)] text-sm rounded-xl p-3">
+            <div className="bg-[var(--color-negative-light)] text-[var(--color-negative)] text-sm rounded-xl p-3">
               {error}
             </div>
           )}
 
           {inviteSent && (
-            <div className="bg-[#34C759]/8 text-[var(--color-positive)] text-sm rounded-xl p-3 flex items-center gap-2">
+            <div className="bg-[var(--color-positive-light)] text-[var(--color-positive)] text-sm rounded-xl p-3 flex items-center gap-2">
               <CheckCircle size={16} />
               {t("friend.inviteSent", { email })}
             </div>
@@ -107,7 +107,7 @@ export default function AddFriendPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="friend@example.com"
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
             />
           </div>
 
@@ -117,22 +117,22 @@ export default function AddFriendPage() {
             className="w-full flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200 disabled:opacity-50"
           >
             <UserPlus size={16} />
-            {loading ? "..." : t("friend.addFriend")}
+            {loading ? t("common.loading") : t("friend.addFriend")}
           </button>
         </form>
 
         {showInvite && (
-          <div className="mt-4 pt-4 border-t border-[rgba(0,0,0,0.06)]">
+          <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
             <p className="text-sm text-[var(--color-text-secondary)] mb-3">
               {t("friend.notOnHesabKetab", { email })}
             </p>
             <button
               onClick={handleSendInvite}
               disabled={inviteLoading}
-              className="w-full flex items-center justify-center gap-2 bg-[var(--color-text)] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-80 transition-all duration-200 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-[var(--color-text)] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-opacity-90 transition-all duration-200 disabled:opacity-50"
             >
               <Mail size={16} />
-              {inviteLoading ? "..." : t("friend.sendInvite")}
+              {inviteLoading ? t("common.loading") : t("friend.sendInvite")}
             </button>
           </div>
         )}
