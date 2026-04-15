@@ -52,28 +52,38 @@ function Landing({ locale }: { locale: string }) {
     { qKey: "faq1Q" as const, aKey: "faq1A" as const },
     { qKey: "faq2Q" as const, aKey: "faq2A" as const },
     { qKey: "faq3Q" as const, aKey: "faq3A" as const },
-    { qKey: "faq4Q" as const, aKey: "faq4A" as const },
+  ];
+
+  const mockItems = [
+    { nameKey: "mock1Name" as const, catKey: "mock1Cat" as const, amount: "-$18.50", color: "text-[var(--color-negative)]" },
+    { nameKey: "mock2Name" as const, catKey: "mock2Cat" as const, amount: "+$24.00", color: "text-[var(--color-positive)]" },
+    { nameKey: "mock3Name" as const, catKey: "mock3Cat" as const, amount: "-$24.00", color: "text-[var(--color-negative)]" },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ─── Navbar ─── */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[rgba(0,0,0,0.06)]">
-        <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
-          <span className="text-[var(--color-text)] text-base font-semibold tracking-tight">
-            {appName("name")}
-          </span>
-          <div className="flex items-center gap-4">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-[var(--color-primary)] rounded-xl flex items-center justify-center">
+              <span className="text-white text-sm font-bold">H</span>
+            </div>
+            <span className="text-[var(--color-text)] text-[15px] font-semibold tracking-tight">
+              {appName("name")}
+            </span>
+          </Link>
+          <div className="flex items-center gap-2">
             <LandingLanguageToggle locale={locale} />
             <Link
               href="/login"
-              className="text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
+              className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] px-3.5 py-2 rounded-xl hover:bg-[rgba(0,0,0,0.04)] transition-all duration-200"
             >
               {t("logIn")}
             </Link>
             <Link
               href="/signup"
-              className="bg-[var(--color-primary)] text-white text-sm font-medium px-5 py-1.5 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200"
+              className="bg-[var(--color-primary)] text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_1px_3px_rgba(0,113,227,0.3)]"
             >
               {t("getStarted")}
             </Link>
@@ -115,43 +125,39 @@ function Landing({ locale }: { locale: string }) {
       <section className="pb-24 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-3xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] overflow-hidden">
-            {/* Mock browser bar */}
-            <div className="h-10 bg-[var(--color-bg)] border-b border-[rgba(0,0,0,0.06)] flex items-center px-4 gap-2">
+            {/* Mock title bar — clean, no URL */}
+            <div className="h-11 bg-[var(--color-bg)] border-b border-[rgba(0,0,0,0.06)] flex items-center px-5 gap-2">
               <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
               <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
               <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-              <div className="flex-1 mx-8">
-                <div className="bg-white rounded-lg h-6 flex items-center justify-center text-xs text-[var(--color-text-tertiary)] border border-[rgba(0,0,0,0.06)]">
-                  hesabketab.vercel.app/dashboard
-                </div>
+              <div className="flex-1 text-center">
+                <span className="text-xs font-medium text-[var(--color-text-tertiary)]">
+                  {t("mockBrand")}
+                </span>
               </div>
             </div>
-            {/* Mock dashboard content */}
+            {/* Mock dashboard content — fully localized */}
             <div className="p-6 md:p-8">
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
-                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">total balance</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">{t("mockBalance")}</p>
                   <p className="text-xl font-bold text-[var(--color-text)]">$0.00</p>
                 </div>
                 <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
-                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">you owe</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">{t("mockOwe")}</p>
                   <p className="text-xl font-bold text-[var(--color-negative)]">$42.50</p>
                 </div>
                 <div className="bg-[var(--color-bg)] rounded-2xl p-4 text-center">
-                  <p className="text-xs text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">you are owed</p>
+                  <p className="text-[10px] text-[var(--color-text-tertiary)] mb-1 uppercase tracking-wide">{t("mockOwed")}</p>
                   <p className="text-xl font-bold text-[var(--color-positive)]">$42.50</p>
                 </div>
               </div>
               <div className="space-y-3">
-                {[
-                  { name: "Dinner at Olive Garden", amount: "-$18.50", color: "text-[var(--color-negative)]", cat: "Dining out" },
-                  { name: "Groceries — Whole Foods", amount: "+$24.00", color: "text-[var(--color-positive)]", cat: "Groceries" },
-                  { name: "Uber to airport", amount: "-$24.00", color: "text-[var(--color-negative)]", cat: "Transportation" },
-                ].map((item) => (
-                  <div key={item.name} className="flex items-center justify-between bg-[var(--color-bg)] rounded-xl px-4 py-3">
+                {mockItems.map((item, i) => (
+                  <div key={i} className="flex items-center justify-between bg-[var(--color-bg)] rounded-xl px-4 py-3">
                     <div>
-                      <p className="text-sm font-medium text-[var(--color-text)]">{item.name}</p>
-                      <p className="text-xs text-[var(--color-text-tertiary)]">{item.cat}</p>
+                      <p className="text-sm font-medium text-[var(--color-text)]">{t(item.nameKey)}</p>
+                      <p className="text-xs text-[var(--color-text-tertiary)]">{t(item.catKey)}</p>
                     </div>
                     <span className={`text-sm font-semibold ${item.color}`}>{item.amount}</span>
                   </div>
@@ -163,7 +169,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Features Grid ─── */}
-      <section className="py-24 px-6 bg-white border-y border-[rgba(0,0,0,0.06)]">
+      <section id="features" className="py-24 px-6 bg-white border-y border-[rgba(0,0,0,0.06)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-4">
@@ -208,7 +214,6 @@ function Landing({ locale }: { locale: string }) {
               {t("howSubtitle")}
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((s, i) => (
               <div key={i} className="text-center">
@@ -278,48 +283,49 @@ function Landing({ locale }: { locale: string }) {
       <footer className="border-t border-[rgba(0,0,0,0.06)] py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-            {/* Brand */}
             <div className="md:col-span-1">
-              <span className="text-[var(--color-text)] text-lg font-semibold tracking-tight">
-                {appName("name")}
-              </span>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-7 h-7 bg-[var(--color-primary)] rounded-lg flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">H</span>
+                </div>
+                <span className="text-[var(--color-text)] text-base font-semibold tracking-tight">
+                  {appName("name")}
+                </span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 {t("footerTagline")}
               </p>
             </div>
-            {/* Product */}
             <div>
               <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
                 {t("footerProduct")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerFeatures")}</span></li>
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerPricing")}</span></li>
+                <li><Link href="/features" className="hover:text-[var(--color-primary)] transition-colors">{t("footerFeatures")}</Link></li>
+                <li><Link href="/pricing" className="hover:text-[var(--color-primary)] transition-colors">{t("footerPricing")}</Link></li>
               </ul>
             </div>
-            {/* Support */}
             <div>
               <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
                 {t("footerSupport")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("faqTitle")}</span></li>
+                <li><Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
               </ul>
             </div>
-            {/* Company */}
             <div>
               <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
                 {t("footerCompany")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerAbout")}</span></li>
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerPrivacy")}</span></li>
-                <li><span className="hover:text-[var(--color-primary)] cursor-pointer transition-colors">{t("footerTerms")}</span></li>
+                <li><Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">{t("footerAbout")}</Link></li>
+                <li><Link href="/privacy" className="hover:text-[var(--color-primary)] transition-colors">{t("footerPrivacy")}</Link></li>
+                <li><Link href="/terms" className="hover:text-[var(--color-primary)] transition-colors">{t("footerTerms")}</Link></li>
               </ul>
             </div>
           </div>
           <div className="pt-6 border-t border-[rgba(0,0,0,0.06)] text-center text-xs text-[var(--color-text-tertiary)]">
-            {appName("name")} &mdash; {t("free")}
+            &copy; {new Date().getFullYear()} {appName("name")} &mdash; {t("free")}
           </div>
         </div>
       </footer>
