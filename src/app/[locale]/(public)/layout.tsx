@@ -70,7 +70,7 @@ function PublicFooter({ locale }: { locale: string }) {
               {t("footerSupport")}
             </p>
             <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-              <li><Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
+              <li><Link href="/#faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
             </ul>
           </div>
           <div>

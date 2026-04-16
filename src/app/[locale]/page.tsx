@@ -252,7 +252,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="py-24 px-6 bg-white border-t border-[var(--color-border)]">
+      <section id="faq" className="py-24 px-6 bg-white border-t border-[var(--color-border)] scroll-mt-14">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
             {t("faqTitle")}
@@ -310,7 +310,7 @@ function Landing({ locale }: { locale: string }) {
                 {t("footerSupport")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-                <li><Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
+                <li><a href="#faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</a></li>
               </ul>
             </div>
             <div>
