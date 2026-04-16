@@ -63,7 +63,7 @@ function Landing({ locale }: { locale: string }) {
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ─── Navbar ─── */}
-      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[rgba(0,0,0,0.06)]">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-[var(--color-primary)] rounded-xl flex items-center justify-center">
@@ -124,9 +124,9 @@ function Landing({ locale }: { locale: string }) {
       {/* ─── App Preview Mock ─── */}
       <section className="pb-24 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-[var(--shadow-elevated)] border border-[rgba(0,0,0,0.06)] overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] overflow-hidden">
             {/* Mock title bar — clean, no URL */}
-            <div className="h-11 bg-[var(--color-bg)] border-b border-[rgba(0,0,0,0.06)] flex items-center px-5 gap-2">
+            <div className="h-11 bg-[var(--color-bg)] border-b border-[var(--color-border)] flex items-center px-5 gap-2">
               <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
               <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
               <div className="w-3 h-3 rounded-full bg-[#28C840]" />
@@ -169,7 +169,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Features Grid ─── */}
-      <section id="features" className="py-24 px-6 bg-white border-y border-[rgba(0,0,0,0.06)]">
+      <section id="features" className="py-24 px-6 bg-white border-y border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-4">
@@ -185,7 +185,7 @@ function Landing({ locale }: { locale: string }) {
               return (
                 <div
                   key={i}
-                  className="group p-6 rounded-2xl border border-[rgba(0,0,0,0.06)] hover:shadow-[var(--shadow-elevated)] hover:border-transparent transition-all duration-300"
+                  className="group p-6 rounded-2xl border border-[var(--color-border)] hover:shadow-[var(--shadow-elevated)] hover:border-transparent transition-all duration-300"
                 >
                   <div className="w-12 h-12 bg-[var(--color-primary)]/8 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-300">
                     <Icon className="text-[var(--color-primary)] group-hover:text-white transition-colors duration-300" size={22} />
@@ -252,7 +252,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="py-24 px-6 bg-white border-t border-[rgba(0,0,0,0.06)]">
+      <section className="py-24 px-6 bg-white border-t border-[var(--color-border)]">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
             {t("faqTitle")}
@@ -261,7 +261,7 @@ function Landing({ locale }: { locale: string }) {
             {faqs.map((faq, i) => (
               <details
                 key={i}
-                className="group bg-[var(--color-bg)] rounded-2xl border border-[rgba(0,0,0,0.06)] overflow-hidden"
+                className="group bg-[var(--color-bg)] rounded-2xl border border-[var(--color-border)] overflow-hidden"
               >
                 <summary className="flex items-center justify-between cursor-pointer px-6 py-5 text-[var(--color-text)] font-medium text-base list-none">
                   {t(faq.qKey)}
@@ -280,7 +280,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Footer ─── */}
-      <footer className="border-t border-[rgba(0,0,0,0.06)] py-12 px-6">
+      <footer className="border-t border-[var(--color-border)] py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div className="md:col-span-1">
@@ -297,7 +297,7 @@ function Landing({ locale }: { locale: string }) {
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+              <p className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-3">
                 {t("footerProduct")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
@@ -306,7 +306,7 @@ function Landing({ locale }: { locale: string }) {
               </ul>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+              <p className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-3">
                 {t("footerSupport")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
@@ -314,7 +314,7 @@ function Landing({ locale }: { locale: string }) {
               </ul>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wider text-[var(--color-text-tertiary)] font-medium mb-3">
+              <p className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-3">
                 {t("footerCompany")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
@@ -324,7 +324,7 @@ function Landing({ locale }: { locale: string }) {
               </ul>
             </div>
           </div>
-          <div className="pt-6 border-t border-[rgba(0,0,0,0.06)] text-center text-xs text-[var(--color-text-tertiary)]">
+          <div className="pt-6 border-t border-[var(--color-border)] text-center text-xs text-[var(--color-text-tertiary)]">
             &copy; {new Date().getFullYear()} {appName("name")} &mdash; {t("free")}
           </div>
         </div>
