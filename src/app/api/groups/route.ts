@@ -41,7 +41,9 @@ export async function GET() {
       myRole: m.role,
     }));
 
-  return NextResponse.json(groups);
+  return NextResponse.json(groups, {
+    headers: { "Cache-Control": "private, max-age=15, stale-while-revalidate=60" },
+  });
 }
 
 const createGroupSchema = z.object({

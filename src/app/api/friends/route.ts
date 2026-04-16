@@ -27,7 +27,9 @@ export async function GET() {
     };
   });
 
-  return NextResponse.json(friends);
+  return NextResponse.json(friends, {
+    headers: { "Cache-Control": "private, max-age=15, stale-while-revalidate=60" },
+  });
 }
 
 const addFriendSchema = z.object({

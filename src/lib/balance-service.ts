@@ -17,7 +17,7 @@ export async function getUserBalances(userId: string): Promise<{
   netBalance: number;
   byPerson: PairBalance[];
 }> {
-  // Get all non-deleted expenses where the user is a payer or sharer
+  // Single query: fetch expenses with payers, shares, AND user info in one shot
   const expenses = await prisma.expense.findMany({
     where: {
       deletedAt: null,
@@ -26,18 +26,31 @@ export async function getUserBalances(userId: string): Promise<{
         { shares: { some: { userId } } },
       ],
     },
-    include: {
-      payers: true,
-      shares: true,
+    select: {
+      payers: { select: { userId: true, amount: true, user: { select: { id: true, name: true, avatar: true } } } },
+      shares: { select: { userId: true, amount: true, user: { select: { id: true, name: true, avatar: true } } } },
     },
   });
 
-  // Build pairwise balance map: otherUserId -> net amount (positive = they owe user)
+  // Build pairwise balance map AND collect user info in one pass
   const balanceMap = new Map<string, number>();
+  const userInfoMap = new Map<string, { name: string; avatar: string | null }>();
 
   for (const exp of expenses) {
     const totalPaid = exp.payers.reduce((s, p) => s + Number(p.amount), 0);
     if (totalPaid === 0) continue;
+
+    // Collect user info from payers and shares
+    for (const p of exp.payers) {
+      if (p.userId !== userId && !userInfoMap.has(p.userId)) {
+        userInfoMap.set(p.userId, { name: p.user.name, avatar: p.user.avatar });
+      }
+    }
+    for (const s of exp.shares) {
+      if (s.userId !== userId && !userInfoMap.has(s.userId)) {
+        userInfoMap.set(s.userId, { name: s.user.name, avatar: s.user.avatar });
+      }
+    }
 
     for (const payer of exp.payers) {
       for (const share of exp.shares) {
@@ -46,13 +59,10 @@ export async function getUserBalances(userId: string): Promise<{
         const owedAmount = (Number(payer.amount) / totalPaid) * Number(share.amount);
         if (owedAmount === 0) continue;
 
-        // share.userId owes payer.userId this amount
         if (payer.userId === userId) {
-          // Someone owes me
           const cur = balanceMap.get(share.userId) ?? 0;
           balanceMap.set(share.userId, cur + owedAmount);
         } else if (share.userId === userId) {
-          // I owe someone
           const cur = balanceMap.get(payer.userId) ?? 0;
           balanceMap.set(payer.userId, cur - owedAmount);
         }
@@ -60,14 +70,11 @@ export async function getUserBalances(userId: string): Promise<{
     }
   }
 
-  // Fetch user info for all counterparties
-  const otherUserIds = [...balanceMap.keys()];
-  const users = otherUserIds.length > 0
-    ? await prisma.user.findMany({
-        where: { id: { in: otherUserIds } },
-        select: { id: true, name: true, avatar: true },
-      })
-    : [];
+  // No second query needed — user info already collected
+  const users: { id: string; name: string; avatar: string | null }[] = [];
+  for (const [id, info] of userInfoMap) {
+    users.push({ id, ...info });
+  }
 
   const userMap = new Map(users.map((u) => [u.id, u]));
 

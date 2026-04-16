@@ -8,5 +8,7 @@ export async function GET() {
   if (result.error) return result.error;
 
   const balances = await getUserBalances(result.userId);
-  return NextResponse.json(balances);
+  return NextResponse.json(balances, {
+    headers: { "Cache-Control": "private, max-age=10, stale-while-revalidate=30" },
+  });
 }
