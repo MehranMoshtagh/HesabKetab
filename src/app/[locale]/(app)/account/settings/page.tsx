@@ -6,6 +6,26 @@ import { useRouter } from "@/i18n/routing";
 import { currencies } from "@/lib/currencies";
 import type { Locale } from "@/i18n/config";
 
+function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+        checked ? "bg-[var(--color-primary)]" : "bg-[var(--color-border-strong)]"
+      }`}
+    >
+      <span
+        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+          checked ? "translate-x-5" : "translate-x-0"
+        }`}
+      />
+    </button>
+  );
+}
+
 interface UserProfile {
   id: string;
   name: string;
@@ -118,7 +138,7 @@ export default function AccountSettingsPage() {
 
       {/* Profile Section */}
       <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-4">
-        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider">
+        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)]">
           {t("yourAccount")}
         </h2>
 
@@ -221,7 +241,7 @@ export default function AccountSettingsPage() {
 
       {/* Notifications */}
       <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-4">
+        <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-4">
           {t("notifications")}
         </h2>
 
@@ -233,7 +253,7 @@ export default function AccountSettingsPage() {
 
         {/* Group: Groups & Friends */}
         <div className="mb-4">
-          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
             {t("notifGroupsFriends")}
           </h3>
           {notifKeys
@@ -241,21 +261,17 @@ export default function AccountSettingsPage() {
             .map((n) => (
               <div
                 key={n.key}
-                className="flex items-center justify-between py-1.5"
+                className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.email?.[n.key] ?? true}
                     onChange={() => toggleNotif("email", n.key)}
-                    className="rounded"
                   />
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.push?.[n.key] ?? true}
                     onChange={() => toggleNotif("push", n.key)}
-                    className="rounded"
                   />
                 </div>
               </div>
@@ -264,7 +280,7 @@ export default function AccountSettingsPage() {
 
         {/* Group: Expenses */}
         <div className="mb-4">
-          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
             {t("notifExpenses")}
           </h3>
           {notifKeys
@@ -272,21 +288,17 @@ export default function AccountSettingsPage() {
             .map((n) => (
               <div
                 key={n.key}
-                className="flex items-center justify-between py-1.5"
+                className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.email?.[n.key] ?? true}
                     onChange={() => toggleNotif("email", n.key)}
-                    className="rounded"
                   />
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.push?.[n.key] ?? true}
                     onChange={() => toggleNotif("push", n.key)}
-                    className="rounded"
                   />
                 </div>
               </div>
@@ -295,7 +307,7 @@ export default function AccountSettingsPage() {
 
         {/* Group: News */}
         <div>
-          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-2">
+          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
             {t("notifNews")}
           </h3>
           {notifKeys
@@ -303,21 +315,17 @@ export default function AccountSettingsPage() {
             .map((n) => (
               <div
                 key={n.key}
-                className="flex items-center justify-between py-1.5"
+                className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
                 <div className="flex items-center gap-6">
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.email?.[n.key] ?? true}
                     onChange={() => toggleNotif("email", n.key)}
-                    className="rounded"
                   />
-                  <input
-                    type="checkbox"
+                  <ToggleSwitch
                     checked={notifPrefs.push?.[n.key] ?? true}
                     onChange={() => toggleNotif("push", n.key)}
-                    className="rounded"
                   />
                 </div>
               </div>
@@ -331,21 +339,20 @@ export default function AccountSettingsPage() {
           <a
             href="/api/export/json"
             download
-            className="text-sm text-[var(--color-primary)] hover:underline"
+            className="border border-[var(--color-border-strong)] px-4 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-hover)] transition-all duration-200 text-[var(--color-text)]"
           >
             {t("downloadBackup")}
           </a>
-          <span className="text-[var(--color-text-tertiary)]">|</span>
           <a
             href="/api/export/csv"
             download
-            className="text-sm text-[var(--color-primary)] hover:underline"
+            className="border border-[var(--color-border-strong)] px-4 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-hover)] transition-all duration-200 text-[var(--color-text)]"
           >
             Export CSV
           </a>
         </div>
         <div className="border-t border-[var(--color-border)] pt-3">
-          <button className="text-sm text-[var(--color-negative)] hover:underline transition-colors duration-150">
+          <button className="border border-[var(--color-negative)] text-[var(--color-negative)] px-4 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-negative-light)] transition-all duration-200">
             {t("deleteAccount")}
           </button>
         </div>
