@@ -82,7 +82,7 @@ export default function AddFriendPage() {
     <div className="max-w-md mx-auto">
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("friend.addFriend")}</h1>
 
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="bg-[var(--color-negative-light)] text-[var(--color-negative)] text-sm rounded-xl p-3">

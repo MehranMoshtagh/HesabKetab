@@ -13,7 +13,7 @@ export default function EmptyState({ icon = "📭", message, action }: EmptyStat
   const t = useTranslations("common");
 
   return (
-    <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-10 text-center">
+    <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-10 text-center">
       <div className="text-4xl mb-3">{icon}</div>
       <p className="text-sm text-[var(--color-text-tertiary)] mb-4">
         {message ?? t("noResults")}

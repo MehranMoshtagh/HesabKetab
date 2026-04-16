@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
 import { findSubcategory } from "@/lib/categories";
 import { getMonthAbbr, getDayNumber } from "@/lib/date-utils";
+import { getCurrencySymbol } from "@/lib/currencies";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import ExpenseDetail from "./ExpenseDetail";
@@ -20,6 +21,7 @@ interface ExpenseListItemProps {
     createdBy: { id: string; name: string };
     payers: { userId: string; amount: string; user: { id: string; name: string } }[];
     shares: { userId: string; amount: string; user: { id: string; name: string } }[];
+    group?: { id: string; name: string } | null;
     _count?: { comments: number };
   };
   onDeleted?: () => void;
@@ -45,27 +47,29 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
   let rightAmount = "";
   let rightColor = "text-[var(--color-text-secondary)]";
 
+  const sym = getCurrencySymbol(expense.currency);
+
   if (expense.isPayment) {
     const payer = expense.payers[0];
     const payee = expense.shares[0];
     rightLabel = `${payer?.user.name} → ${payee?.user.name}`;
-    rightAmount = `$${parseFloat(expense.amount).toFixed(2)}`;
+    rightAmount = `${sym}${parseFloat(expense.amount).toFixed(2)}`;
     rightColor = "text-[var(--color-positive)]";
   } else if (userPaid && parseFloat(userPaid.amount) > 0) {
     const lentAmount =
       parseFloat(userPaid.amount) - parseFloat(userShare?.amount ?? "0");
     if (lentAmount > 0) {
       rightLabel = "you lent";
-      rightAmount = `$${lentAmount.toFixed(2)}`;
+      rightAmount = `${sym}${lentAmount.toFixed(2)}`;
       rightColor = "text-[var(--color-positive)]";
     } else {
       rightLabel = "you borrowed";
-      rightAmount = `$${Math.abs(lentAmount).toFixed(2)}`;
+      rightAmount = `${sym}${Math.abs(lentAmount).toFixed(2)}`;
       rightColor = "text-[var(--color-negative)]";
     }
   } else if (userShare) {
     rightLabel = "you borrowed";
-    rightAmount = `$${parseFloat(userShare.amount).toFixed(2)}`;
+    rightAmount = `${sym}${parseFloat(userShare.amount).toFixed(2)}`;
     rightColor = "text-[var(--color-negative)]";
   }
 
@@ -93,13 +97,16 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
           </div>
           {userPaid && !expense.isPayment && (
             <div className="text-xs text-[var(--color-text-tertiary)]">
-              you paid ${parseFloat(userPaid.amount).toFixed(2)}
+              you paid {sym}{parseFloat(userPaid.amount).toFixed(2)}
             </div>
           )}
         </div>
 
         {/* Right side */}
-        <div className="text-end shrink-0">
+        <div className="text-end shrink-0 max-w-[140px]">
+          {expense.group && (
+            <div className="text-[10px] text-[var(--color-text-tertiary)] truncate">{expense.group.name}</div>
+          )}
           <div className={`text-[11px] ${rightColor}`}>{rightLabel}</div>
           <div className={`text-sm font-semibold ${rightColor}`}>{rightAmount}</div>
         </div>

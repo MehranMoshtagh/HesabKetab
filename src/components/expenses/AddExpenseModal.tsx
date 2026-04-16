@@ -188,7 +188,7 @@ export default function AddExpenseModal() {
       className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="bg-white w-full sm:max-w-[440px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-[var(--color-surface)] w-full sm:max-w-[440px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] max-h-[90vh] flex flex-col overflow-hidden">
 
         {/* ── Header ── */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
@@ -297,7 +297,7 @@ export default function AddExpenseModal() {
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-all duration-150",
                       selected
                         ? "bg-[var(--color-primary)] text-white border-transparent"
-                        : "bg-white text-[var(--color-text)] border-[var(--color-border-strong)] hover:border-[var(--color-primary)]"
+                        : "bg-[var(--color-surface)] text-[var(--color-text)] border-[var(--color-border-strong)] hover:border-[var(--color-primary)]"
                     )}
                   >
                     {selected && <Check size={14} />}
@@ -330,7 +330,7 @@ export default function AddExpenseModal() {
                       {payerName} <ChevronDown size={13} />
                     </button>
                     {showPayerMenu && (
-                      <div className="absolute top-full left-0 mt-1 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
+                      <div className="absolute top-full left-0 mt-1 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
                         <button
                           onClick={() => { setPayerId(currentUserId); setShowPayerMenu(false); }}
                           className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === currentUserId && "text-[var(--color-primary)] font-medium")}
@@ -408,7 +408,7 @@ export default function AddExpenseModal() {
         </div>
 
         {/* ── Footer ── */}
-        <div className="px-4 py-3 border-t border-[var(--color-border)] bg-white sm:rounded-b-2xl">
+        <div className="px-4 py-3 border-t border-[var(--color-border)] bg-[var(--color-surface)] sm:rounded-b-2xl">
           <button
             onClick={handleSave}
             disabled={saving || !isValid}

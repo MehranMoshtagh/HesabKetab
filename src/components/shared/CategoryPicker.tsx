@@ -12,7 +12,7 @@ export default function CategoryPicker({ selected, onSelect }: CategoryPickerPro
   const t = useTranslations();
 
   return (
-    <div className="border border-[var(--color-border)] rounded-2xl bg-white p-3.5 max-h-60 overflow-y-auto shadow-[var(--shadow-card)]">
+    <div className="border border-[var(--color-border)] rounded-2xl bg-[var(--color-surface)] p-3.5 max-h-60 overflow-y-auto shadow-[var(--shadow-card)]">
       {categories.map((cat) => (
         <div key={cat.id} className="mb-2.5">
           <div className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase mb-1 flex items-center gap-1">

@@ -18,7 +18,7 @@ function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: (v: b
       }`}
     >
       <span
-        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--color-surface)] shadow-sm ring-0 transition duration-200 ease-in-out ${
           checked ? "translate-x-5" : "translate-x-0"
         }`}
       />
@@ -126,7 +126,7 @@ export default function AccountSettingsPage() {
     return (
       <div className="max-w-2xl mx-auto space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-40 bg-[var(--color-hover)]" />
+          <div key={i} className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-40 bg-[var(--color-hover)]" />
         ))}
       </div>
     );
@@ -137,7 +137,7 @@ export default function AccountSettingsPage() {
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">{t("title")}</h1>
 
       {/* Profile Section */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-4">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-4">
         <h2 className="text-xs font-medium text-[var(--color-text-tertiary)]">
           {t("yourAccount")}
         </h2>
@@ -240,7 +240,7 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Notifications */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
         <h2 className="text-xs font-medium text-[var(--color-text-tertiary)] mb-4">
           {t("notifications")}
         </h2>
@@ -334,7 +334,7 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Export & Advanced */}
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-3">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-3">
         <div className="flex items-center gap-3">
           <a
             href="/api/export/json"

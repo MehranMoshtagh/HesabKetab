@@ -15,7 +15,7 @@ export default function PricingPage() {
         {t("pricingIntro")}
       </p>
 
-      <div className="bg-white rounded-2xl border border-[rgba(0,0,0,0.06)] shadow-[var(--shadow-card)] p-8 mb-8">
+      <div className="bg-[var(--color-surface)] rounded-2xl border border-[rgba(0,0,0,0.06)] shadow-[var(--shadow-card)] p-8 mb-8">
         <div className="flex items-baseline gap-2 mb-4">
           <span className="text-4xl font-bold text-[var(--color-text)]">$0</span>
           <span className="text-[var(--color-text-tertiary)]">/ forever</span>

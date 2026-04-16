@@ -73,7 +73,7 @@ export default function Navbar() {
               </button>
 
               {menuOpen && (
-                <div className="absolute end-0 mt-2 w-48 bg-white rounded-xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] py-1 z-50">
+                <div className="absolute end-0 mt-2 w-48 bg-[var(--color-surface)] rounded-xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] py-1 z-50">
                   <Link
                     href="/account/settings"
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[var(--color-hover)] text-sm text-[var(--color-text)] transition-colors duration-150"

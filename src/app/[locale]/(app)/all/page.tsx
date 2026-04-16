@@ -95,12 +95,12 @@ export default function AllExpensesPage() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-16 bg-[var(--color-hover)]"
+              className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-16 bg-[var(--color-hover)]"
             />
           ))}
         </div>
       ) : expenses.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           {t("dashboard.noExpenses")}
         </div>
       ) : (
@@ -112,7 +112,7 @@ export default function AllExpensesPage() {
               return (
                 <div key={month} className="mb-4">
                   <MonthHeader monthKey={month} />
-                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
+                  <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                     {monthExpenses.map((exp) => (
                       <div key={exp.id} className="relative">
                         <ExpenseListItem expense={exp} />

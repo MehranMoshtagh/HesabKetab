@@ -67,7 +67,7 @@ export default function SignupPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
         <div className="text-center mb-8">
           <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
             {appName("name")}
@@ -95,7 +95,7 @@ export default function SignupPage() {
             <div className="w-full border-t border-[rgba(0,0,0,0.06)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-white px-3 text-[var(--color-text-tertiary)]">
+            <span className="bg-[var(--color-surface)] px-3 text-[var(--color-text-tertiary)]">
               {t("orContinueWith")}
             </span>
           </div>

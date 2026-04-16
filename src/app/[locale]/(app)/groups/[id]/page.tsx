@@ -72,7 +72,7 @@ export default function GroupDetailPage() {
     const name = groupFromStore?.name ?? "...";
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 flex items-center justify-between">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] font-semibold">
               {name[0]?.toUpperCase()}
@@ -85,7 +85,7 @@ export default function GroupDetailPage() {
         </div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
+            <div key={i} className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
               <div className="h-4 bg-[var(--color-hover)] rounded w-2/3 mb-2" />
               <div className="h-3 bg-[var(--color-hover)] rounded w-1/3" />
             </div>
@@ -111,7 +111,7 @@ export default function GroupDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-lg">
@@ -158,7 +158,7 @@ export default function GroupDetailPage() {
             return (
               <div key={month} className="mb-4">
                 <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
+                <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                   {expenses.map((exp) => (
                     <ExpenseListItem key={exp.id} expense={exp} />
                   ))}
@@ -168,7 +168,7 @@ export default function GroupDetailPage() {
           })}
 
         {data.expenses.length === 0 && (
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+          <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
             {t("dashboard.noExpenses")}
           </div>
         )}
@@ -176,7 +176,7 @@ export default function GroupDetailPage() {
 
       {/* Right panel — group balances */}
       <div className="w-64 hidden lg:block space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
           <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
             {t("group.groupBalances")}
           </h3>

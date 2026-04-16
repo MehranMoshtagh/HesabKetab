@@ -90,10 +90,10 @@ export async function GET(req: NextRequest) {
     prisma.expense.count({ where }),
   ]);
 
-  return NextResponse.json({
-    expenses,
-    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-  });
+  return NextResponse.json(
+    { expenses, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } },
+    { headers: { "Cache-Control": "private, max-age=10, stale-while-revalidate=30" } }
+  );
 }
 
 // POST /api/expenses — create an expense

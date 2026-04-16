@@ -88,7 +88,7 @@ export default function GroupEditPage() {
     <div className="max-w-lg mx-auto">
       <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight mb-4">{t("group.settings")}</h1>
 
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-6">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 space-y-6">
         {/* Group name */}
         <div>
           <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
@@ -182,7 +182,7 @@ export default function GroupEditPage() {
             }`}
           >
             <span
-              className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
+              className={`absolute top-0.5 w-5 h-5 rounded-full bg-[var(--color-surface)] shadow transition-transform ${
                 simplifyDebts ? "start-[22px]" : "start-0.5"
               }`}
             />

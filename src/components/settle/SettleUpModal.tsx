@@ -80,7 +80,7 @@ export default function SettleUpModal() {
       className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50"
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="bg-white w-full sm:max-w-[400px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] flex flex-col overflow-hidden">
+      <div className="bg-[var(--color-surface)] w-full sm:max-w-[400px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] flex flex-col overflow-hidden">
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
@@ -116,7 +116,7 @@ export default function SettleUpModal() {
                 </span>
               </button>
               {showPayerPicker && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
                   {allPeople.filter((p) => p.id !== payeeId).map((p) => (
                     <button key={p.id}
                       onClick={() => { setPayerId(p.id); setShowPayerPicker(false); }}
@@ -157,7 +157,7 @@ export default function SettleUpModal() {
                 </span>
               </button>
               {showPayeePicker && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
                   {allPeople.filter((p) => p.id !== payerId).map((p) => (
                     <button key={p.id}
                       onClick={() => { setPayeeId(p.id); setShowPayeePicker(false); }}
@@ -213,7 +213,7 @@ export default function SettleUpModal() {
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-[var(--color-border)] bg-white sm:rounded-b-2xl">
+        <div className="px-4 py-3 border-t border-[var(--color-border)] bg-[var(--color-surface)] sm:rounded-b-2xl">
           <button
             onClick={handleSave}
             disabled={saving || !isValid}

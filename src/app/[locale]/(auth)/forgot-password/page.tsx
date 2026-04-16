@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
         <div className="text-center mb-8">
           <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
             {appName("name")}

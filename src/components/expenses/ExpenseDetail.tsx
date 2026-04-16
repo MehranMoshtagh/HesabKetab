@@ -169,7 +169,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
 
       {/* Notes */}
       {expense.notes && (
-        <div className="bg-white rounded-xl p-3.5 text-sm text-[var(--color-text-secondary)] border border-[var(--color-border)]">
+        <div className="bg-[var(--color-surface)] rounded-xl p-3.5 text-sm text-[var(--color-text-secondary)] border border-[var(--color-border)]">
           {expense.notes}
         </div>
       )}
@@ -209,7 +209,7 @@ export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProp
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder={t("expense.detail.addComment")}
-            className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+            className="flex-1 border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2 text-sm bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
             onKeyDown={(e) => {
               if (e.key === "Enter") handlePostComment();
             }}

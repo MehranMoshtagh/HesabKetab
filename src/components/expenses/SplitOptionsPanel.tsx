@@ -77,7 +77,7 @@ export default function SplitOptionsPanel({
               "flex-1 text-center py-1.5 rounded-lg text-xs font-medium transition-all duration-200",
               splitType === tab.type
                 ? "bg-[var(--color-primary)] text-white"
-                : "bg-white text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)]"
+                : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)]"
             )}
           >
             <div className="text-base">{tab.icon}</div>
@@ -120,7 +120,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-[var(--color-surface)]"
               />
             )}
 
@@ -138,7 +138,7 @@ export default function SplitOptionsPanel({
                   placeholder="0"
                   min="0"
                   max="100"
-                  className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                  className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-[var(--color-surface)]"
                 />
                 <span className="text-sm text-[var(--color-text-tertiary)]">%</span>
               </div>
@@ -156,7 +156,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="1"
                 min="0"
-                className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-16 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-[var(--color-surface)]"
               />
             )}
 
@@ -172,7 +172,7 @@ export default function SplitOptionsPanel({
                 }
                 placeholder="0.00"
                 step="0.01"
-                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-white"
+                className="w-24 border border-[var(--color-border-strong)] rounded-lg px-2.5 py-1.5 text-sm text-end bg-[var(--color-surface)]"
               />
             )}
           </div>

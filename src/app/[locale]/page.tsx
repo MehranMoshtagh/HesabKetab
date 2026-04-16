@@ -63,7 +63,7 @@ function Landing({ locale }: { locale: string }) {
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ─── Navbar ─── */}
-      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[rgba(255,255,255,0.72)] border-b border-[var(--color-border)]">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-[var(--color-primary)] rounded-xl flex items-center justify-center">
@@ -110,7 +110,7 @@ function Landing({ locale }: { locale: string }) {
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full border border-[rgba(0,0,0,0.12)] hover:bg-white hover:shadow-[var(--shadow-card)] transition-all duration-200"
+              className="inline-flex items-center gap-2 text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full border border-[rgba(0,0,0,0.12)] hover:bg-[var(--color-surface)] hover:shadow-[var(--shadow-card)] transition-all duration-200"
             >
               {t("logIn")}
             </Link>
@@ -124,7 +124,7 @@ function Landing({ locale }: { locale: string }) {
       {/* ─── App Preview Mock ─── */}
       <section className="pb-24 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] overflow-hidden">
+          <div className="bg-[var(--color-surface)] rounded-3xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] overflow-hidden">
             {/* Mock title bar — clean, no URL */}
             <div className="h-11 bg-[var(--color-bg)] border-b border-[var(--color-border)] flex items-center px-5 gap-2">
               <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
@@ -169,7 +169,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Features Grid ─── */}
-      <section id="features" className="py-24 px-6 bg-white border-y border-[var(--color-border)]">
+      <section id="features" className="py-24 px-6 bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-4">
@@ -243,7 +243,7 @@ function Landing({ locale }: { locale: string }) {
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 bg-white text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
+            className="inline-flex items-center gap-2 bg-[var(--color-surface)] text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
           >
             {t("ctaButton")}
             <ArrowRight size={18} />
@@ -252,7 +252,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section id="faq" className="py-24 px-6 bg-white border-t border-[var(--color-border)] scroll-mt-14">
+      <section id="faq" className="py-24 px-6 bg-[var(--color-surface)] border-t border-[var(--color-border)] scroll-mt-14">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
             {t("faqTitle")}

@@ -124,16 +124,16 @@ export default function ActivityPage() {
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 animate-pulse h-14 bg-[var(--color-hover)]"
+              className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 animate-pulse h-14 bg-[var(--color-hover)]"
             />
           ))}
         </div>
       ) : activities.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
           No recent activity.
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
           {activities.map((act) => (
             <div
               key={act.id}

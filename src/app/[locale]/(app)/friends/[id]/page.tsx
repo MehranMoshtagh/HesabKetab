@@ -75,7 +75,7 @@ export default function FriendDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header — renders INSTANTLY from store data */}
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold text-white"
@@ -110,7 +110,7 @@ export default function FriendDetailPage() {
         {loadingExpenses ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
+              <div key={i} className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
                 <div className="h-4 bg-[var(--color-hover)] rounded w-2/3 mb-2" />
                 <div className="h-3 bg-[var(--color-hover)] rounded w-1/3" />
               </div>
@@ -123,7 +123,7 @@ export default function FriendDetailPage() {
               .map(([month, monthExpenses]) => (
                 <div key={month} className="mb-4">
                   <MonthHeader monthKey={month} />
-                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
+                  <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                     {monthExpenses.map((exp) => (
                       <ExpenseListItem key={exp.id} expense={exp} />
                     ))}
@@ -131,7 +131,7 @@ export default function FriendDetailPage() {
                 </div>
               ))}
             {expenses.length === 0 && (
-              <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+              <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
                 {t("dashboard.noExpenses")}
               </div>
             )}
@@ -141,7 +141,7 @@ export default function FriendDetailPage() {
 
       {/* Right sidebar */}
       <div className="w-64 hidden lg:block shrink-0">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5">
           <h3 className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-3">
             {t("friend.yourBalance")}
           </h3>
