@@ -19,7 +19,6 @@ interface SplitOptionsPanelProps {
   splitType: SplitType;
   setSplitType: (t: SplitType) => void;
   totalAmount: number;
-  onClose: () => void;
 }
 
 const tabs: { type: SplitType; label: string; icon: string }[] = [
@@ -36,7 +35,6 @@ export default function SplitOptionsPanel({
   splitType,
   setSplitType,
   totalAmount,
-  onClose,
 }: SplitOptionsPanelProps) {
   const t = useTranslations("expense.splitOptions");
 
@@ -209,12 +207,6 @@ export default function SplitOptionsPanel({
         </div>
       )}
 
-      <button
-        onClick={onClose}
-        className="w-full text-center text-sm text-[var(--color-primary)] font-medium py-1.5 hover:opacity-70 transition-opacity"
-      >
-        Done
-      </button>
     </div>
   );
 }

@@ -3,200 +3,229 @@
 import { useTranslations } from "next-intl";
 import { useAppStore } from "@/stores/app-store";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { X, ArrowRight } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { ArrowRight, ChevronDown, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { avatarColor, getInitial } from "@/lib/utils";
 
 export default function SettleUpModal() {
   const t = useTranslations();
   const { data: session } = useSession();
-  const { isSettleUpOpen, closeSettleUp, friends, groups, settleUpContext } =
-    useAppStore();
+  const { isSettleUpOpen, closeSettleUp, friends, settleUpContext } = useAppStore();
 
   const currentUserId = session?.user?.id ?? "";
   const currentUserName = session?.user?.name ?? "You";
 
   const [payerId, setPayerId] = useState(currentUserId);
-  const [payeeId, setPayeeId] = useState(settleUpContext.friendId ?? "");
+  const [payeeId, setPayeeId] = useState("");
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState("USD");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [groupId, setGroupId] = useState<string | null>(
-    settleUpContext.groupId ?? null
-  );
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [showPayerPicker, setShowPayerPicker] = useState(false);
+  const [showPayeePicker, setShowPayeePicker] = useState(false);
+
+  const resetForm = useCallback(() => {
+    setPayerId(currentUserId);
+    setPayeeId("");
+    setAmount("");
+    setNotes("");
+    setDate(new Date().toISOString().split("T")[0]);
+    setShowPayerPicker(false);
+    setShowPayeePicker(false);
+  }, [currentUserId]);
+
+  useEffect(() => {
+    if (isSettleUpOpen) {
+      resetForm();
+      if (settleUpContext.friendId) setPayeeId(settleUpContext.friendId);
+    }
+  }, [isSettleUpOpen, settleUpContext, resetForm]);
+
+  const handleClose = () => {
+    closeSettleUp();
+    resetForm();
+  };
 
   const handleSave = async () => {
     if (!payeeId || !amount || parseFloat(amount) <= 0) return;
-
     setSaving(true);
     try {
       const res = await fetch("/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          payerId,
-          payeeId,
-          amount: parseFloat(amount),
-          currency,
-          groupId,
-          date,
+          payerId, payeeId, amount: parseFloat(amount), currency: "USD", date,
           notes: notes || undefined,
         }),
       });
-
-      if (res.ok) {
-        closeSettleUp();
-        setAmount("");
-        setNotes("");
-        window.location.reload();
-      }
-    } finally {
-      setSaving(false);
-    }
+      if (res.ok) { handleClose(); window.location.reload(); }
+    } finally { setSaving(false); }
   };
 
   if (!isSettleUpOpen) return null;
 
-  const payerName =
-    payerId === currentUserId
-      ? currentUserName
-      : friends.find((f) => f.id === payerId)?.name ?? "?";
-  const payeeName =
-    payeeId === currentUserId
-      ? currentUserName
-      : friends.find((f) => f.id === payeeId)?.name ?? "Select";
+  const payerName = payerId === currentUserId ? currentUserName : friends.find((f) => f.id === payerId)?.name ?? "?";
+  const payeeName = payeeId ? (payeeId === currentUserId ? currentUserName : friends.find((f) => f.id === payeeId)?.name ?? "?") : null;
+
+  const allPeople = [
+    { id: currentUserId, name: currentUserName },
+    ...friends.map((f) => ({ id: f.id, name: f.name })),
+  ];
+
+  const isValid = !!payeeId && payeeId !== payerId && !!amount && parseFloat(amount) > 0;
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] w-full max-w-md">
+    <div
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50"
+      onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
+    >
+      <div className="bg-white w-full sm:max-w-[400px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] flex flex-col overflow-hidden">
+
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-          <h2 className="font-semibold text-[var(--color-text)] tracking-tight">
-            {t("settle.title")}
-          </h2>
-          <button
-            onClick={closeSettleUp}
-            className="p-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-tertiary)] transition-colors"
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
+          <button onClick={handleClose} className="text-sm text-[var(--color-primary)] font-medium py-1 px-1">
+            {t("expense.cancel")}
+          </button>
+          <h2 className="font-semibold text-[15px] text-[var(--color-text)]">{t("settle.title")}</h2>
+          <button onClick={handleSave} disabled={saving || !isValid}
+            className="text-sm text-[var(--color-primary)] font-semibold py-1 px-1 disabled:opacity-30"
           >
-            <X size={18} />
+            {saving ? "..." : t("expense.save")}
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          {/* Payment direction */}
-          <div className="flex items-center justify-center gap-5">
-            <div className="text-center">
-              <div className="w-14 h-14 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center text-lg font-semibold text-[var(--color-primary)] mx-auto mb-2">
-                {payerName[0]?.toUpperCase()}
-              </div>
-              <select
-                value={payerId}
-                onChange={(e) => setPayerId(e.target.value)}
-                className="text-sm border border-[var(--color-border-strong)] rounded-xl px-2.5 py-1.5 max-w-[120px] bg-[var(--color-bg)]"
+        <div className="p-5 space-y-5">
+
+          {/* Payer → Payee visual */}
+          <div className="flex items-center justify-center gap-4">
+            {/* Payer */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowPayerPicker(!showPayerPicker); setShowPayeePicker(false); }}
+                className="flex flex-col items-center gap-2 group"
               >
-                <option value={currentUserId}>{currentUserName}</option>
-                {friends.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.name}
-                  </option>
-                ))}
-              </select>
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold text-white shadow-md group-hover:scale-105 transition-transform"
+                  style={{ backgroundColor: avatarColor(payerName) }}
+                >
+                  {getInitial(payerName)}
+                </div>
+                <span className="text-sm font-medium text-[var(--color-text)] flex items-center gap-0.5">
+                  {payerName} <ChevronDown size={12} />
+                </span>
+              </button>
+              {showPayerPicker && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
+                  {allPeople.filter((p) => p.id !== payeeId).map((p) => (
+                    <button key={p.id}
+                      onClick={() => { setPayerId(p.id); setShowPayerPicker(false); }}
+                      className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
+                        payerId === p.id && "text-[var(--color-primary)] font-medium"
+                      )}
+                    >
+                      {payerId === p.id && <Check size={14} />}
+                      {p.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <ArrowRight size={22} className="text-[var(--color-text-tertiary)]" />
+            <div className="flex flex-col items-center gap-1">
+              <ArrowRight size={20} className="text-[var(--color-text-tertiary)]" />
+              <span className="text-[10px] text-[var(--color-text-tertiary)]">paid</span>
+            </div>
 
-            <div className="text-center">
-              <div className="w-14 h-14 rounded-full bg-[var(--color-positive)]/10 flex items-center justify-center text-lg font-semibold text-[var(--color-positive)] mx-auto mb-2">
-                {payeeName[0]?.toUpperCase()}
-              </div>
-              <select
-                value={payeeId}
-                onChange={(e) => setPayeeId(e.target.value)}
-                className="text-sm border border-[var(--color-border-strong)] rounded-xl px-2.5 py-1.5 max-w-[120px] bg-[var(--color-bg)]"
+            {/* Payee */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowPayeePicker(!showPayeePicker); setShowPayerPicker(false); }}
+                className="flex flex-col items-center gap-2 group"
               >
-                <option value="">--</option>
-                {friends
-                  .filter((f) => f.id !== payerId)
-                  .map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {f.name}
-                    </option>
+                <div
+                  className={cn(
+                    "w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold shadow-md group-hover:scale-105 transition-transform",
+                    payeeName ? "text-white" : "bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border-strong)] text-[var(--color-text-tertiary)]"
+                  )}
+                  style={payeeName ? { backgroundColor: avatarColor(payeeName) } : undefined}
+                >
+                  {payeeName ? getInitial(payeeName) : "?"}
+                </div>
+                <span className="text-sm font-medium text-[var(--color-text)] flex items-center gap-0.5">
+                  {payeeName ?? "Select"} <ChevronDown size={12} />
+                </span>
+              </button>
+              {showPayeePicker && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
+                  {allPeople.filter((p) => p.id !== payerId).map((p) => (
+                    <button key={p.id}
+                      onClick={() => { setPayeeId(p.id); setShowPayeePicker(false); }}
+                      className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
+                        payeeId === p.id && "text-[var(--color-primary)] font-medium"
+                      )}
+                    >
+                      {payeeId === p.id && <Check size={14} />}
+                      {p.name}
+                    </button>
                   ))}
-                {payerId !== currentUserId && (
-                  <option value={currentUserId}>{currentUserName}</option>
-                )}
-              </select>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Amount */}
-          <div className="flex gap-2 items-center justify-center">
-            <span className="text-lg font-medium text-[var(--color-text-tertiary)]">{currency}</span>
+          {/* Amount — large centered */}
+          <div className="bg-[var(--color-bg)] rounded-2xl px-4 py-5 flex items-center justify-center gap-2">
+            <span className="text-2xl text-[var(--color-text-tertiary)] font-light">$</span>
             <input
               type="number"
+              inputMode="decimal"
+              placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.00"
               step="0.01"
               min="0"
-              className="border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-3xl font-semibold text-center w-48 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
+              className={cn(
+                "text-4xl font-bold text-[var(--color-text)] text-center",
+                "bg-transparent border-none outline-none w-40",
+                "placeholder:text-[var(--color-text-tertiary)]/30",
+                "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              )}
             />
           </div>
 
-          {/* Date */}
-          <div>
-            <label className="text-sm text-[var(--color-text-secondary)] block mb-1.5">{t("settle.date")}</label>
+          {/* Date + Notes */}
+          <div className="space-y-2">
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
+              className="w-full text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)]"
+            />
+            <textarea
+              placeholder={t("expense.notes") || "Add a note..."}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={1}
+              className="w-full text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-primary)] resize-none"
             />
           </div>
-
-          {/* Group */}
-          <select
-            value={groupId ?? ""}
-            onChange={(e) => setGroupId(e.target.value || null)}
-            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
-          >
-            <option value="">{t("expense.noGroup")}</option>
-            {groups.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name}
-              </option>
-            ))}
-          </select>
-
-          {/* Notes */}
-          <textarea
-            placeholder={t("expense.notes")}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm h-16 bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all"
-          />
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2.5 px-5 py-4 border-t border-[var(--color-border)]">
-          <button
-            onClick={closeSettleUp}
-            className="px-5 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-hover)] rounded-xl transition-colors"
-          >
-            {t("expense.cancel")}
-          </button>
+        <div className="px-4 py-3 border-t border-[var(--color-border)] bg-white sm:rounded-b-2xl">
           <button
             onClick={handleSave}
-            disabled={saving || !payeeId || !amount || parseFloat(amount) <= 0}
-            className="px-5 py-2 text-sm bg-[var(--color-primary)] text-white rounded-xl font-medium hover:bg-[var(--color-primary-hover)] disabled:opacity-50 transition-all duration-200"
+            disabled={saving || !isValid}
+            className={cn(
+              "w-full py-3 rounded-xl text-sm font-semibold transition-all duration-200",
+              "bg-[var(--color-positive)] text-white",
+              "hover:opacity-90",
+              "disabled:opacity-30 disabled:cursor-not-allowed",
+              "active:scale-[0.98]"
+            )}
           >
-            {saving ? (
-              <span className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                {t("expense.save")}
-              </span>
-            ) : t("expense.save")}
+            {saving ? "Saving..." : isValid ? `Record $${parseFloat(amount).toFixed(2)} payment` : t("settle.title")}
           </button>
         </div>
       </div>

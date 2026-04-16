@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useAppStore } from "@/stores/app-store";
 import { useSession } from "next-auth/react";
 import { useState, useCallback, useRef, useEffect } from "react";
-import { X, ChevronDown, Check } from "lucide-react";
+import { X, ChevronDown, Check, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CategoryPicker from "@/components/shared/CategoryPicker";
 import CurrencyPicker from "@/components/shared/CurrencyPicker";
@@ -35,36 +35,74 @@ export default function AddExpenseModal() {
   const [category, setCategory] = useState("general");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [notes, setNotes] = useState("");
-  const [groupId, setGroupId] = useState<string | null>(
-    addExpenseContext.groupId ?? null
-  );
+  const [groupId, setGroupId] = useState<string | null>(null);
   const [splitType, setSplitType] = useState<SplitType>("EQUAL");
   const [showCategoryPicker, setShowCategoryPicker] = useState(false);
   const [showSplitPanel, setShowSplitPanel] = useState(false);
   const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
-  const [isRecurring, setIsRecurring] = useState(false);
-  const [recurringInterval, setRecurringInterval] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [showPayerMenu, setShowPayerMenu] = useState(false);
+  const [friendSearch, setFriendSearch] = useState("");
 
-  const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>(
-    addExpenseContext.friendId ? [addExpenseContext.friendId] : []
-  );
+  const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
   const [payerId, setPayerId] = useState(session?.user?.id ?? "");
 
   const currentUserId = session?.user?.id ?? "";
   const currentUserName = session?.user?.name ?? "You";
 
-  const allParticipants: Participant[] = [
-    { userId: currentUserId, name: currentUserName, included: true, amount: 0, shareValue: 1 },
-    ...selectedFriendIds.map((fid) => {
-      const f = friends.find((fr) => fr.id === fid);
-      return { userId: fid, name: f?.name ?? "Unknown", included: true, amount: 0, shareValue: 1 };
-    }),
-  ];
+  // Refs for click-outside
+  const payerRef = useRef<HTMLDivElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const splitRef = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLInputElement>(null);
 
-  const [participants, setParticipants] = useState<Participant[]>(allParticipants);
+  // ── Reset form completely ──
+  const resetForm = useCallback(() => {
+    setDescription(""); setAmount(""); setCategory("general"); setNotes("");
+    setSplitType("EQUAL"); setSelectedFriendIds([]); setFriendSearch("");
+    setGroupId(null); setShowCategoryPicker(false); setShowSplitPanel(false);
+    setShowPayerMenu(false); setShowCurrencyPicker(false);
+    setPayerId(session?.user?.id ?? "");
+    setDate(new Date().toISOString().split("T")[0]);
+  }, [session?.user?.id]);
+
+  // ── Initialize from context when modal opens ──
+  useEffect(() => {
+    if (isAddExpenseOpen) {
+      resetForm();
+      if (addExpenseContext.friendId) setSelectedFriendIds([addExpenseContext.friendId]);
+      if (addExpenseContext.groupId) setGroupId(addExpenseContext.groupId);
+      setTimeout(() => descRef.current?.focus(), 150);
+    }
+  }, [isAddExpenseOpen, addExpenseContext, resetForm]);
+
+  // ── Close modal and reset ──
+  const handleClose = () => {
+    closeAddExpense();
+    resetForm();
+  };
+
+  // ── Click-outside handlers ──
+  useEffect(() => {
+    if (!showPayerMenu && !showCategoryPicker && !showSplitPanel) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (showPayerMenu && payerRef.current && !payerRef.current.contains(target)) {
+        setShowPayerMenu(false);
+      }
+      if (showCategoryPicker && categoryRef.current && !categoryRef.current.contains(target)) {
+        setShowCategoryPicker(false);
+      }
+      if (showSplitPanel && splitRef.current && !splitRef.current.contains(target)) {
+        setShowSplitPanel(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showPayerMenu, showCategoryPicker, showSplitPanel]);
+
+  // ── Participants ──
+  const [participants, setParticipants] = useState<Participant[]>([]);
 
   const updateParticipants = useCallback(
     (friendIds: string[]) => {
@@ -87,6 +125,7 @@ export default function AddExpenseModal() {
     updateParticipants(next);
   };
 
+  // ── Compute shares ──
   const computeShares = () => {
     const total = parseFloat(amount) || 0;
     const included = participants.filter((p) => p.included);
@@ -106,6 +145,7 @@ export default function AddExpenseModal() {
     return included;
   };
 
+  // ── Save ──
   const handleSave = async () => {
     if (!description.trim() || !amount || parseFloat(amount) <= 0) return;
     if (selectedFriendIds.length === 0) return;
@@ -123,66 +163,43 @@ export default function AddExpenseModal() {
           shares: shares.map((s) => ({
             userId: s.userId, amount: Math.round(s.amount * 100) / 100, shareValue: s.shareValue,
           })),
-          isRecurring, recurringInterval: isRecurring ? recurringInterval : null,
         }),
       });
-      if (res.ok) { closeAddExpense(); resetForm(); window.location.reload(); }
+      if (res.ok) { handleClose(); window.location.reload(); }
     } finally { setSaving(false); }
   };
 
-  const resetForm = () => {
-    setDescription(""); setAmount(""); setCategory("general"); setNotes("");
-    setShowNotes(false); setSplitType("EQUAL"); setSelectedFriendIds([]);
-    setIsRecurring(false);
-  };
-
-  // Derived
+  // ── Derived ──
   const isValid = description.trim().length > 0 && !!amount && parseFloat(amount) > 0 && selectedFriendIds.length > 0;
   const catInfo = findSubcategory(category);
   const catIcon = catInfo?.subcategory.icon ?? "📄";
   const payerName = payerId === currentUserId ? t("expense.you") : friends.find((f) => f.id === payerId)?.name ?? "?";
+  const perPerson = selectedFriendIds.length > 0 ? (parseFloat(amount) || 0) / (selectedFriendIds.length + 1) : 0;
 
-  // Close payer menu on outside click
-  const payerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!showPayerMenu) return;
-    const h = (e: MouseEvent) => {
-      if (payerRef.current && !payerRef.current.contains(e.target as Node)) setShowPayerMenu(false);
-    };
-    document.addEventListener("mousedown", h);
-    return () => document.removeEventListener("mousedown", h);
-  }, [showPayerMenu]);
-
-  const descRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (isAddExpenseOpen) setTimeout(() => descRef.current?.focus(), 100);
-  }, [isAddExpenseOpen]);
+  // Filter friends by search
+  const filteredFriends = friendSearch.trim()
+    ? friends.filter((f) => f.name.toLowerCase().includes(friendSearch.toLowerCase()))
+    : friends;
 
   if (!isAddExpenseOpen) return null;
-
-  const perPerson = selectedFriendIds.length > 0
-    ? (parseFloat(amount) || 0) / (selectedFriendIds.length + 1)
-    : 0;
 
   return (
     <div
       className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50"
-      onClick={(e) => { if (e.target === e.currentTarget) closeAddExpense(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div className="bg-white w-full sm:max-w-[440px] sm:rounded-2xl rounded-t-2xl shadow-[var(--shadow-elevated)] max-h-[90vh] flex flex-col overflow-hidden">
 
         {/* ── Header ── */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
-          <button onClick={closeAddExpense} className="text-sm text-[var(--color-primary)] font-medium py-1 px-1">
+          <button onClick={handleClose} className="text-sm text-[var(--color-primary)] font-medium py-1 px-1">
             {t("expense.cancel")}
           </button>
-          <h2 className="font-semibold text-[15px] text-[var(--color-text)]">
-            {t("expense.addExpense")}
-          </h2>
+          <h2 className="font-semibold text-[15px] text-[var(--color-text)]">{t("expense.addExpense")}</h2>
           <button
             onClick={handleSave}
             disabled={saving || !isValid}
-            className="text-sm text-[var(--color-primary)] font-semibold py-1 px-1 disabled:opacity-30 disabled:cursor-default"
+            className="text-sm text-[var(--color-primary)] font-semibold py-1 px-1 disabled:opacity-30"
           >
             {saving ? "..." : t("expense.save")}
           </button>
@@ -191,11 +208,11 @@ export default function AddExpenseModal() {
         {/* ── Body ── */}
         <div className="flex-1 overflow-y-auto">
 
-          {/* 1. Description — first, because you think "what" before "how much" */}
-          <div className="px-4 pt-4 pb-3">
+          {/* 1. Description + Category */}
+          <div className="px-4 pt-4 pb-3" ref={categoryRef}>
             <div className="flex items-center gap-2.5">
               <button
-                onClick={() => setShowCategoryPicker(!showCategoryPicker)}
+                onClick={() => { setShowCategoryPicker(!showCategoryPicker); setShowSplitPanel(false); }}
                 className="w-10 h-10 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] flex items-center justify-center text-xl hover:border-[var(--color-primary)] transition-colors shrink-0"
               >
                 {catIcon}
@@ -206,6 +223,7 @@ export default function AddExpenseModal() {
                 placeholder="What's this for?"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
                 className="flex-1 text-base text-[var(--color-text)] bg-transparent border-none outline-none placeholder:text-[var(--color-text-tertiary)]"
               />
             </div>
@@ -216,14 +234,16 @@ export default function AddExpenseModal() {
             )}
           </div>
 
-          {/* 2. Amount — big and clear */}
+          {/* 2. Amount — clear bg card with clickable currency */}
           <div className="px-4 pb-4">
-            <div className="bg-[var(--color-bg)] rounded-2xl px-4 py-5 flex items-center justify-center gap-2">
+            <div className="bg-[var(--color-bg)] rounded-2xl px-4 py-5 flex items-center justify-center gap-1">
               <button
                 onClick={() => setShowCurrencyPicker(true)}
-                className="text-2xl text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors font-light"
+                className="flex items-center gap-0.5 text-2xl text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors font-light border border-[var(--color-border)] rounded-lg px-2 py-0.5"
+                title="Change currency"
               >
                 {getCurrencySymbol(currency)}
+                <ChevronDown size={14} className="text-[var(--color-text-tertiary)]" />
               </button>
               <input
                 type="number"
@@ -231,6 +251,7 @@ export default function AddExpenseModal() {
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
                 step="0.01"
                 min="0"
                 className={cn(
@@ -243,13 +264,30 @@ export default function AddExpenseModal() {
             </div>
           </div>
 
-          {/* 3. People — who's splitting */}
+          {/* 3. People — search + chips */}
           <div className="px-4 pb-3">
             <p className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
               {t("expense.withYouAnd")}
             </p>
+
+            {/* Search input */}
+            {friends.length > 5 && (
+              <div className="relative mb-2">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                <input
+                  type="text"
+                  placeholder="Search friends..."
+                  value={friendSearch}
+                  onChange={(e) => setFriendSearch(e.target.value)}
+                  onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
+                  className="w-full pl-8 pr-3 py-2 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]"
+                />
+              </div>
+            )}
+
+            {/* Friend chips */}
             <div className="flex flex-wrap gap-2">
-              {friends.map((f) => {
+              {filteredFriends.map((f) => {
                 const selected = selectedFriendIds.includes(f.id);
                 return (
                   <button
@@ -267,75 +305,83 @@ export default function AddExpenseModal() {
                   </button>
                 );
               })}
+              {filteredFriends.length === 0 && friendSearch && (
+                <p className="text-sm text-[var(--color-text-tertiary)] italic py-1">
+                  No friends matching &quot;{friendSearch}&quot;
+                </p>
+              )}
               {friends.length === 0 && (
                 <p className="text-sm text-[var(--color-text-tertiary)] italic">No friends added yet</p>
               )}
             </div>
           </div>
 
-          {/* 4. Split line — Paid by / split */}
-          <div className="px-4 py-3 border-t border-[var(--color-border)]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)]">
-                <span>{t("expense.paidBy")}</span>
-                <div className="relative" ref={payerRef}>
+          {/* 4. Split line — only show when friends are selected */}
+          {selectedFriendIds.length > 0 && (
+            <div className="px-4 py-3 border-t border-[var(--color-border)]" ref={splitRef}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)] flex-wrap">
+                  <span>{t("expense.paidBy")}</span>
+                  <div className="relative" ref={payerRef}>
+                    <button
+                      onClick={() => { setShowPayerMenu(!showPayerMenu); setShowCategoryPicker(false); setShowSplitPanel(false); }}
+                      className="inline-flex items-center gap-0.5 font-medium text-[var(--color-primary)] px-1.5 py-0.5 rounded-md hover:bg-[var(--color-primary-light)] transition-colors"
+                    >
+                      {payerName} <ChevronDown size={13} />
+                    </button>
+                    {showPayerMenu && (
+                      <div className="absolute top-full left-0 mt-1 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
+                        <button
+                          onClick={() => { setPayerId(currentUserId); setShowPayerMenu(false); }}
+                          className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === currentUserId && "text-[var(--color-primary)] font-medium")}
+                        >{t("expense.you")}</button>
+                        {selectedFriendIds.map((fid) => {
+                          const f = friends.find((fr) => fr.id === fid);
+                          return (
+                            <button key={fid}
+                              onClick={() => { setPayerId(fid); setShowPayerMenu(false); }}
+                              className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === fid && "text-[var(--color-primary)] font-medium")}
+                            >{f?.name}</button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  <span>{t("expense.split")}</span>
                   <button
-                    onClick={() => setShowPayerMenu(!showPayerMenu)}
+                    onClick={() => { setShowSplitPanel(!showSplitPanel); setShowCategoryPicker(false); setShowPayerMenu(false); }}
                     className="inline-flex items-center gap-0.5 font-medium text-[var(--color-primary)] px-1.5 py-0.5 rounded-md hover:bg-[var(--color-primary-light)] transition-colors"
                   >
-                    {payerName} <ChevronDown size={13} />
+                    {t("expense.equally")} <ChevronDown size={13} />
                   </button>
-                  {showPayerMenu && (
-                    <div className="absolute top-full left-0 mt-1 z-10 bg-white rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
-                      <button
-                        onClick={() => { setPayerId(currentUserId); setShowPayerMenu(false); }}
-                        className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === currentUserId && "text-[var(--color-primary)] font-medium")}
-                      >{t("expense.you")}</button>
-                      {selectedFriendIds.map((fid) => {
-                        const f = friends.find((fr) => fr.id === fid);
-                        return (
-                          <button key={fid}
-                            onClick={() => { setPayerId(fid); setShowPayerMenu(false); }}
-                            className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === fid && "text-[var(--color-primary)] font-medium")}
-                          >{f?.name}</button>
-                        );
-                      })}
-                    </div>
-                  )}
                 </div>
-                <span>{t("expense.split")}</span>
-                <button
-                  onClick={() => setShowSplitPanel(!showSplitPanel)}
-                  className="inline-flex items-center gap-0.5 font-medium text-[var(--color-primary)] px-1.5 py-0.5 rounded-md hover:bg-[var(--color-primary-light)] transition-colors"
-                >
-                  {t("expense.equally")} <ChevronDown size={13} />
-                </button>
+                {perPerson > 0 && (
+                  <span className="text-xs text-[var(--color-text-tertiary)]">
+                    ${perPerson.toFixed(2)}/person
+                  </span>
+                )}
               </div>
-              {perPerson > 0 && (
-                <span className="text-xs text-[var(--color-text-tertiary)]">
-                  ${perPerson.toFixed(2)}/person
-                </span>
+
+              {showSplitPanel && (
+                <div className="mt-3">
+                  <SplitOptionsPanel
+                    participants={participants} setParticipants={setParticipants}
+                    splitType={splitType} setSplitType={setSplitType}
+                    totalAmount={parseFloat(amount) || 0}
+                  />
+                </div>
               )}
             </div>
+          )}
 
-            {showSplitPanel && (
-              <div className="mt-3">
-                <SplitOptionsPanel
-                  participants={participants} setParticipants={setParticipants}
-                  splitType={splitType} setSplitType={setSplitType}
-                  totalAmount={parseFloat(amount) || 0} onClose={() => setShowSplitPanel(false)}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* 5. Group + Date — visible, not hidden */}
-          <div className="px-4 py-3 border-t border-[var(--color-border)] space-y-2">
+          {/* 5. Group + Date + Notes — always visible */}
+          <div className="px-4 py-3 border-t border-[var(--color-border)] space-y-2.5">
             <div className="flex gap-2">
               <select
                 value={groupId ?? ""}
                 onChange={(e) => setGroupId(e.target.value || null)}
-                className="flex-1 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] appearance-none cursor-pointer"
+                onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
+                className="flex-1 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] cursor-pointer"
               >
                 <option value="">{t("expense.noGroup")}</option>
                 {groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}
@@ -344,31 +390,24 @@ export default function AddExpenseModal() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
                 className="text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)]"
               />
             </div>
 
-            {/* Notes (always visible as a small link) */}
-            {!showNotes ? (
-              <button
-                onClick={() => setShowNotes(true)}
-                className="text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-primary)] transition-colors"
-              >
-                + Add notes
-              </button>
-            ) : (
-              <textarea
-                placeholder={t("expense.notes")}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={2}
-                className="w-full text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-primary)] resize-none"
-              />
-            )}
+            {/* Notes — always visible as a single-line textarea */}
+            <textarea
+              placeholder={t("expense.notes") || "Add a note..."}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
+              rows={1}
+              className="w-full text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-primary)] resize-none"
+            />
           </div>
         </div>
 
-        {/* ── Footer — big save button ── */}
+        {/* ── Footer ── */}
         <div className="px-4 py-3 border-t border-[var(--color-border)] bg-white sm:rounded-b-2xl">
           <button
             onClick={handleSave}

@@ -51,54 +51,27 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-5">
-      {/* ── Balance Summary Card ── */}
-      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-        <div className="flex items-center justify-between">
-          {/* Total balance */}
-          <div className="flex-1 text-center">
-            <p className="text-xs text-[var(--color-text-secondary)] mb-1">
-              {t("totalBalance")}
-            </p>
-            <p
-              className={`text-3xl font-bold tracking-[-0.03em] ${
-                (balances?.netBalance ?? 0) >= 0
-                  ? "text-[var(--color-positive)]"
-                  : "text-[var(--color-negative)]"
-              }`}
-            >
-              {loading ? "..." : fmt(balances?.netBalance ?? 0)}
-            </p>
-          </div>
-
-          {/* Divider */}
-          <div className="w-px h-12 bg-[var(--color-border)] mx-5 shrink-0" />
-
-          {/* You owe pill */}
-          <div className="flex-1 flex justify-center">
-            <div className="inline-flex flex-col items-center bg-[var(--color-negative-light)] rounded-xl px-5 py-2.5">
-              <p className="text-[11px] text-[var(--color-negative)] mb-0.5">
-                {t("youOwe")}
-              </p>
-              <p className="text-lg font-semibold text-[var(--color-negative)] tracking-[-0.02em]">
-                {loading ? "..." : fmt(balances?.totalOwing ?? 0)}
-              </p>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="w-px h-12 bg-[var(--color-border)] mx-5 shrink-0" />
-
-          {/* You are owed pill */}
-          <div className="flex-1 flex justify-center">
-            <div className="inline-flex flex-col items-center bg-[var(--color-positive-light)] rounded-xl px-5 py-2.5">
-              <p className="text-[11px] text-[var(--color-positive)] mb-0.5">
-                {t("youAreOwed")}
-              </p>
-              <p className="text-lg font-semibold text-[var(--color-positive)] tracking-[-0.02em]">
-                {loading ? "..." : fmt(balances?.totalOwed ?? 0)}
-              </p>
-            </div>
-          </div>
+      {/* ── Balance Summary ── */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
+          <p className="text-xs text-[var(--color-text-secondary)] mb-1">{t("totalBalance")}</p>
+          <p className={`text-2xl font-bold tracking-[-0.03em] ${
+            (balances?.netBalance ?? 0) >= 0 ? "text-[var(--color-positive)]" : "text-[var(--color-negative)]"
+          }`}>
+            {loading ? "..." : fmt(balances?.netBalance ?? 0)}
+          </p>
+        </div>
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
+          <p className="text-xs text-[var(--color-negative)] mb-1">{t("youOwe")}</p>
+          <p className="text-2xl font-bold text-[var(--color-negative)] tracking-[-0.03em]">
+            {loading ? "..." : fmt(balances?.totalOwing ?? 0)}
+          </p>
+        </div>
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
+          <p className="text-xs text-[var(--color-positive)] mb-1">{t("youAreOwed")}</p>
+          <p className="text-2xl font-bold text-[var(--color-positive)] tracking-[-0.03em]">
+            {loading ? "..." : fmt(balances?.totalOwed ?? 0)}
+          </p>
         </div>
       </div>
 
@@ -159,11 +132,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Chart View ── */}
+      {/* ── Chart View — stacked for larger charts ── */}
       {view === "chart" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-5">
           <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-            <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
+            <h3 className="text-base font-semibold text-[var(--color-text)] mb-5">
               {t("chartBalance")}
             </h3>
             <BalancePieChart
@@ -172,13 +145,13 @@ export default function DashboardPage() {
             />
           </div>
           <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-            <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
+            <h3 className="text-base font-semibold text-[var(--color-text)] mb-5">
               {t("chartMonthly")}
             </h3>
             <MonthlyTrend data={chartData?.monthly ?? []} />
           </div>
-          <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 md:col-span-2">
-            <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
+          <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
+            <h3 className="text-base font-semibold text-[var(--color-text)] mb-5">
               {t("chartCategory")}
             </h3>
             <SpendingByCategory data={chartData?.byCategory ?? []} />

@@ -56,7 +56,7 @@ export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
   return (
     <div className="flex flex-col items-center">
       {/* Donut */}
-      <div className="relative w-40 h-40">
+      <div className="relative w-52 h-52">
         <svg viewBox="0 0 120 120" className="w-full h-full">
           {/* Background track */}
           <circle
