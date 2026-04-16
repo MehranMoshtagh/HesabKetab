@@ -5,6 +5,7 @@ import { Plus, HandCoins, List, PieChart, ChevronRight, CheckCircle2 } from "luc
 import { useAppStore } from "@/stores/app-store";
 import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
+import { avatarColor } from "@/lib/utils";
 import BalancePieChart from "@/components/charts/BalancePieChart";
 import SpendingByCategory from "@/components/charts/SpendingByCategory";
 import MonthlyTrend from "@/components/charts/MonthlyTrend";
@@ -24,20 +25,6 @@ interface BalanceData {
 interface ChartData {
   byCategory: { category: string; total: number }[];
   monthly: { month: string; total: number }[];
-}
-
-/* Deterministic avatar color from name */
-function avatarColor(name: string): string {
-  const palette = [
-    "#0071E3", "#34C759", "#FF9500", "#AF52DE",
-    "#FF2D55", "#5AC8FA", "#FF3B30", "#007AFF",
-    "#5856D6", "#30B0C7", "#A2845E", "#64D2FF",
-  ];
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return palette[Math.abs(hash) % palette.length];
 }
 
 export default function DashboardPage() {
