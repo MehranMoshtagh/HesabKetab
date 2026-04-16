@@ -44,6 +44,7 @@ export async function GET(
       payers: { include: { user: { select: { id: true, name: true } } } },
       shares: { include: { user: { select: { id: true, name: true } } } },
       createdBy: { select: { id: true, name: true } },
+      _count: { select: { comments: true } },
     },
     orderBy: { date: "desc" },
   });

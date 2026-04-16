@@ -20,7 +20,7 @@ interface ExpenseListItemProps {
     createdBy: { id: string; name: string };
     payers: { userId: string; amount: string; user: { id: string; name: string } }[];
     shares: { userId: string; amount: string; user: { id: string; name: string } }[];
-    _count: { comments: number };
+    _count?: { comments: number };
   };
   onDeleted?: () => void;
 }
@@ -104,7 +104,7 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
           <div className={`text-sm font-semibold ${rightColor}`}>{rightAmount}</div>
         </div>
 
-        {expense._count.comments > 0 && (
+        {(expense._count?.comments ?? 0) > 0 && (
           <MessageCircle size={13} className="text-[var(--color-text-tertiary)] shrink-0" />
         )}
 

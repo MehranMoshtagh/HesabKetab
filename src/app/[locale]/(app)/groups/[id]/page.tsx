@@ -33,7 +33,7 @@ interface ExpenseItem {
   createdBy: { id: string; name: string };
   payers: { userId: string; amount: string; user: { id: string; name: string } }[];
   shares: { userId: string; amount: string; user: { id: string; name: string } }[];
-  _count: { comments: number };
+  _count?: { comments: number };
 }
 
 interface GroupBalanceData {

@@ -19,7 +19,7 @@ interface ExpenseItem {
   payers: { userId: string; amount: string; user: { id: string; name: string } }[];
   shares: { userId: string; amount: string; user: { id: string; name: string } }[];
   group: { id: string; name: string } | null;
-  _count: { comments: number };
+  _count?: { comments: number };
 }
 
 interface Pagination {
