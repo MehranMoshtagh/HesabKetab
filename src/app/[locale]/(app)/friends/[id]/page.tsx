@@ -5,14 +5,9 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Plus, HandCoins } from "lucide-react";
 import { useAppStore } from "@/stores/app-store";
+import { avatarColor, getInitial } from "@/lib/utils";
 import ExpenseListItem from "@/components/expenses/ExpenseListItem";
 import MonthHeader from "@/components/expenses/MonthHeader";
-import { ExpenseListSkeleton } from "@/components/ui/Skeleton";
-
-interface FriendData {
-  friend: { id: string; name: string; email: string; avatar: string | null };
-  expenses: ExpenseItem[];
-}
 
 interface ExpenseItem {
   id: string;
@@ -32,39 +27,34 @@ export default function FriendDetailPage() {
   const t = useTranslations();
   const params = useParams();
   const friendId = params.id as string;
-  const { openAddExpense, openSettleUp } = useAppStore();
-  const [data, setData] = useState<FriendData | null>(null);
-  const [balance, setBalance] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
+  const { openAddExpense, openSettleUp, friends, initData } = useAppStore();
+
+  // Instant: get friend info + balance from the store (already loaded by /api/init)
+  const friend = friends.find((f) => f.id === friendId);
+  const balanceFromInit = (initData?.balances as { byPerson?: { userId: string; amount: number }[] })
+    ?.byPerson?.find((p) => p.userId === friendId);
+  const balance = balanceFromInit?.amount ?? 0;
+
+  // Only fetch expenses (the one thing we don't have in the store)
+  const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
+  const [loadingExpenses, setLoadingExpenses] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`/api/friends/${friendId}`).then((r) => r.json()),
-      fetch(`/api/balances/friend/${friendId}`).then((r) => r.json()),
-    ])
-      .then(([friendData, balanceData]) => {
-        setData(friendData);
-        setBalance(balanceData.balance ?? 0);
+    fetch(`/api/friends/${friendId}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.expenses) setExpenses(data.expenses);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingExpenses(false));
   }, [friendId]);
 
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-20 bg-[var(--color-hover)]" />
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-40 bg-[var(--color-hover)]" />
-      </div>
-    );
-  }
-
-  if (!data) {
+  if (!friend) {
     return <div className="text-center py-8 text-[var(--color-text-tertiary)]">{t("common.error")}</div>;
   }
 
   // Group expenses by month
   const byMonth: Record<string, ExpenseItem[]> = {};
-  for (const exp of data.expenses) {
+  for (const exp of expenses) {
     const d = new Date(exp.date);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     if (!byMonth[key]) byMonth[key] = [];
@@ -74,23 +64,28 @@ export default function FriendDetailPage() {
   const balanceColor = balance > 0 ? "text-[var(--color-positive)]" : balance < 0 ? "text-[var(--color-negative)]" : "text-[var(--color-text-secondary)]";
   const balanceLabel =
     balance > 0
-      ? `${data.friend.name} ${t("common.owes")} $${balance.toFixed(2)}`
+      ? `${friend.name} ${t("common.owes")} $${balance.toFixed(2)}`
       : balance < 0
       ? `${t("dashboard.youOwe")} $${Math.abs(balance).toFixed(2)}`
       : t("dashboard.settledUp");
 
+  const color = avatarColor(friend.name);
+
   return (
     <div className="flex gap-4">
       <div className="flex-1">
-        {/* Header */}
+        {/* Header — renders INSTANTLY from store data */}
         <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-lg font-semibold text-[var(--color-primary)]">
-              {data.friend.name[0]?.toUpperCase()}
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold text-white"
+              style={{ backgroundColor: color }}
+            >
+              {getInitial(friend.name)}
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-[var(--color-text)]">{data.friend.name}</h1>
-              <p className="text-sm text-[var(--color-text-secondary)]">{data.friend.email}</p>
+              <h1 className="text-lg font-semibold text-[var(--color-text)]">{friend.name}</h1>
+              <p className="text-sm text-[var(--color-text-secondary)]">{friend.email}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -102,10 +97,8 @@ export default function FriendDetailPage() {
               {t("dashboard.addExpense")}
             </button>
             <button
-              onClick={() =>
-                openSettleUp({ friendId, friendName: data.friend.name })
-              }
-              className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"
+              onClick={() => openSettleUp({ friendId, friendName: friend.name })}
+              className="flex items-center gap-1 border border-[var(--color-border-strong)] text-[var(--color-text)] px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-hover)] transition-all duration-200"
             >
               <HandCoins size={14} />
               {t("dashboard.settleUp")}
@@ -113,37 +106,48 @@ export default function FriendDetailPage() {
           </div>
         </div>
 
-        {/* Expenses by month */}
-        {Object.entries(byMonth)
-          .sort(([a], [b]) => b.localeCompare(a))
-          .map(([month, expenses]) => {
-            const d = new Date(month + "-01");
-            return (
-              <div key={month} className="mb-4">
-                <MonthHeader monthKey={month} />
-                <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
-                  {expenses.map((exp) => (
-                    <ExpenseListItem key={exp.id} expense={exp} />
-                  ))}
-                </div>
+        {/* Expenses — loads separately but header is already visible */}
+        {loadingExpenses ? (
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
+                <div className="h-4 bg-[var(--color-hover)] rounded w-2/3 mb-2" />
+                <div className="h-3 bg-[var(--color-hover)] rounded w-1/3" />
               </div>
-            );
-          })}
-
-        {data.expenses.length === 0 && (
-          <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
-            {t("dashboard.noExpenses")}
+            ))}
           </div>
+        ) : (
+          <>
+            {Object.entries(byMonth)
+              .sort(([a], [b]) => b.localeCompare(a))
+              .map(([month, monthExpenses]) => (
+                <div key={month} className="mb-4">
+                  <MonthHeader monthKey={month} />
+                  <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
+                    {monthExpenses.map((exp) => (
+                      <ExpenseListItem key={exp.id} expense={exp} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            {expenses.length === 0 && (
+              <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8 text-center text-[var(--color-text-tertiary)] text-sm">
+                {t("dashboard.noExpenses")}
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* Right panel */}
-      <div className="w-64 hidden lg:block">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
+      {/* Right sidebar */}
+      <div className="w-64 hidden lg:block shrink-0">
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5">
+          <h3 className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-3">
             {t("friend.yourBalance")}
           </h3>
-          <p className={`text-lg font-semibold ${balanceColor}`}>{balanceLabel}</p>
+          <p className={`text-lg font-bold ${balanceColor}`}>
+            {balanceLabel}
+          </p>
         </div>
       </div>
     </div>

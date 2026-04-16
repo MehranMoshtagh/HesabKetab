@@ -46,28 +46,51 @@ export default function GroupDetailPage() {
   const t = useTranslations();
   const params = useParams();
   const groupId = params.id as string;
-  const { openAddExpense, openSettleUp } = useAppStore();
+  const { openAddExpense, openSettleUp, groups } = useAppStore();
+
+  // Instant: get group name from the store
+  const groupFromStore = groups.find((g) => g.id === groupId);
+
   const [data, setData] = useState<GroupData | null>(null);
   const [balances, setBalances] = useState<GroupBalanceData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      fetch(`/api/groups/${groupId}`).then((r) => r.json()),
-      fetch(`/api/balances/group/${groupId}`).then((r) => r.json()),
+      fetch(`/api/groups/${groupId}`).then((r) => (r.ok ? r.json() : null)),
+      fetch(`/api/balances/group/${groupId}`).then((r) => (r.ok ? r.json() : null)),
     ])
       .then(([groupData, balanceData]) => {
-        setData(groupData);
-        setBalances(balanceData);
+        if (groupData) setData(groupData);
+        if (balanceData) setBalances(balanceData);
       })
       .finally(() => setLoading(false));
   }, [groupId]);
 
-  if (loading) {
+  // Show header instantly with store data while expenses load
+  if (loading && !data) {
+    const name = groupFromStore?.name ?? "...";
     return (
       <div className="space-y-4">
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-20 bg-[var(--color-hover)]" />
-        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 animate-pulse h-60 bg-[var(--color-hover)]" />
+        <div className="bg-white rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)] font-semibold">
+              {name[0]?.toUpperCase()}
+            </div>
+            <div>
+              <h1 className="text-lg font-semibold text-[var(--color-text)]">{name}</h1>
+              <p className="text-sm text-[var(--color-text-tertiary)]">{groupFromStore?.memberCount ?? "..."} {t("group.members").toLowerCase()}</p>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-2xl border border-[var(--color-border)] p-4 animate-pulse">
+              <div className="h-4 bg-[var(--color-hover)] rounded w-2/3 mb-2" />
+              <div className="h-3 bg-[var(--color-hover)] rounded w-1/3" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
