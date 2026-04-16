@@ -73,8 +73,12 @@ export default function ActivityPage() {
         return `${name} deleted "${meta.description ?? ""}".`;
       case "EXPENSE_RESTORED":
         return `${name} restored "${meta.description ?? ""}".`;
-      case "PAYMENT_ADDED":
-        return `${meta.payerName} paid ${meta.payeeName} $${Number(meta.amount).toFixed(2)}.`;
+      case "PAYMENT_ADDED": {
+        const payerN = meta.payerName ?? name;
+        const payeeN = meta.payeeName ?? "";
+        const amt = meta.amount ? Number(meta.amount) : (act.expense ? Number(act.expense.amount) : 0);
+        return payeeN ? `${payerN} paid ${payeeN} $${amt.toFixed(2)}.` : `${payerN} recorded a $${amt.toFixed(2)} payment.`;
+      }
       case "COMMENT_ADDED":
         return `${name} commented on "${meta.expenseDescription ?? ""}".`;
       case "FRIEND_ADDED":
