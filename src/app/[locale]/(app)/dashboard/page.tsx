@@ -42,24 +42,20 @@ function avatarColor(name: string): string {
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
-  const { openAddExpense, openSettleUp } = useAppStore();
+  const { openAddExpense, openSettleUp, initData } = useAppStore();
   const [balances, setBalances] = useState<BalanceData | null>(null);
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [view, setView] = useState<"list" | "chart">("list");
   const [loading, setLoading] = useState(true);
 
+  // Use data from the single /api/init call (via useAppData in AppShell)
   useEffect(() => {
-    Promise.all([
-      fetch("/api/balances").then((r) => (r.ok ? r.json() : null)),
-      fetch("/api/charts").then((r) => (r.ok ? r.json() : null)),
-    ])
-      .then(([bal, charts]) => {
-        if (bal?.byPerson) setBalances(bal);
-        if (charts?.byCategory) setChartData(charts);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+    if (initData) {
+      if (initData.balances) setBalances(initData.balances as BalanceData);
+      if (initData.charts) setChartData(initData.charts as ChartData);
+      setLoading(false);
+    }
+  }, [initData]);
 
   const youOwe = balances?.byPerson?.filter((p) => p.amount < 0) ?? [];
   const youAreOwed = balances?.byPerson?.filter((p) => p.amount > 0) ?? [];

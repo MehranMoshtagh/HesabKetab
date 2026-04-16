@@ -15,9 +15,15 @@ interface GroupSummary {
   memberCount: number;
 }
 
+interface InitData {
+  balances: unknown;
+  charts: unknown;
+}
+
 interface AppState {
   friends: Friend[];
   groups: GroupSummary[];
+  initData: InitData | null;
   isAddExpenseOpen: boolean;
   isSettleUpOpen: boolean;
   addExpenseContext: {
@@ -32,6 +38,7 @@ interface AppState {
 
   setFriends: (friends: Friend[]) => void;
   setGroups: (groups: GroupSummary[]) => void;
+  setInitData: (data: InitData) => void;
   openAddExpense: (ctx?: { groupId?: string; friendId?: string }) => void;
   closeAddExpense: () => void;
   openSettleUp: (ctx?: { groupId?: string; friendId?: string; friendName?: string }) => void;
@@ -41,6 +48,7 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   friends: [],
   groups: [],
+  initData: null,
   isAddExpenseOpen: false,
   isSettleUpOpen: false,
   addExpenseContext: {},
@@ -48,6 +56,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   setFriends: (friends) => set({ friends }),
   setGroups: (groups) => set({ groups }),
+  setInitData: (data) => set({ initData: data }),
   openAddExpense: (ctx = {}) =>
     set({ isAddExpenseOpen: true, addExpenseContext: ctx }),
   closeAddExpense: () =>
