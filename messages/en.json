@@ -115,7 +115,11 @@
     "viewAsList": "View as list",
     "viewAsChart": "View as chart",
     "settledUp": "You are all settled up!",
-    "noExpenses": "No expenses to show"
+    "noExpenses": "No expenses to show",
+    "chartBalance": "Balance",
+    "chartMonthly": "Monthly spending",
+    "chartCategory": "Spending by category",
+    "chartNoData": "No chart data available"
   },
   "expense": {
     "addExpense": "Add an expense",

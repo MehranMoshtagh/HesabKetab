@@ -10,7 +10,18 @@ interface SpendingByCategoryProps {
 export default function SpendingByCategory({ data }: SpendingByCategoryProps) {
   const t = useTranslations();
 
-  if (data.length === 0) return null;
+  if (data.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-8 gap-2">
+        <div className="w-12 h-12 rounded-full bg-[var(--color-hover)] flex items-center justify-center">
+          <span className="text-lg opacity-40">📊</span>
+        </div>
+        <p className="text-sm text-[var(--color-text-tertiary)]">
+          {t("dashboard.noExpenses")}
+        </p>
+      </div>
+    );
+  }
 
   const maxTotal = Math.max(...data.map((d) => d.total));
   const grandTotal = data.reduce((s, d) => s + d.total, 0);
@@ -65,12 +76,13 @@ export default function SpendingByCategory({ data }: SpendingByCategoryProps) {
                 <span className="text-xs text-[var(--color-text-tertiary)]">{pct.toFixed(0)}%</span>
               </div>
             </div>
-            <div className="h-2 bg-[var(--color-hover)] rounded-full overflow-hidden">
+            <div className="h-2.5 bg-[var(--color-hover)] rounded-full overflow-hidden">
               <div
-                className="h-full rounded-full transition-all duration-300"
+                className="h-full rounded-full transition-all duration-500 ease-out"
                 style={{
                   width: `${barWidth}%`,
                   backgroundColor: item.color,
+                  boxShadow: `0 0 8px ${item.color}33`,
                 }}
               />
             </div>

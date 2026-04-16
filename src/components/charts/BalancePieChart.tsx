@@ -7,116 +7,132 @@ interface BalancePieChartProps {
   owing: number;
 }
 
+/**
+ * Clean donut chart with two colored arcs (owed vs owing).
+ * Uses stroke-dasharray on <circle> elements for simplicity
+ * instead of complex SVG path math.
+ */
 export default function BalancePieChart({ owed, owing }: BalancePieChartProps) {
   const t = useTranslations("dashboard");
   const total = owed + owing;
+  const net = Math.abs(owed - owing);
 
+  /* ── Donut geometry ── */
+  const cx = 60;
+  const cy = 60;
+  const radius = 44;
+  const circumference = 2 * Math.PI * radius;
+  const strokeWidth = 12;
+
+  /* ── Zero / settled state ── */
   if (total === 0) {
     return (
-      <div className="text-center py-6">
-        <svg viewBox="0 0 100 100" className="w-32 h-32 mx-auto">
-          <circle cx="50" cy="50" r="40" className="fill-[var(--color-hover)]" />
-          <text
-            x="50"
-            y="50"
-            textAnchor="middle"
-            dominantBaseline="middle"
-            className="fill-[var(--color-text-tertiary)]"
-            fontSize="8"
-          >
-            {t("settledUp")}
-          </text>
+      <div className="flex flex-col items-center py-6 gap-3">
+        <svg viewBox="0 0 120 120" className="w-36 h-36">
+          <circle
+            cx={cx}
+            cy={cy}
+            r={radius}
+            fill="none"
+            stroke="#E5E5EA"
+            strokeWidth={strokeWidth}
+            opacity={0.5}
+          />
         </svg>
+        <p className="text-sm font-medium text-[var(--color-positive)]">
+          {t("settledUp")}
+        </p>
       </div>
     );
   }
 
-  const owedPct = total > 0 ? owed / total : 0;
-  const owedAngle = owedPct * 360;
+  const owedFraction = owed / total;
+  const owingFraction = owing / total;
 
-  const describeArc = (
-    cx: number,
-    cy: number,
-    r: number,
-    startAngle: number,
-    endAngle: number
-  ) => {
-    const start = polarToCartesian(cx, cy, r, endAngle);
-    const end = polarToCartesian(cx, cy, r, startAngle);
-    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y} L ${cx} ${cy} Z`;
-  };
-
-  const polarToCartesian = (
-    cx: number,
-    cy: number,
-    r: number,
-    angleInDegrees: number
-  ) => {
-    const rad = ((angleInDegrees - 90) * Math.PI) / 180;
-    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-  };
+  /* Dash lengths for each arc */
+  const owedDash = owedFraction * circumference;
+  const owingDash = owingFraction * circumference;
 
   return (
-    <div className="text-center">
-      <svg viewBox="0 0 120 120" className="w-40 h-40 mx-auto">
-        {owing > 0 && (
-          <path
-            d={
-              owed === 0
-                ? describeArc(60, 60, 45, 0, 359.99)
-                : describeArc(60, 60, 45, owedAngle, 360)
-            }
-            fill="var(--color-negative)"
-            opacity={0.75}
+    <div className="flex flex-col items-center">
+      {/* Donut */}
+      <div className="relative w-40 h-40">
+        <svg viewBox="0 0 120 120" className="w-full h-full">
+          {/* Background track */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={radius}
+            fill="none"
+            stroke="#E5E5EA"
+            strokeWidth={strokeWidth}
+            opacity={0.25}
           />
-        )}
-        {owed > 0 && (
-          <path
-            d={
-              owing === 0
-                ? describeArc(60, 60, 45, 0, 359.99)
-                : describeArc(60, 60, 45, 0, owedAngle)
-            }
-            fill="var(--color-positive)"
-            opacity={0.75}
-          />
-        )}
-        <circle cx="60" cy="60" r="28" fill="white" />
-        <text
-          x="60"
-          y="57"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          className="fill-[var(--color-text)]"
-          fontSize="7"
-          fontWeight="600"
-        >
-          ${Math.abs(owed - owing).toFixed(2)}
-        </text>
-        <text
-          x="60"
-          y="67"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          className={owed >= owing ? "fill-[var(--color-positive)]" : "fill-[var(--color-negative)]"}
-          fontSize="5"
-        >
-          {owed >= owing ? "net owed" : "net owing"}
-        </text>
-      </svg>
 
-      <div className="flex justify-center gap-6 mt-2">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-[var(--color-positive)]" />
-          <span className="text-xs text-[var(--color-text-secondary)]">
-            {t("youAreOwed")}: ${owed.toFixed(2)}
+          {/* Owing arc (red) — drawn first so green overlaps at start */}
+          {owing > 0 && (
+            <circle
+              cx={cx}
+              cy={cy}
+              r={radius}
+              fill="none"
+              stroke="#FF3B30"
+              strokeWidth={strokeWidth}
+              strokeDasharray={`${owingDash} ${circumference - owingDash}`}
+              strokeDashoffset={-owedDash}
+              strokeLinecap="round"
+              transform={`rotate(-90 ${cx} ${cy})`}
+              style={{ transition: "stroke-dasharray 0.6s ease, stroke-dashoffset 0.6s ease" }}
+            />
+          )}
+
+          {/* Owed arc (green) — starts at 12 o'clock */}
+          {owed > 0 && (
+            <circle
+              cx={cx}
+              cy={cy}
+              r={radius}
+              fill="none"
+              stroke="#34C759"
+              strokeWidth={strokeWidth}
+              strokeDasharray={`${owedDash} ${circumference - owedDash}`}
+              strokeDashoffset={0}
+              strokeLinecap="round"
+              transform={`rotate(-90 ${cx} ${cy})`}
+              style={{ transition: "stroke-dasharray 0.6s ease" }}
+            />
+          )}
+        </svg>
+
+        {/* Center label */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-bold tracking-tight text-[var(--color-text)]">
+            ${net.toFixed(2)}
+          </span>
+          <span
+            className={`text-[11px] font-medium ${
+              owed >= owing
+                ? "text-[var(--color-positive)]"
+                : "text-[var(--color-negative)]"
+            }`}
+          >
+            {owed >= owing ? t("youAreOwed") : t("youOwe")}
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm bg-[var(--color-negative)]" />
-          <span className="text-xs text-[var(--color-text-secondary)]">
-            {t("youOwe")}: ${owing.toFixed(2)}
+      </div>
+
+      {/* Legend pills */}
+      <div className="flex items-center gap-4 mt-4">
+        <div className="flex items-center gap-1.5 bg-[var(--color-positive-light)] rounded-full px-3 py-1">
+          <div className="w-2 h-2 rounded-full bg-[var(--color-positive)]" />
+          <span className="text-xs font-medium text-[var(--color-positive)]">
+            ${owed.toFixed(2)}
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-[var(--color-negative-light)] rounded-full px-3 py-1">
+          <div className="w-2 h-2 rounded-full bg-[var(--color-negative)]" />
+          <span className="text-xs font-medium text-[var(--color-negative)]">
+            ${owing.toFixed(2)}
           </span>
         </div>
       </div>

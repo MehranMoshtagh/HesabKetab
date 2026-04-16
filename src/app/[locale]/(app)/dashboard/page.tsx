@@ -181,7 +181,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
-              Balance
+              {t("chartBalance")}
             </h3>
             <BalancePieChart
               owed={balances?.totalOwed ?? 0}
@@ -190,13 +190,13 @@ export default function DashboardPage() {
           </div>
           <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
             <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
-              Monthly spending
+              {t("chartMonthly")}
             </h3>
             <MonthlyTrend data={chartData?.monthly ?? []} />
           </div>
           <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 md:col-span-2">
             <h3 className="text-sm font-semibold text-[var(--color-text)] mb-4">
-              Spending by category
+              {t("chartCategory")}
             </h3>
             <SpendingByCategory data={chartData?.byCategory ?? []} />
           </div>

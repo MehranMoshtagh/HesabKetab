@@ -115,7 +115,11 @@
     "viewAsList": "نمایش لیستی",
     "viewAsChart": "نمایش نموداری",
     "settledUp": "همه حساب‌ها تسویه شده!",
-    "noExpenses": "هزینه‌ای برای نمایش وجود ندارد"
+    "noExpenses": "هزینه‌ای برای نمایش وجود ندارد",
+    "chartBalance": "تراز حساب",
+    "chartMonthly": "هزینه‌های ماهانه",
+    "chartCategory": "هزینه بر اساس دسته‌بندی",
+    "chartNoData": "داده‌ای برای نمایش نمودار موجود نیست"
   },
   "expense": {
     "addExpense": "افزودن هزینه",
