@@ -52,45 +52,46 @@ export default function DashboardPage() {
   return (
     <div className="space-y-5">
       {/* ── Balance Summary ── */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
-          <p className="text-xs text-[var(--color-text-secondary)] mb-1">{t("totalBalance")}</p>
-          <p className={`text-2xl font-bold tracking-[-0.03em] ${
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 sm:p-5 text-center">
+          <p className="text-[10px] sm:text-xs text-[var(--color-text-secondary)] mb-1 truncate">{t("totalBalance")}</p>
+          <p className={`text-lg sm:text-2xl font-bold tracking-[-0.03em] ${
             (balances?.netBalance ?? 0) >= 0 ? "text-[var(--color-positive)]" : "text-[var(--color-negative)]"
           }`}>
             {loading ? "..." : fmt(balances?.netBalance ?? 0)}
           </p>
         </div>
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
-          <p className="text-xs text-[var(--color-negative)] mb-1">{t("youOwe")}</p>
-          <p className="text-2xl font-bold text-[var(--color-negative)] tracking-[-0.03em]">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 sm:p-5 text-center">
+          <p className="text-[10px] sm:text-xs text-[var(--color-negative)] mb-1 truncate">{t("youOwe")}</p>
+          <p className="text-lg sm:text-2xl font-bold text-[var(--color-negative)] tracking-[-0.03em]">
             {loading ? "..." : fmt(balances?.totalOwing ?? 0)}
           </p>
         </div>
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5 text-center">
-          <p className="text-xs text-[var(--color-positive)] mb-1">{t("youAreOwed")}</p>
-          <p className="text-2xl font-bold text-[var(--color-positive)] tracking-[-0.03em]">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-3 sm:p-5 text-center">
+          <p className="text-[10px] sm:text-xs text-[var(--color-positive)] mb-1 truncate">{t("youAreOwed")}</p>
+          <p className="text-lg sm:text-2xl font-bold text-[var(--color-positive)] tracking-[-0.03em]">
             {loading ? "..." : fmt(balances?.totalOwed ?? 0)}
           </p>
         </div>
       </div>
 
       {/* ── Actions + Segmented Toggle ── */}
-      <div className="flex items-center justify-between">
-        <div className="flex gap-2.5">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex gap-2 flex-1 sm:flex-none">
           {/* Add expense — filled primary */}
           <button
             onClick={() => openAddExpense()}
-            className="flex items-center gap-2 bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-xl font-medium text-sm shadow-[var(--shadow-button)] hover:bg-[var(--color-primary-hover)] active:scale-[0.97] transition-all duration-200"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white px-4 sm:px-5 py-2.5 rounded-xl font-medium text-sm shadow-[var(--shadow-button)] hover:bg-[var(--color-primary-hover)] active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
           >
             <Plus size={16} strokeWidth={2.5} />
-            {t("addExpense")}
+            <span className="hidden xs:inline sm:inline">{t("addExpense")}</span>
+            <span className="xs:hidden sm:hidden">Add</span>
           </button>
 
           {/* Settle up — outlined */}
           <button
             onClick={() => openSettleUp()}
-            className="flex items-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border-strong)] text-[var(--color-text)] px-5 py-2.5 rounded-xl font-medium text-sm shadow-[var(--shadow-button)] hover:bg-[var(--color-hover)] active:scale-[0.97] transition-all duration-200"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[var(--color-surface)] border border-[var(--color-border-strong)] text-[var(--color-text)] px-4 sm:px-5 py-2.5 rounded-xl font-medium text-sm shadow-[var(--shadow-button)] hover:bg-[var(--color-hover)] active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
           >
             <HandCoins size={16} />
             {t("settleUp")}

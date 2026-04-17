@@ -100,8 +100,8 @@ export default function GroupDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header */}
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4">
-          <div className="flex items-center justify-between">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-4 sm:p-6 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-lg">
                 👥
@@ -114,7 +114,7 @@ export default function GroupDetailPage() {
                 </p>
               </div>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center flex-wrap">
               <button
                 onClick={() => openAddExpense({ groupId })}
                 className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"

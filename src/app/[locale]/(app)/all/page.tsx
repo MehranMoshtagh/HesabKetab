@@ -118,7 +118,7 @@ export default function AllExpensesPage() {
         <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
           {t("nav.allExpenses")}
         </h1>
-        <div className="flex gap-2">
+        <div className="hidden sm:flex gap-2">
           <button
             onClick={() => openAddExpense()}
             className="flex items-center gap-1 bg-[var(--color-primary)] text-white px-5 py-2 rounded-xl text-sm font-medium hover:bg-[var(--color-primary-hover)] transition-all duration-200"

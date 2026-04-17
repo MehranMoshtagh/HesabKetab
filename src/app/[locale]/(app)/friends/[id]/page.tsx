@@ -68,7 +68,7 @@ export default function FriendDetailPage() {
     <div className="flex gap-4">
       <div className="flex-1">
         {/* Header — renders INSTANTLY from store data */}
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6 mb-4 flex items-center justify-between">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-4 sm:p-6 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold text-white"
