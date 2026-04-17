@@ -19,7 +19,7 @@ export default function LandingLanguageToggle({ locale }: { locale: string }) {
       className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
     >
       <Globe size={15} />
-      <span>{locale === "en" ? "فارسی" : "English"}</span>
+      <span className="hidden sm:inline">{locale === "en" ? "فارسی" : "English"}</span>
     </button>
   );
 }

@@ -121,9 +121,9 @@ export default function SettleUpModal() {
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
                   <div className="px-2 py-1.5">
                     <div className="relative">
-                      <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                      <Search size={13} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
                       <input type="text" placeholder="Search..." value={payerSearch} onChange={(e) => setPayerSearch(e.target.value)}
-                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                        className="w-full ps-7 pe-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
                     </div>
                   </div>
                   <div className="max-h-48 overflow-y-auto">
@@ -171,9 +171,9 @@ export default function SettleUpModal() {
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
                   <div className="px-2 py-1.5">
                     <div className="relative">
-                      <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                      <Search size={13} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
                       <input type="text" placeholder="Search..." value={payeeSearch} onChange={(e) => setPayeeSearch(e.target.value)}
-                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                        className="w-full ps-7 pe-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
                     </div>
                   </div>
                   <div className="max-h-48 overflow-y-auto">

@@ -160,13 +160,13 @@ export default function CreateGroupPage() {
 
             {/* Search friends */}
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+              <Search size={14} className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
               <input
                 type="text"
                 value={friendSearch}
                 onChange={(e) => setFriendSearch(e.target.value)}
                 placeholder="Search friends to add..."
-                className="w-full pl-8 pr-3 py-2.5 text-sm border border-[var(--color-border-strong)] rounded-xl bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+                className="w-full ps-8 pe-3 py-2.5 text-sm border border-[var(--color-border-strong)] rounded-xl bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
               />
             </div>
 
@@ -183,13 +183,13 @@ export default function CreateGroupPage() {
                       key={f.id}
                       type="button"
                       onClick={() => { toggleFriend(f.id); setFriendSearch(""); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[var(--color-text)] hover:bg-[var(--color-hover)] transition-colors text-left"
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-[var(--color-text)] hover:bg-[var(--color-hover)] transition-colors text-start"
                     >
                       <span className="w-6 h-6 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] text-[10px] font-semibold flex items-center justify-center">
                         {f.name.charAt(0).toUpperCase()}
                       </span>
                       {f.name}
-                      <span className="ml-auto text-xs text-[var(--color-text-tertiary)]">{f.email}</span>
+                      <span className="ms-auto text-xs text-[var(--color-text-tertiary)]">{f.email}</span>
                     </button>
                   ))
                 )}

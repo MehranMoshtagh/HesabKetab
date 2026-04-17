@@ -52,11 +52,11 @@ function CustomSelect({
             {searchable && (
               <div className="px-2 py-1.5 border-b border-[var(--color-border)]">
                 <div className="relative">
-                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                  <Search size={13} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
                   <input
                     type="text" placeholder="Search..." value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]"
+                    className="w-full ps-7 pe-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]"
                     autoFocus
                   />
                 </div>

@@ -6,6 +6,7 @@ import ThemeToggle from "@/components/shared/ThemeToggle";
 function PublicNav({ locale }: { locale: string }) {
   const appName = useTranslations("app");
   const t = useTranslations("landing");
+  const tAuth = useTranslations("auth");
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
@@ -30,7 +31,8 @@ function PublicNav({ locale }: { locale: string }) {
             href="/signup"
             className="bg-[var(--color-primary)] text-white text-xs sm:text-sm font-medium px-3 sm:px-5 py-1.5 sm:py-2 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_1px_3px_var(--color-primary-shadow)] whitespace-nowrap"
           >
-            {t("getStarted")}
+            <span className="sm:hidden">{tAuth("signUp")}</span>
+            <span className="hidden sm:inline">{t("getStarted")}</span>
           </Link>
         </div>
       </div>

@@ -153,7 +153,7 @@ export default function AllExpensesPage() {
             <ChevronDown size={13} />
           </button>
           {showGroupPicker && (
-            <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[180px] max-h-60 overflow-y-auto">
+            <div className="absolute top-full start-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[180px] max-h-60 overflow-y-auto">
               <button
                 onClick={() => { setFilterGroup(""); setShowGroupPicker(false); }}
                 className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", !filterGroup && "text-[var(--color-primary)] font-medium")}
@@ -183,13 +183,13 @@ export default function AllExpensesPage() {
             <ChevronDown size={13} />
           </button>
           {showFriendPicker && (
-            <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
+            <div className="absolute top-full start-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
               <div className="px-2 py-1.5">
                 <div className="relative">
-                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                  <Search size={13} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
                   <input type="text" placeholder="Search..." value={friendFilterSearch}
                     onChange={(e) => setFriendFilterSearch(e.target.value)}
-                    className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                    className="w-full ps-7 pe-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
                 </div>
               </div>
               <div className="max-h-48 overflow-y-auto">

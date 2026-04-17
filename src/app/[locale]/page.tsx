@@ -33,6 +33,7 @@ export default async function LandingPage({
 function Landing({ locale }: { locale: string }) {
   const t = useTranslations("landing");
   const appName = useTranslations("app");
+  const tAuth = useTranslations("auth");
 
   const features = [
     { icon: Receipt, titleKey: "feature1Title" as const, descKey: "feature1Desc" as const },
@@ -87,7 +88,8 @@ function Landing({ locale }: { locale: string }) {
               href="/signup"
               className="bg-[var(--color-primary)] text-white text-xs sm:text-sm font-medium px-3 sm:px-5 py-1.5 sm:py-2 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_1px_3px_var(--color-primary-shadow)] whitespace-nowrap"
             >
-              {t("getStarted")}
+              <span className="sm:hidden">{tAuth("signUp")}</span>
+              <span className="hidden sm:inline">{t("getStarted")}</span>
             </Link>
           </div>
         </div>

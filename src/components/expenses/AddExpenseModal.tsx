@@ -306,14 +306,14 @@ export default function AddExpenseModal() {
 
             {/* Search */}
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+              <Search size={14} className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
               <input
                 type="text"
                 placeholder="Search friends..."
                 value={friendSearch}
                 onChange={(e) => setFriendSearch(e.target.value)}
                 onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
-                className="w-full pl-8 pr-3 py-2 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]"
+                className="w-full ps-8 pe-3 py-2 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]"
               />
             </div>
 
@@ -354,7 +354,7 @@ export default function AddExpenseModal() {
                       {payerName} <ChevronDown size={13} />
                     </button>
                     {showPayerMenu && (
-                      <div className="absolute top-full left-0 mt-1 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
+                      <div className="absolute top-full start-0 mt-1 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[140px]">
                         <button
                           onClick={() => { setPayerId(currentUserId); setShowPayerMenu(false); }}
                           className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", payerId === currentUserId && "text-[var(--color-primary)] font-medium")}
