@@ -3,16 +3,37 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useState } from "react";
-import { Mail } from "lucide-react";
+import { Mail, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth");
   const appName = useTranslations("app");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
   const [sent, setSent] = useState(false);
+
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
+    if (email && !isValidEmail(email)) {
+      setEmailError(t("errors.invalidEmail"));
+    } else {
+      setEmailError("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setEmailTouched(true);
+    if (!isValidEmail(email)) {
+      setEmailError(t("errors.invalidEmail"));
+      return;
+    }
     setSent(true);
   };
 
@@ -55,12 +76,24 @@ export default function ForgotPasswordPage() {
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); if (emailTouched) setEmailError(""); }}
+                    onBlur={handleEmailBlur}
                     required
-                    placeholder="you@example.com"
-                    className="w-full border border-[var(--color-border-strong)] rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+                    placeholder={t("emailPlaceholder")}
+                    className={cn(
+                      "w-full border rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all duration-200",
+                      emailError
+                        ? "border-[var(--color-negative)] focus:border-[var(--color-negative)]"
+                        : "border-[var(--color-border-strong)] focus:border-[var(--color-primary)]"
+                    )}
                   />
                 </div>
+                {emailError && (
+                  <p className="flex items-center gap-1 text-xs text-[var(--color-negative)] mt-1.5">
+                    <AlertCircle size={12} />
+                    {emailError}
+                  </p>
+                )}
               </div>
 
               <button

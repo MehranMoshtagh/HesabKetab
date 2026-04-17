@@ -94,6 +94,23 @@
     "resetDescription": "ایمیل خود را وارد کنید تا لینک بازنشانی برایتان ارسال شود.",
     "backToHome": "بازگشت به خانه",
     "emailSent": "لینک بازنشانی به ایمیل شما ارسال شد.",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "حداقل ۸ کاراکتر",
+    "showPassword": "نمایش رمز عبور",
+    "hidePassword": "مخفی کردن رمز عبور",
+    "strength": {
+      "tooWeak": "خیلی ضعیف",
+      "weak": "ضعیف",
+      "fair": "متوسط",
+      "good": "خوب",
+      "strong": "قوی"
+    },
+    "passwordReq": {
+      "length": "۸+ کاراکتر",
+      "letter": "حرف (a–z)",
+      "number": "عدد (۰–۹)",
+      "symbol": "نماد (!@#$)"
+    },
     "errors": {
       "invalidEmail": "لطفاً یک ایمیل معتبر وارد کنید",
       "passwordMin": "رمز عبور باید حداقل ۸ کاراکتر باشد",
@@ -246,6 +263,8 @@
     "downloadBackup": "دانلود پشتیبان JSON"
   },
   "common": {
+    "switchToLight": "تغییر به حالت روشن",
+    "switchToDark": "تغییر به حالت تاریک",
     "loading": "در حال بارگذاری...",
     "error": "مشکلی پیش آمد",
     "retry": "تلاش مجدد",

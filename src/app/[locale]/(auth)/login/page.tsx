@@ -118,7 +118,7 @@ export default function LoginPage() {
                 onChange={(e) => { setEmail(e.target.value); if (emailTouched) setEmailError(""); }}
                 onBlur={handleEmailBlur}
                 required
-                placeholder="you@example.com"
+                placeholder={t("emailPlaceholder")}
                 className={`w-full border rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all duration-200 ${
                   emailError
                     ? "border-[var(--color-negative)] focus:border-[var(--color-negative)]"
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? t("hidePassword") : t("showPassword")}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>

@@ -94,6 +94,23 @@
     "resetDescription": "Enter your email and we'll send you a reset link.",
     "backToHome": "Back to home",
     "emailSent": "Check your email for a reset link.",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "At least 8 characters",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "strength": {
+      "tooWeak": "Too weak",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "passwordReq": {
+      "length": "8+ characters",
+      "letter": "Letter (a–z)",
+      "number": "Number (0–9)",
+      "symbol": "Symbol (!@#$)"
+    },
     "errors": {
       "invalidEmail": "Please enter a valid email",
       "passwordMin": "Password must be at least 8 characters",
@@ -249,6 +266,8 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "retry": "Try again",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
     "getsBack": "gets back",
     "owes": "owes",
     "noResults": "No results found",

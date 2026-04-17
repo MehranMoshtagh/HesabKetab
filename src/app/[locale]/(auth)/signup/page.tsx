@@ -15,8 +15,6 @@ function isValidEmail(email: string): boolean {
 
 interface PasswordStrength {
   score: 0 | 1 | 2 | 3 | 4;
-  label: string;
-  color: string;
   checks: {
     length: boolean;
     letter: boolean;
@@ -34,18 +32,16 @@ function analyzePassword(pw: string): PasswordStrength {
   };
   const passedCount = Object.values(checks).filter(Boolean).length;
   const score = passedCount as 0 | 1 | 2 | 3 | 4;
-
-  const labels = ["Too weak", "Weak", "Fair", "Good", "Strong"];
-  const colors = [
-    "var(--color-negative)",
-    "var(--color-negative)",
-    "var(--color-warning)",
-    "var(--color-primary)",
-    "var(--color-positive)",
-  ];
-
-  return { score, label: labels[score], color: colors[score], checks };
+  return { score, checks };
 }
+
+const STRENGTH_COLORS = [
+  "var(--color-negative)",
+  "var(--color-negative)",
+  "var(--color-warning)",
+  "var(--color-primary)",
+  "var(--color-positive)",
+];
 
 export default function SignupPage() {
   const t = useTranslations("auth");
@@ -63,6 +59,15 @@ export default function SignupPage() {
   const [passwordFocused, setPasswordFocused] = useState(false);
 
   const strength = analyzePassword(password);
+  const strengthLabels = [
+    t("strength.tooWeak"),
+    t("strength.weak"),
+    t("strength.fair"),
+    t("strength.good"),
+    t("strength.strong"),
+  ];
+  const strengthLabel = strengthLabels[strength.score];
+  const strengthColor = STRENGTH_COLORS[strength.score];
 
   const handleEmailBlur = () => {
     setEmailTouched(true);
@@ -181,7 +186,6 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Your name"
                 className="w-full border border-[var(--color-border-strong)] rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
               />
             </div>
@@ -200,7 +204,7 @@ export default function SignupPage() {
                 onChange={(e) => { setEmail(e.target.value); if (emailTouched) setEmailError(""); }}
                 onBlur={handleEmailBlur}
                 required
-                placeholder="you@example.com"
+                placeholder={t("emailPlaceholder")}
                 className={cn(
                   "w-full border rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all duration-200",
                   emailError
@@ -231,14 +235,14 @@ export default function SignupPage() {
                 onFocus={() => setPasswordFocused(true)}
                 required
                 minLength={8}
-                placeholder="At least 8 characters"
+                placeholder={t("passwordPlaceholder")}
                 className="w-full border border-[var(--color-border-strong)] rounded-xl ps-10 pe-10 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? t("hidePassword") : t("showPassword")}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -254,15 +258,15 @@ export default function SignupPage() {
                       key={i}
                       className="flex-1 h-1 rounded-full transition-colors duration-300"
                       style={{
-                        backgroundColor: i < strength.score ? strength.color : "var(--color-border)",
+                        backgroundColor: i < strength.score ? strengthColor : "var(--color-border)",
                       }}
                     />
                   ))}
                 </div>
                 {/* Strength label */}
                 {password && (
-                  <p className="text-xs font-medium" style={{ color: strength.color }}>
-                    {strength.label}
+                  <p className="text-xs font-medium" style={{ color: strengthColor }}>
+                    {strengthLabel}
                   </p>
                 )}
                 {/* Requirement checklist */}
@@ -272,28 +276,28 @@ export default function SignupPage() {
                       size={11}
                       className={strength.checks.length ? "text-[var(--color-positive)]" : "opacity-30"}
                     />
-                    8+ characters
+                    {t("passwordReq.length")}
                   </li>
                   <li className="flex items-center gap-1">
                     <Check
                       size={11}
                       className={strength.checks.letter ? "text-[var(--color-positive)]" : "opacity-30"}
                     />
-                    Letter (a–z)
+                    {t("passwordReq.letter")}
                   </li>
                   <li className="flex items-center gap-1">
                     <Check
                       size={11}
                       className={strength.checks.number ? "text-[var(--color-positive)]" : "opacity-30"}
                     />
-                    Number (0–9)
+                    {t("passwordReq.number")}
                   </li>
                   <li className="flex items-center gap-1">
                     <Check
                       size={11}
                       className={strength.checks.special ? "text-[var(--color-positive)]" : "opacity-30"}
                     />
-                    Symbol (!@#$)
+                    {t("passwordReq.symbol")}
                   </li>
                 </ul>
               </div>
