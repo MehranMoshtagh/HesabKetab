@@ -31,7 +31,7 @@ interface Pagination {
 
 export default function AllExpensesPage() {
   const t = useTranslations();
-  const { openAddExpense, openSettleUp } = useAppStore();
+  const { openAddExpense, openSettleUp, groups, friends } = useAppStore();
   const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -41,9 +41,16 @@ export default function AllExpensesPage() {
   });
   const [loading, setLoading] = useState(true);
 
-  const fetchExpenses = useCallback((page: number) => {
+  // Filters
+  const [filterGroup, setFilterGroup] = useState("");
+  const [filterFriend, setFilterFriend] = useState("");
+
+  const fetchExpenses = useCallback((page: number, gId?: string, fId?: string) => {
     setLoading(true);
-    fetch(`/api/expenses?page=${page}&limit=50`)
+    let url = `/api/expenses?page=${page}&limit=50`;
+    if (gId) url += `&groupId=${gId}`;
+    if (fId) url += `&friendId=${fId}`;
+    fetch(url)
       .then((r) => r.json())
       .then((data) => {
         setExpenses(data.expenses ?? []);
@@ -53,8 +60,8 @@ export default function AllExpensesPage() {
   }, []);
 
   useEffect(() => {
-    fetchExpenses(1);
-  }, [fetchExpenses]);
+    fetchExpenses(1, filterGroup || undefined, filterFriend || undefined);
+  }, [fetchExpenses, filterGroup, filterFriend]);
 
   // Group by month
   const byMonth: Record<string, ExpenseItem[]> = {};
@@ -68,7 +75,7 @@ export default function AllExpensesPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
           {t("nav.allExpenses")}
         </h1>
@@ -88,6 +95,38 @@ export default function AllExpensesPage() {
             {t("dashboard.settleUp")}
           </button>
         </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex gap-2 mb-4">
+        <select
+          value={filterGroup}
+          onChange={(e) => setFilterGroup(e.target.value)}
+          className="text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-3 py-2 text-[var(--color-text)] cursor-pointer"
+        >
+          <option value="">All groups</option>
+          {groups.map((g) => (
+            <option key={g.id} value={g.id}>{g.name}</option>
+          ))}
+        </select>
+        <select
+          value={filterFriend}
+          onChange={(e) => setFilterFriend(e.target.value)}
+          className="text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-3 py-2 text-[var(--color-text)] cursor-pointer"
+        >
+          <option value="">All friends</option>
+          {friends.map((f) => (
+            <option key={f.id} value={f.id}>{f.name}</option>
+          ))}
+        </select>
+        {(filterGroup || filterFriend) && (
+          <button
+            onClick={() => { setFilterGroup(""); setFilterFriend(""); }}
+            className="text-sm text-[var(--color-primary)] hover:underline px-2"
+          >
+            Clear filters
+          </button>
+        )}
       </div>
 
       {loading ? (

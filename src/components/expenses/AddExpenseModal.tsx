@@ -264,56 +264,80 @@ export default function AddExpenseModal() {
             </div>
           </div>
 
-          {/* 3. People — search + chips */}
+          {/* 3. People — top 3 + selected + search */}
           <div className="px-4 pb-3">
             <p className="text-xs font-medium text-[var(--color-text-tertiary)] mb-2">
               {t("expense.withYouAnd")}
             </p>
 
-            {/* Search input */}
-            {friends.length > 5 && (
-              <div className="relative mb-2">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
-                <input
-                  type="text"
-                  placeholder="Search friends..."
-                  value={friendSearch}
-                  onChange={(e) => setFriendSearch(e.target.value)}
-                  onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
-                  className="w-full pl-8 pr-3 py-2 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]"
-                />
+            {/* Selected friends (always shown) */}
+            {selectedFriendIds.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {selectedFriendIds.map((fid) => {
+                  const f = friends.find((fr) => fr.id === fid);
+                  if (!f) return null;
+                  return (
+                    <button key={fid} onClick={() => toggleFriend(fid)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-[var(--color-primary)] text-white border border-transparent transition-all duration-150"
+                    >
+                      <Check size={14} /> {f.name}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
-            {/* Friend chips */}
-            <div className="flex flex-wrap gap-2">
-              {filteredFriends.map((f) => {
-                const selected = selectedFriendIds.includes(f.id);
-                return (
-                  <button
-                    key={f.id}
-                    onClick={() => toggleFriend(f.id)}
-                    className={cn(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-all duration-150",
-                      selected
-                        ? "bg-[var(--color-primary)] text-white border-transparent"
-                        : "bg-[var(--color-surface)] text-[var(--color-text)] border-[var(--color-border-strong)] hover:border-[var(--color-primary)]"
-                    )}
+            {/* Top 3 unselected friends (quick picks) */}
+            {(() => {
+              const unselected = friends.filter((f) => !selectedFriendIds.includes(f.id));
+              const topFriends = friendSearch ? [] : unselected.slice(0, 3);
+              return topFriends.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {topFriends.map((f) => (
+                    <button key={f.id} onClick={() => toggleFriend(f.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border-strong)] hover:border-[var(--color-primary)] transition-all duration-150"
+                    >
+                      {f.name}
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
+
+            {/* Search */}
+            <div className="relative">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+              <input
+                type="text"
+                placeholder="Search friends..."
+                value={friendSearch}
+                onChange={(e) => setFriendSearch(e.target.value)}
+                onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
+                className="w-full pl-8 pr-3 py-2 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] outline-none focus:border-[var(--color-primary)]"
+              />
+            </div>
+
+            {/* Search results */}
+            {friendSearch && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {filteredFriends.filter((f) => !selectedFriendIds.includes(f.id)).map((f) => (
+                  <button key={f.id} onClick={() => { toggleFriend(f.id); setFriendSearch(""); }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border-strong)] hover:border-[var(--color-primary)] transition-all duration-150"
                   >
-                    {selected && <Check size={14} />}
                     {f.name}
                   </button>
-                );
-              })}
-              {filteredFriends.length === 0 && friendSearch && (
-                <p className="text-sm text-[var(--color-text-tertiary)] italic py-1">
-                  No friends matching &quot;{friendSearch}&quot;
-                </p>
-              )}
-              {friends.length === 0 && (
-                <p className="text-sm text-[var(--color-text-tertiary)] italic">No friends added yet</p>
-              )}
-            </div>
+                ))}
+                {filteredFriends.filter((f) => !selectedFriendIds.includes(f.id)).length === 0 && (
+                  <p className="text-sm text-[var(--color-text-tertiary)] italic py-1">
+                    No friends matching &quot;{friendSearch}&quot;
+                  </p>
+                )}
+              </div>
+            )}
+
+            {friends.length === 0 && (
+              <p className="text-sm text-[var(--color-text-tertiary)] italic mt-2">No friends added yet</p>
+            )}
           </div>
 
           {/* 4. Split line — only show when friends are selected */}

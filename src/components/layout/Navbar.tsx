@@ -2,10 +2,39 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
-import { Bell, ChevronDown, Globe, LogOut, Settings } from "lucide-react";
+import { Bell, ChevronDown, Globe, LogOut, Settings, Sun, Moon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import type { Locale } from "@/i18n/config";
+
+function useTheme() {
+  const [theme, setThemeState] = useState<"light" | "dark" | "system">("system");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (stored) {
+      setThemeState(stored);
+      document.documentElement.classList.toggle("dark", stored === "dark");
+    }
+  }, []);
+
+  const setTheme = (t: "light" | "dark" | "system") => {
+    setThemeState(t);
+    if (t === "system") {
+      localStorage.removeItem("theme");
+      document.documentElement.classList.remove("dark");
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      localStorage.setItem("theme", t);
+      document.documentElement.classList.toggle("dark", t === "dark");
+      document.documentElement.setAttribute("data-theme", t);
+    }
+  };
+
+  const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  return { theme, setTheme, isDark };
+}
 
 export default function Navbar() {
   const t = useTranslations();
@@ -15,6 +44,7 @@ export default function Navbar() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { isDark, setTheme } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -31,10 +61,13 @@ export default function Navbar() {
     router.replace(pathname, { locale: next as Locale });
   };
 
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
+
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        {/* Logo */}
         <Link
           href="/dashboard"
           className="text-base font-semibold text-[var(--color-text)] tracking-tight"
@@ -42,8 +75,16 @@ export default function Navbar() {
           {t("app.name")}
         </Link>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-all duration-200"
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+
           {/* Language toggle */}
           <button
             onClick={toggleLocale}
@@ -66,7 +107,7 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-[var(--color-hover)] transition-all duration-200"
               >
-                <div className="w-7 h-7 rounded-full bg-[var(--color-primary)]/12 flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
+                <div className="w-7 h-7 rounded-full bg-[var(--color-primary-light)] flex items-center justify-center text-xs font-semibold text-[var(--color-primary)]">
                   {session.user.name?.[0]?.toUpperCase() || "U"}
                 </div>
                 <ChevronDown size={12} className="text-[var(--color-text-tertiary)]" />

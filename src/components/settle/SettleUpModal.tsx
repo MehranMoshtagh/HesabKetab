@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useAppStore } from "@/stores/app-store";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useCallback } from "react";
-import { ArrowRight, ChevronDown, Check } from "lucide-react";
+import { ArrowRight, ChevronDown, Check, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { avatarColor, getInitial } from "@/lib/utils";
 
@@ -24,6 +24,8 @@ export default function SettleUpModal() {
   const [saving, setSaving] = useState(false);
   const [showPayerPicker, setShowPayerPicker] = useState(false);
   const [showPayeePicker, setShowPayeePicker] = useState(false);
+  const [payerSearch, setPayerSearch] = useState("");
+  const [payeeSearch, setPayeeSearch] = useState("");
 
   const resetForm = useCallback(() => {
     setPayerId(currentUserId);
@@ -116,18 +118,27 @@ export default function SettleUpModal() {
                 </span>
               </button>
               {showPayerPicker && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
-                  {allPeople.filter((p) => p.id !== payeeId).map((p) => (
-                    <button key={p.id}
-                      onClick={() => { setPayerId(p.id); setShowPayerPicker(false); }}
-                      className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
-                        payerId === p.id && "text-[var(--color-primary)] font-medium"
-                      )}
-                    >
-                      {payerId === p.id && <Check size={14} />}
-                      {p.name}
-                    </button>
-                  ))}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
+                  <div className="px-2 py-1.5">
+                    <div className="relative">
+                      <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                      <input type="text" placeholder="Search..." value={payerSearch} onChange={(e) => setPayerSearch(e.target.value)}
+                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                    </div>
+                  </div>
+                  <div className="max-h-48 overflow-y-auto">
+                    {allPeople.filter((p) => p.id !== payeeId && p.name.toLowerCase().includes(payerSearch.toLowerCase())).map((p) => (
+                      <button key={p.id}
+                        onClick={() => { setPayerId(p.id); setShowPayerPicker(false); setPayerSearch(""); }}
+                        className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
+                          payerId === p.id && "text-[var(--color-primary)] font-medium"
+                        )}
+                      >
+                        {payerId === p.id && <Check size={14} />}
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -157,18 +168,27 @@ export default function SettleUpModal() {
                 </span>
               </button>
               {showPayeePicker && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[160px]">
-                  {allPeople.filter((p) => p.id !== payerId).map((p) => (
-                    <button key={p.id}
-                      onClick={() => { setPayeeId(p.id); setShowPayeePicker(false); }}
-                      className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
-                        payeeId === p.id && "text-[var(--color-primary)] font-medium"
-                      )}
-                    >
-                      {payeeId === p.id && <Check size={14} />}
-                      {p.name}
-                    </button>
-                  ))}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
+                  <div className="px-2 py-1.5">
+                    <div className="relative">
+                      <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                      <input type="text" placeholder="Search..." value={payeeSearch} onChange={(e) => setPayeeSearch(e.target.value)}
+                        className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                    </div>
+                  </div>
+                  <div className="max-h-48 overflow-y-auto">
+                    {allPeople.filter((p) => p.id !== payerId && p.name.toLowerCase().includes(payeeSearch.toLowerCase())).map((p) => (
+                      <button key={p.id}
+                        onClick={() => { setPayeeId(p.id); setShowPayeePicker(false); setPayeeSearch(""); }}
+                        className={cn("w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--color-hover)]",
+                          payeeId === p.id && "text-[var(--color-primary)] font-medium"
+                        )}
+                      >
+                        {payeeId === p.id && <Check size={14} />}
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

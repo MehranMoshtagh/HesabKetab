@@ -103,9 +103,11 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
         </div>
 
         {/* Right side */}
-        <div className="text-end shrink-0 max-w-[140px]">
+        <div className="text-end shrink-0">
           {expense.group && (
-            <div className="text-[10px] text-[var(--color-text-tertiary)] truncate">{expense.group.name}</div>
+            <span className="inline-block text-[10px] font-medium text-[var(--color-primary)] bg-[var(--color-primary-light)] px-1.5 py-0.5 rounded mb-0.5">
+              {expense.group.name}
+            </span>
           )}
           <div className={`text-[11px] ${rightColor}`}>{rightLabel}</div>
           <div className={`text-sm font-semibold ${rightColor}`}>{rightAmount}</div>
