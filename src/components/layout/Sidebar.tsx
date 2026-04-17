@@ -39,7 +39,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
   );
 
   return (
-    <aside className="w-60 hidden lg:flex flex-col overflow-y-auto pt-4 pb-4 px-3 shrink-0">
+    <aside className="w-60 hidden md:flex flex-col overflow-y-auto pt-4 pb-4 px-3 shrink-0">
       {/* ── Main nav ── */}
       <nav className="space-y-1 mb-6">
         {navItems.map((item) => (

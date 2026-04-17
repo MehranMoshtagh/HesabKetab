@@ -34,6 +34,7 @@ function Landing({ locale }: { locale: string }) {
   const t = useTranslations("landing");
   const appName = useTranslations("app");
   const tAuth = useTranslations("auth");
+  const tPages = useTranslations("pages");
 
   const features = [
     { icon: Receipt, titleKey: "feature1Title" as const, descKey: "feature1Desc" as const },
@@ -268,9 +269,12 @@ function Landing({ locale }: { locale: string }) {
       {/* ─── FAQ ─── */}
       <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6 bg-[var(--color-surface)] border-t border-[var(--color-border)] scroll-mt-14">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-3 text-center">
             {t("faqTitle")}
           </h2>
+          <p className="text-[15px] text-[var(--color-text-secondary)] text-center mb-10">
+            {t("faqSubtitle")}
+          </p>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
               <details
@@ -289,6 +293,15 @@ function Landing({ locale }: { locale: string }) {
                 </div>
               </details>
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/faq"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-primary)] hover:underline"
+            >
+              {t("faqSeeAll")}
+              <ArrowRight size={15} className="rtl:-scale-x-100" />
+            </Link>
           </div>
         </div>
       </section>
@@ -324,7 +337,8 @@ function Landing({ locale }: { locale: string }) {
                 {t("footerSupport")}
               </p>
               <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-                <li><a href="#faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</a></li>
+                <li><Link href="/faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
+                <li><Link href="/support" className="hover:text-[var(--color-primary)] transition-colors">{tPages("supportTitle")}</Link></li>
               </ul>
             </div>
             <div>

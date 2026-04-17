@@ -24,7 +24,7 @@ export default function MobileNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 backdrop-blur-xl bg-[var(--color-glass)] border-t border-[var(--color-border)] z-40 lg:hidden safe-area-bottom">
+    <nav className="fixed bottom-0 inset-x-0 backdrop-blur-xl bg-[var(--color-glass)] border-t border-[var(--color-border)] z-40 md:hidden safe-area-bottom">
       <div className="flex items-center justify-around h-14">
         {items.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");

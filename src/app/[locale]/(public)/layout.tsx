@@ -43,6 +43,7 @@ function PublicNav({ locale }: { locale: string }) {
 function PublicFooter({ locale }: { locale: string }) {
   const appName = useTranslations("app");
   const t = useTranslations("landing");
+  const tPages = useTranslations("pages");
   return (
     <footer className="border-t border-[var(--color-border)] py-12 px-6">
       <div className="max-w-6xl mx-auto">
@@ -74,7 +75,8 @@ function PublicFooter({ locale }: { locale: string }) {
               {t("footerSupport")}
             </p>
             <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
-              <li><Link href="/#faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
+              <li><Link href="/faq" className="hover:text-[var(--color-primary)] transition-colors">{t("faqTitle")}</Link></li>
+              <li><Link href="/support" className="hover:text-[var(--color-primary)] transition-colors">{tPages("supportTitle")}</Link></li>
             </ul>
           </div>
           <div>
@@ -107,7 +109,7 @@ export default async function PublicLayout({
   return (
     <div className="min-h-screen bg-[var(--color-bg)] flex flex-col">
       <PublicNav locale={locale} />
-      <main className="flex-1 max-w-3xl mx-auto w-full px-6 py-16">
+      <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-16">
         {children}
       </main>
       <PublicFooter locale={locale} />

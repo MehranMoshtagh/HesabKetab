@@ -43,7 +43,7 @@ export default function Navbar() {
           {/* Hamburger — mobile only */}
           <button
             onClick={() => setDrawerOpen(true)}
-            className="lg:hidden p-2 -ms-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-colors"
+            className="md:hidden p-2 -ms-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-colors"
             aria-label="Open menu"
           >
             <Menu size={20} />
