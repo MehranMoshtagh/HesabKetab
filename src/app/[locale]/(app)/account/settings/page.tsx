@@ -4,7 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "@/i18n/routing";
 import { currencies } from "@/lib/currencies";
-import { ChevronDown, Search, Check } from "lucide-react";
+import { ChevronDown, Search, Check, Mail, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 
@@ -311,10 +311,20 @@ export default function AccountSettingsPage() {
           {t("notifications")}
         </h2>
 
-        {/* Header */}
-        <div className="flex items-center justify-end gap-8 mb-2 pe-1">
-          <span className="text-xs text-[var(--color-text-secondary)]">📧</span>
-          <span className="text-xs text-[var(--color-text-secondary)]">📱</span>
+        {/* Channel header — proper icons + labels */}
+        <div className="flex items-center justify-end gap-4 mb-3 pe-1">
+          <div className="flex flex-col items-center gap-1 w-12" title="Email notifications">
+            <div className="w-8 h-8 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center">
+              <Mail size={15} className="text-[var(--color-primary)]" />
+            </div>
+            <span className="text-[10px] font-medium text-[var(--color-text-tertiary)]">Email</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 w-12" title="Push notifications">
+            <div className="w-8 h-8 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center">
+              <Smartphone size={15} className="text-[var(--color-primary)]" />
+            </div>
+            <span className="text-[10px] font-medium text-[var(--color-text-tertiary)]">Push</span>
+          </div>
         </div>
 
         {/* Group: Groups & Friends */}
@@ -330,15 +340,19 @@ export default function AccountSettingsPage() {
                 className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
-                <div className="flex items-center gap-6">
-                  <ToggleSwitch
-                    checked={notifPrefs.email?.[n.key] ?? true}
-                    onChange={() => toggleNotif("email", n.key)}
-                  />
-                  <ToggleSwitch
-                    checked={notifPrefs.push?.[n.key] ?? true}
-                    onChange={() => toggleNotif("push", n.key)}
-                  />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.email?.[n.key] ?? true}
+                      onChange={() => toggleNotif("email", n.key)}
+                    />
+                  </div>
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.push?.[n.key] ?? true}
+                      onChange={() => toggleNotif("push", n.key)}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -357,15 +371,19 @@ export default function AccountSettingsPage() {
                 className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
-                <div className="flex items-center gap-6">
-                  <ToggleSwitch
-                    checked={notifPrefs.email?.[n.key] ?? true}
-                    onChange={() => toggleNotif("email", n.key)}
-                  />
-                  <ToggleSwitch
-                    checked={notifPrefs.push?.[n.key] ?? true}
-                    onChange={() => toggleNotif("push", n.key)}
-                  />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.email?.[n.key] ?? true}
+                      onChange={() => toggleNotif("email", n.key)}
+                    />
+                  </div>
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.push?.[n.key] ?? true}
+                      onChange={() => toggleNotif("push", n.key)}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
@@ -384,15 +402,19 @@ export default function AccountSettingsPage() {
                 className="flex items-center justify-between py-2"
               >
                 <span className="text-sm text-[var(--color-text)]">{t(n.key)}</span>
-                <div className="flex items-center gap-6">
-                  <ToggleSwitch
-                    checked={notifPrefs.email?.[n.key] ?? true}
-                    onChange={() => toggleNotif("email", n.key)}
-                  />
-                  <ToggleSwitch
-                    checked={notifPrefs.push?.[n.key] ?? true}
-                    onChange={() => toggleNotif("push", n.key)}
-                  />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.email?.[n.key] ?? true}
+                      onChange={() => toggleNotif("email", n.key)}
+                    />
+                  </div>
+                  <div className="w-12 flex justify-center">
+                    <ToggleSwitch
+                      checked={notifPrefs.push?.[n.key] ?? true}
+                      onChange={() => toggleNotif("push", n.key)}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
