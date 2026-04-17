@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useState } from "react";
+import { Mail } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth");
@@ -17,7 +18,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8">
         <div className="text-center mb-8">
           <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
             {appName("name")}
@@ -29,7 +30,7 @@ export default function ForgotPasswordPage() {
 
         {sent ? (
           <div className="text-center">
-            <div className="bg-[#34C759]/8 text-[var(--color-positive)] text-sm rounded-xl p-4 mb-5">
+            <div className="bg-[var(--color-positive-light)] text-[var(--color-positive)] text-sm rounded-xl p-4 mb-5">
               {t("emailSent")}
             </div>
             <Link
@@ -49,13 +50,17 @@ export default function ForgotPasswordPage() {
                 <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
                   {t("email")}
                 </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
-                />
+                <div className="relative">
+                  <Mail size={16} className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] pointer-events-none" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="you@example.com"
+                    className="w-full border border-[var(--color-border-strong)] rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+                  />
+                </div>
               </div>
 
               <button

@@ -6,6 +6,11 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -15,10 +20,27 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
+    if (email && !isValidEmail(email)) {
+      setEmailError(t("errors.invalidEmail"));
+    } else {
+      setEmailError("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setEmailTouched(true);
+    if (!isValidEmail(email)) {
+      setEmailError(t("errors.invalidEmail"));
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -38,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[rgba(0,0,0,0.06)] p-8">
+      <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-8">
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="text-xl font-semibold text-[var(--color-text)] tracking-tight">
@@ -52,7 +74,7 @@ export default function LoginPage() {
         {/* Google OAuth */}
         <button
           onClick={() => signIn("google", { callbackUrl: `/${locale}/dashboard` })}
-          className="w-full flex items-center justify-center gap-2.5 border border-[rgba(0,0,0,0.12)] rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--color-text)] hover:bg-[rgba(0,0,0,0.02)] transition-all duration-200 mb-5"
+          className="w-full flex items-center justify-center gap-2.5 border border-[var(--color-border-strong)] rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-hover)] transition-all duration-200 mb-5"
         >
           <svg viewBox="0 0 24 24" width="18" height="18">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
@@ -65,7 +87,7 @@ export default function LoginPage() {
 
         <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[rgba(0,0,0,0.06)]" />
+            <div className="w-full border-t border-[var(--color-border)]" />
           </div>
           <div className="relative flex justify-center text-xs">
             <span className="bg-[var(--color-surface)] px-3 text-[var(--color-text-tertiary)]">
@@ -77,35 +99,65 @@ export default function LoginPage() {
         {/* Email/Password form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-[#FF3B30]/8 text-[var(--color-negative)] text-sm rounded-xl p-3">
-              {error}
+            <div className="flex items-start gap-2 bg-[var(--color-negative-light)] text-[var(--color-negative)] text-sm rounded-xl p-3">
+              <AlertCircle size={16} className="shrink-0 mt-0.5" />
+              <span>{error}</span>
             </div>
           )}
 
+          {/* Email with icon */}
           <div>
             <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
               {t("email")}
             </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
-            />
+            <div className="relative">
+              <Mail size={16} className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] pointer-events-none" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (emailTouched) setEmailError(""); }}
+                onBlur={handleEmailBlur}
+                required
+                placeholder="you@example.com"
+                className={`w-full border rounded-xl ps-10 pe-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 transition-all duration-200 ${
+                  emailError
+                    ? "border-[var(--color-negative)] focus:border-[var(--color-negative)]"
+                    : "border-[var(--color-border-strong)] focus:border-[var(--color-primary)]"
+                }`}
+              />
+            </div>
+            {emailError && (
+              <p className="flex items-center gap-1 text-xs text-[var(--color-negative)] mt-1.5">
+                <AlertCircle size={12} />
+                {emailError}
+              </p>
+            )}
           </div>
 
+          {/* Password with icon and visibility toggle */}
           <div>
             <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
               {t("password")}
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full border border-[rgba(0,0,0,0.12)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
-            />
+            <div className="relative">
+              <Lock size={16} className="absolute start-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] pointer-events-none" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full border border-[var(--color-border-strong)] rounded-xl ps-10 pe-10 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
 
           <div className="text-end">
