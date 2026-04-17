@@ -234,22 +234,32 @@ function Landing({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ─── CTA Banner — always dark regardless of theme ─── */}
+      {/* ─── CTA Banner — brand-colored, consistent in both themes ─── */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto bg-[#1D1D1F] rounded-3xl p-8 sm:p-12 md:p-16 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-[-0.025em] mb-4">
-            {t("ctaTitle")}
-          </h2>
-          <p className="text-base sm:text-lg text-white/60 mb-8 max-w-xl mx-auto">
-            {t("ctaSubtitle")}
-          </p>
-          <Link
-            href="/signup"
-            className="inline-flex items-center gap-2 bg-white text-[#1D1D1F] text-base sm:text-lg font-medium px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
-          >
-            {t("ctaButton")}
-            <ArrowRight size={18} />
-          </Link>
+        <div className="max-w-4xl mx-auto bg-[var(--color-primary)] rounded-3xl p-8 sm:p-12 md:p-16 text-center relative overflow-hidden">
+          {/* Subtle gradient overlay for depth */}
+          <div
+            className="absolute inset-0 opacity-50 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at top, rgba(255,255,255,0.15) 0%, transparent 60%)",
+            }}
+          />
+          <div className="relative">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-[-0.025em] mb-4">
+              {t("ctaTitle")}
+            </h2>
+            <p className="text-base sm:text-lg text-white/85 mb-8 max-w-xl mx-auto">
+              {t("ctaSubtitle")}
+            </p>
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-2 bg-white text-[var(--color-primary)] text-base sm:text-lg font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-gray-100 active:scale-[0.98] transition-all duration-200 shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+            >
+              {t("ctaButton")}
+              <ArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
