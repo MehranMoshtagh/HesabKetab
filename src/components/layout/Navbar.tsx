@@ -2,40 +2,12 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
-import { Bell, ChevronDown, Globe, LogOut, Settings, Sun, Moon, Menu } from "lucide-react";
+import { Bell, ChevronDown, Globe, LogOut, Settings, Menu } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { Locale } from "@/i18n/config";
 import MobileDrawer from "./MobileDrawer";
-
-function useTheme() {
-  const [theme, setThemeState] = useState<"light" | "dark" | "system">("system");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (stored) {
-      setThemeState(stored);
-      document.documentElement.classList.toggle("dark", stored === "dark");
-    }
-  }, []);
-
-  const setTheme = (t: "light" | "dark" | "system") => {
-    setThemeState(t);
-    if (t === "system") {
-      localStorage.removeItem("theme");
-      document.documentElement.classList.remove("dark");
-      document.documentElement.removeAttribute("data-theme");
-    } else {
-      localStorage.setItem("theme", t);
-      document.documentElement.classList.toggle("dark", t === "dark");
-      document.documentElement.setAttribute("data-theme", t);
-    }
-  };
-
-  const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  return { theme, setTheme, isDark };
-}
+import ThemeToggle from "@/components/shared/ThemeToggle";
 
 export default function Navbar() {
   const t = useTranslations();
@@ -46,7 +18,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { isDark, setTheme } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -61,10 +32,6 @@ export default function Navbar() {
   const toggleLocale = () => {
     const next = locale === "en" ? "fa" : "en";
     router.replace(pathname, { locale: next as Locale });
-  };
-
-  const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
   };
 
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
@@ -90,14 +57,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-1">
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-all duration-200"
-            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDark ? <Sun size={17} /> : <Moon size={17} />}
-          </button>
+          <ThemeToggle />
 
           {/* Language toggle */}
           <button

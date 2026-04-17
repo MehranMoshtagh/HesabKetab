@@ -13,6 +13,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import LandingLanguageToggle from "@/components/landing/LandingLanguageToggle";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 
 export default async function LandingPage({
   params,
@@ -74,6 +75,7 @@ function Landing({ locale }: { locale: string }) {
             </span>
           </Link>
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <ThemeToggle />
             <LandingLanguageToggle locale={locale} />
             <Link
               href="/login"

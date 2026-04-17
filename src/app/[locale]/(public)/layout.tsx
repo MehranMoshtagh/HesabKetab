@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import LandingLanguageToggle from "@/components/landing/LandingLanguageToggle";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 
 function PublicNav({ locale }: { locale: string }) {
   const appName = useTranslations("app");
@@ -17,6 +18,7 @@ function PublicNav({ locale }: { locale: string }) {
           </span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <ThemeToggle />
           <LandingLanguageToggle locale={locale} />
           <Link
             href="/login"
