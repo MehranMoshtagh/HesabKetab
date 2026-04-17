@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/app-store";
 
@@ -65,7 +66,12 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
     f.name.toLowerCase().includes(lowerFilter)
   );
 
-  return (
+  // Mount-only flag for SSR safety with createPortal
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+
+  const drawer = (
     <>
       {/* Backdrop */}
       <div
@@ -228,4 +234,6 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
       </aside>
     </>
   );
+
+  return createPortal(drawer, document.body);
 }
