@@ -64,26 +64,26 @@ function Landing({ locale }: { locale: string }) {
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ─── Navbar ─── */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-[var(--color-primary)] rounded-xl flex items-center justify-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
+          <Link href="/" className="flex items-center gap-2 shrink-0 min-w-0">
+            <div className="w-8 h-8 bg-[var(--color-primary)] rounded-xl flex items-center justify-center shrink-0">
               <span className="text-white text-sm font-bold">H</span>
             </div>
-            <span className="text-[var(--color-text)] text-[15px] font-semibold tracking-tight">
+            <span className="text-[var(--color-text)] text-[15px] font-semibold tracking-tight truncate">
               {appName("name")}
             </span>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <LandingLanguageToggle locale={locale} />
             <Link
               href="/login"
-              className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] px-3.5 py-2 rounded-xl hover:bg-[rgba(0,0,0,0.04)] transition-all duration-200"
+              className="hidden sm:inline-flex text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] px-3.5 py-2 rounded-xl hover:bg-[var(--color-hover)] transition-all duration-200"
             >
               {t("logIn")}
             </Link>
             <Link
               href="/signup"
-              className="bg-[var(--color-primary)] text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_1px_3px_rgba(0,113,227,0.3)]"
+              className="bg-[var(--color-primary)] text-white text-xs sm:text-sm font-medium px-3 sm:px-5 py-1.5 sm:py-2 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_1px_3px_var(--color-primary-shadow)] whitespace-nowrap"
             >
               {t("getStarted")}
             </Link>
@@ -92,25 +92,25 @@ function Landing({ locale }: { locale: string }) {
       </nav>
 
       {/* ─── Hero ─── */}
-      <section className="pt-24 pb-20 px-6">
+      <section className="pt-12 sm:pt-24 pb-12 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-[3.5rem] font-bold text-[var(--color-text)] mb-6 leading-[1.1] tracking-[-0.03em]">
+          <h1 className="text-3xl sm:text-4xl md:text-[3.5rem] font-bold text-[var(--color-text)] mb-4 sm:mb-6 leading-[1.1] tracking-[-0.03em]">
             {t("hero")}
           </h1>
-          <p className="text-lg md:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
             {t("subtitle")}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto">
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white text-lg font-medium px-8 py-3.5 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_4px_12px_rgba(0,113,227,0.3)]"
+              className="inline-flex items-center justify-center gap-2 bg-[var(--color-primary)] text-white text-base sm:text-lg font-medium px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-[var(--color-primary-hover)] transition-all duration-200 shadow-[0_4px_12px_var(--color-primary-shadow)]"
             >
               {t("getStarted")}
               <ArrowRight size={18} />
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full border border-[rgba(0,0,0,0.12)] hover:bg-[var(--color-surface)] hover:shadow-[var(--shadow-card)] transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 text-[var(--color-text)] text-base sm:text-lg font-medium px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border border-[var(--color-border-strong)] hover:bg-[var(--color-surface)] hover:shadow-[var(--shadow-card)] transition-all duration-200"
             >
               {t("logIn")}
             </Link>
@@ -122,7 +122,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── App Preview Mock ─── */}
-      <section className="pb-24 px-6">
+      <section className="pb-16 sm:pb-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-[var(--color-surface)] rounded-3xl shadow-[var(--shadow-elevated)] border border-[var(--color-border)] overflow-hidden">
             {/* Mock title bar — clean, no URL */}
@@ -169,7 +169,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Features Grid ─── */}
-      <section id="features" className="py-24 px-6 bg-[var(--color-surface)] border-y border-[var(--color-border)]">
+      <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-4">
@@ -204,7 +204,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── How It Works ─── */}
-      <section className="py-24 px-6">
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-3">
@@ -217,7 +217,7 @@ function Landing({ locale }: { locale: string }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((s, i) => (
               <div key={i} className="text-center">
-                <div className="w-16 h-16 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold shadow-[0_4px_12px_rgba(0,113,227,0.3)]">
+                <div className="w-16 h-16 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold shadow-[0_4px_12px_var(--color-primary-shadow)]">
                   {s.num}
                 </div>
                 <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2">
@@ -232,18 +232,18 @@ function Landing({ locale }: { locale: string }) {
         </div>
       </section>
 
-      {/* ─── CTA Banner ─── */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto bg-[var(--color-text)] rounded-3xl p-12 md:p-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-[-0.025em] mb-4">
+      {/* ─── CTA Banner — always dark regardless of theme ─── */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto bg-[#1D1D1F] rounded-3xl p-8 sm:p-12 md:p-16 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-[-0.025em] mb-4">
             {t("ctaTitle")}
           </h2>
-          <p className="text-lg text-white/60 mb-8 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-white/60 mb-8 max-w-xl mx-auto">
             {t("ctaSubtitle")}
           </p>
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 bg-[var(--color-surface)] text-[var(--color-text)] text-lg font-medium px-8 py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
+            className="inline-flex items-center gap-2 bg-white text-[#1D1D1F] text-base sm:text-lg font-medium px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-gray-100 transition-all duration-200"
           >
             {t("ctaButton")}
             <ArrowRight size={18} />
@@ -252,7 +252,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section id="faq" className="py-24 px-6 bg-[var(--color-surface)] border-t border-[var(--color-border)] scroll-mt-14">
+      <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6 bg-[var(--color-surface)] border-t border-[var(--color-border)] scroll-mt-14">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text)] tracking-[-0.025em] mb-12 text-center">
             {t("faqTitle")}
@@ -280,7 +280,7 @@ function Landing({ locale }: { locale: string }) {
       </section>
 
       {/* ─── Footer ─── */}
-      <footer className="border-t border-[var(--color-border)] py-12 px-6">
+      <footer className="border-t border-[var(--color-border)] py-10 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div className="md:col-span-1">

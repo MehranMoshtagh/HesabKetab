@@ -18,7 +18,7 @@ export default function FeaturesPage() {
         {features.map((key) => (
           <div
             key={key}
-            className="flex items-start gap-3 bg-[var(--color-surface)] rounded-xl border border-[rgba(0,0,0,0.06)] px-5 py-4"
+            className="flex items-start gap-3 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] px-5 py-4"
           >
             <div className="w-6 h-6 bg-[var(--color-positive)]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
               <Check size={14} className="text-[var(--color-positive)]" />
