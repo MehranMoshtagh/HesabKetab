@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { AlertCircle, CheckCircle2, HelpCircle, LifeBuoy, Mail, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CustomSelect from "@/components/shared/CustomSelect";
 
 type Category = "bug" | "account" | "feedback" | "other";
 
@@ -184,23 +185,18 @@ export default function SupportPage() {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
-            {t("supportFormCategory")}
-          </label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as Category)}
-            required
-            className="w-full border border-[var(--color-border-strong)] rounded-xl ps-3.5 pe-9 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 focus:border-[var(--color-primary)] transition-all duration-200"
-          >
-            <option value="" disabled>{t("supportFormCategoryPlaceholder")}</option>
-            <option value="bug">{t("supportFormCategoryBug")}</option>
-            <option value="account">{t("supportFormCategoryAccount")}</option>
-            <option value="feedback">{t("supportFormCategoryFeedback")}</option>
-            <option value="other">{t("supportFormCategoryOther")}</option>
-          </select>
-        </div>
+        <CustomSelect
+          label={t("supportFormCategory")}
+          value={category}
+          onChange={(v) => setCategory(v as Category)}
+          placeholder={t("supportFormCategoryPlaceholder")}
+          options={[
+            { value: "bug", label: t("supportFormCategoryBug") },
+            { value: "account", label: t("supportFormCategoryAccount") },
+            { value: "feedback", label: t("supportFormCategoryFeedback") },
+            { value: "other", label: t("supportFormCategoryOther") },
+          ]}
+        />
 
         <div>
           <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
