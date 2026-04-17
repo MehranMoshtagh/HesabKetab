@@ -1,9 +1,10 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState, useCallback } from "react";
-import { Plus, HandCoins, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Plus, HandCoins, ChevronDown, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { useAppStore } from "@/stores/app-store";
+import { cn } from "@/lib/utils";
 import ExpenseListItem from "@/components/expenses/ExpenseListItem";
 import MonthHeader from "@/components/expenses/MonthHeader";
 
@@ -44,12 +45,35 @@ export default function AllExpensesPage() {
   // Filters
   const [filterGroup, setFilterGroup] = useState("");
   const [filterFriend, setFilterFriend] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [showGroupPicker, setShowGroupPicker] = useState(false);
+  const [showFriendPicker, setShowFriendPicker] = useState(false);
+  const [friendFilterSearch, setFriendFilterSearch] = useState("");
+  const groupPickerRef = useRef<HTMLDivElement>(null);
+  const friendPickerRef = useRef<HTMLDivElement>(null);
 
-  const fetchExpenses = useCallback((page: number, gId?: string, fId?: string) => {
+  // Close pickers on outside click
+  useEffect(() => {
+    if (!showGroupPicker && !showFriendPicker) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (showGroupPicker && groupPickerRef.current && !groupPickerRef.current.contains(target)) setShowGroupPicker(false);
+      if (showFriendPicker && friendPickerRef.current && !friendPickerRef.current.contains(target)) setShowFriendPicker(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showGroupPicker, showFriendPicker]);
+
+  const fetchExpenses = useCallback((page: number, gId?: string, fId?: string, days?: string) => {
     setLoading(true);
     let url = `/api/expenses?page=${page}&limit=50`;
     if (gId) url += `&groupId=${gId}`;
     if (fId) url += `&friendId=${fId}`;
+    if (days) {
+      const since = new Date();
+      since.setDate(since.getDate() - parseInt(days));
+      url += `&since=${since.toISOString().split("T")[0]}`;
+    }
     fetch(url)
       .then((r) => r.json())
       .then((data) => {
@@ -60,8 +84,8 @@ export default function AllExpensesPage() {
   }, []);
 
   useEffect(() => {
-    fetchExpenses(1, filterGroup || undefined, filterFriend || undefined);
-  }, [fetchExpenses, filterGroup, filterFriend]);
+    fetchExpenses(1, filterGroup || undefined, filterFriend || undefined, filterDate || undefined);
+  }, [fetchExpenses, filterGroup, filterFriend, filterDate]);
 
   // Group by month
   const byMonth: Record<string, ExpenseItem[]> = {};
@@ -98,33 +122,107 @@ export default function AllExpensesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-4">
-        <select
-          value={filterGroup}
-          onChange={(e) => setFilterGroup(e.target.value)}
-          className="text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-3 py-2 text-[var(--color-text)] cursor-pointer"
-        >
-          <option value="">All groups</option>
-          {groups.map((g) => (
-            <option key={g.id} value={g.id}>{g.name}</option>
-          ))}
-        </select>
-        <select
-          value={filterFriend}
-          onChange={(e) => setFilterFriend(e.target.value)}
-          className="text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-3 py-2 text-[var(--color-text)] cursor-pointer"
-        >
-          <option value="">All friends</option>
-          {friends.map((f) => (
-            <option key={f.id} value={f.id}>{f.name}</option>
-          ))}
-        </select>
-        {(filterGroup || filterFriend) && (
+      <div className="flex flex-wrap gap-2 mb-4">
+        {/* Group filter */}
+        <div className="relative" ref={groupPickerRef}>
           <button
-            onClick={() => { setFilterGroup(""); setFilterFriend(""); }}
-            className="text-sm text-[var(--color-primary)] hover:underline px-2"
+            onClick={() => { setShowGroupPicker(!showGroupPicker); setShowFriendPicker(false); }}
+            className={cn(
+              "flex items-center gap-1.5 text-sm px-3 py-2 rounded-xl border transition-all duration-150",
+              filterGroup
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] border-[var(--color-primary)]"
+                : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:border-[var(--color-primary)]"
+            )}
           >
-            Clear filters
+            {filterGroup ? groups.find((g) => g.id === filterGroup)?.name : "All groups"}
+            <ChevronDown size={13} />
+          </button>
+          {showGroupPicker && (
+            <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[180px] max-h-60 overflow-y-auto">
+              <button
+                onClick={() => { setFilterGroup(""); setShowGroupPicker(false); }}
+                className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", !filterGroup && "text-[var(--color-primary)] font-medium")}
+              >All groups</button>
+              {groups.map((g) => (
+                <button key={g.id}
+                  onClick={() => { setFilterGroup(g.id); setShowGroupPicker(false); }}
+                  className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", filterGroup === g.id && "text-[var(--color-primary)] font-medium")}
+                >{g.name}</button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Friend filter */}
+        <div className="relative" ref={friendPickerRef}>
+          <button
+            onClick={() => { setShowFriendPicker(!showFriendPicker); setShowGroupPicker(false); }}
+            className={cn(
+              "flex items-center gap-1.5 text-sm px-3 py-2 rounded-xl border transition-all duration-150",
+              filterFriend
+                ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] border-[var(--color-primary)]"
+                : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:border-[var(--color-primary)]"
+            )}
+          >
+            {filterFriend ? friends.find((f) => f.id === filterFriend)?.name : "All friends"}
+            <ChevronDown size={13} />
+          </button>
+          {showFriendPicker && (
+            <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 min-w-[200px] w-56">
+              <div className="px-2 py-1.5">
+                <div className="relative">
+                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                  <input type="text" placeholder="Search..." value={friendFilterSearch}
+                    onChange={(e) => setFriendFilterSearch(e.target.value)}
+                    className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]" />
+                </div>
+              </div>
+              <div className="max-h-48 overflow-y-auto">
+                <button
+                  onClick={() => { setFilterFriend(""); setShowFriendPicker(false); setFriendFilterSearch(""); }}
+                  className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", !filterFriend && "text-[var(--color-primary)] font-medium")}
+                >All friends</button>
+                {friends.filter((f) => f.name.toLowerCase().includes(friendFilterSearch.toLowerCase())).map((f) => (
+                  <button key={f.id}
+                    onClick={() => { setFilterFriend(f.id); setShowFriendPicker(false); setFriendFilterSearch(""); }}
+                    className={cn("w-full text-start px-3 py-2 text-sm hover:bg-[var(--color-hover)]", filterFriend === f.id && "text-[var(--color-primary)] font-medium")}
+                  >{f.name}</button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Date filter pills */}
+        <div className="flex gap-1">
+          {[
+            { value: "", label: "All time" },
+            { value: "30", label: "30 days" },
+            { value: "90", label: "3 months" },
+            { value: "365", label: "1 year" },
+          ].map((d) => (
+            <button
+              key={d.value}
+              onClick={() => setFilterDate(d.value)}
+              className={cn(
+                "text-xs px-3 py-2 rounded-xl border transition-all duration-150",
+                filterDate === d.value
+                  ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] border-[var(--color-primary)]"
+                  : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:border-[var(--color-primary)]"
+              )}
+            >
+              {d.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Clear */}
+        {(filterGroup || filterFriend || filterDate) && (
+          <button
+            onClick={() => { setFilterGroup(""); setFilterFriend(""); setFilterDate(""); }}
+            className="flex items-center gap-1 text-xs text-[var(--color-primary)] hover:underline px-1"
+          >
+            <X size={12} /> Clear
           </button>
         )}
       </div>

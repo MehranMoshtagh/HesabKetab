@@ -52,8 +52,11 @@ export async function GET(req: NextRequest) {
     ],
   };
 
+  const since = searchParams.get("since");
+
   if (groupId) where.groupId = groupId;
   if (category) where.category = category;
+  if (since) where.date = { gte: new Date(since) };
 
   if (friendId) {
     where.AND = [

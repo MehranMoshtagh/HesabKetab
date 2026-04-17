@@ -39,7 +39,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
   );
 
   return (
-    <aside className="w-60 min-h-[calc(100vh-3.5rem)] pt-4 pb-6 px-3 hidden lg:flex flex-col border-e border-[var(--color-border)] bg-[var(--color-surface)]/50">
+    <aside className="w-60 hidden lg:flex flex-col overflow-y-auto pt-4 pb-4 px-3 shrink-0">
       {/* ── Main nav ── */}
       <nav className="space-y-1 mb-6">
         {navItems.map((item) => (
@@ -89,13 +89,13 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             <Plus size={14} />
           </Link>
         </div>
-        <div className="space-y-0.5">
+        <div className="space-y-0.5 max-h-[240px] overflow-y-auto">
           {filteredGroups.length === 0 && filter && (
             <p className="px-3 py-2 text-xs text-[var(--color-text-tertiary)]">
               {t("common.noResults")}
             </p>
           )}
-          {filteredGroups.map((group) => (
+          {filteredGroups.slice(0, filter ? 20 : 10).map((group) => (
             <Link
               key={group.id}
               href={`/groups/${group.id}`}
@@ -129,7 +129,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             <Plus size={14} />
           </Link>
         </div>
-        <div className="space-y-0.5">
+        <div className="space-y-0.5 max-h-[280px] overflow-y-auto">
           {filteredFriends.length === 0 && filter && (
             <p className="px-3 py-2 text-xs text-[var(--color-text-tertiary)]">
               {t("common.noResults")}

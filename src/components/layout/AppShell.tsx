@@ -14,14 +14,14 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
   const { friends, groups } = useAppStore();
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="h-screen flex flex-col bg-[var(--color-bg)]">
       <Navbar />
-      <div className="flex max-w-7xl mx-auto">
+      <div className="flex flex-1 max-w-7xl mx-auto w-full overflow-hidden">
         <Sidebar
           groups={groups.map((g) => ({ id: g.id, name: g.name }))}
           friends={friends.map((f) => ({ id: f.id, name: f.name }))}
         />
-        <main className="flex-1 p-5 lg:p-6 min-h-[calc(100vh-3.5rem)] pb-20 lg:pb-6">
+        <main className="flex-1 overflow-y-auto p-5 lg:p-6 pb-20 lg:pb-6">
           {children}
         </main>
       </div>
