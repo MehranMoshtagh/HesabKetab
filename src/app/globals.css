@@ -55,34 +55,40 @@
 /* ─── Dark Mode (system preference OR manual toggle via data-theme) ─── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-primary: #0A84FF;
-    --color-primary-hover: #409CFF;
-    --color-primary-light: rgba(10, 132, 255, 0.15);
-    --color-primary-shadow: rgba(10, 132, 255, 0.3);
+    /* Brand — slightly brighter Apple blue for dark bg */
+    --color-primary: #3B82F6;
+    --color-primary-hover: #60A5FA;
+    --color-primary-light: rgba(59, 130, 246, 0.15);
+    --color-primary-shadow: rgba(59, 130, 246, 0.35);
 
-    --color-surface: #1C1C1E;
-    --color-bg: #000000;
-    --color-hover: rgba(255, 255, 255, 0.06);
-    --color-active: rgba(255, 255, 255, 0.1);
-    --color-glass: rgba(28, 28, 30, 0.8);
+    /* Surfaces — Linear-inspired neutral dark with subtle elevation */
+    --color-bg: #17171A;          /* Soft near-black, NOT pure black */
+    --color-surface: #1E1E22;     /* Card surface — clearly elevated from bg */
+    --color-hover: rgba(255, 255, 255, 0.05);
+    --color-active: rgba(255, 255, 255, 0.09);
+    --color-glass: rgba(23, 23, 26, 0.75);
 
-    --color-text: #F5F5F7;
-    --color-text-secondary: #98989D;
-    --color-text-tertiary: #636366;
+    /* Typography — warmer whites, easier on eyes */
+    --color-text: #EDEDEF;
+    --color-text-secondary: #9B9BA3;
+    --color-text-tertiary: #6B6B73;
 
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-strong: rgba(255, 255, 255, 0.16);
+    /* Borders — crisp but subtle */
+    --color-border: rgba(255, 255, 255, 0.07);
+    --color-border-strong: rgba(255, 255, 255, 0.14);
 
-    --color-positive: #30D158;
-    --color-positive-light: rgba(48, 209, 88, 0.15);
-    --color-negative: #FF453A;
-    --color-negative-light: rgba(255, 69, 58, 0.15);
-    --color-warning: #FF9F0A;
-    --color-warning-light: rgba(255, 159, 10, 0.15);
+    /* Semantic */
+    --color-positive: #34D399;
+    --color-positive-light: rgba(52, 211, 153, 0.13);
+    --color-negative: #F87171;
+    --color-negative-light: rgba(248, 113, 113, 0.13);
+    --color-warning: #FBBF24;
+    --color-warning-light: rgba(251, 191, 36, 0.13);
 
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-button: 0 1px 3px rgba(0, 0, 0, 0.3);
+    /* Elevation — deeper shadows for separation */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-button: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 }
 
