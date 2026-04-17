@@ -251,14 +251,7 @@ export default function AllExpensesPage() {
                   <MonthHeader monthKey={month} />
                   <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] divide-y divide-[var(--color-border)]">
                     {monthExpenses.map((exp) => (
-                      <div key={exp.id} className="relative">
-                        <ExpenseListItem expense={exp} />
-                        {exp.group && (
-                          <span className="absolute top-1 end-1 text-[10px] bg-[var(--color-hover)] text-[var(--color-text-secondary)] px-1.5 py-0.5 rounded">
-                            {exp.group.name}
-                          </span>
-                        )}
-                      </div>
+                      <ExpenseListItem key={exp.id} expense={exp} />
                     ))}
                   </div>
                 </div>

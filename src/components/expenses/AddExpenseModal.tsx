@@ -405,7 +405,7 @@ export default function AddExpenseModal() {
                 value={groupId ?? ""}
                 onChange={(e) => setGroupId(e.target.value || null)}
                 onFocus={() => { setShowCategoryPicker(false); setShowSplitPanel(false); }}
-                className="flex-1 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] cursor-pointer"
+                className="flex-1 text-sm bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl px-3 py-2.5 text-[var(--color-text)] cursor-pointer appearance-none bg-[length:16px] bg-no-repeat bg-[position:right_12px_center] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2386868B%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')]"
               >
                 <option value="">{t("expense.noGroup")}</option>
                 {groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}

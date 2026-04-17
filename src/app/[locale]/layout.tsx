@@ -28,7 +28,7 @@ export default async function LocaleLayout({
   const isFa = locale === "fa";
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         {isFa && (
           <link
@@ -36,9 +36,18 @@ export default async function LocaleLayout({
             rel="stylesheet"
           />
         )}
+        {/* Prevent theme flash — apply stored theme before paint */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          try {
+            var t = localStorage.getItem('theme');
+            if (t === 'dark' || t === 'light') {
+              document.documentElement.setAttribute('data-theme', t);
+            }
+          } catch(e) {}
+        ` }} />
       </head>
       <body
-        className={`min-h-screen bg-[#eeeeee] antialiased ${isFa ? "font-[Vazirmatn]" : ""}`}
+        className={`min-h-screen bg-[var(--color-bg)] antialiased ${isFa ? "font-[Vazirmatn]" : ""}`}
       >
         <NextIntlClientProvider messages={messages}>
           {children}
