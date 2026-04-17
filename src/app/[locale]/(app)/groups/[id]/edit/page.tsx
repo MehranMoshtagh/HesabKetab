@@ -4,7 +4,15 @@ import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
-import { X, Trash2 } from "lucide-react";
+import { X, Trash2, Home, Plane, Heart, MoreHorizontal } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const groupTypes = [
+  { value: "HOME", icon: Home },
+  { value: "TRIP", icon: Plane },
+  { value: "COUPLE", icon: Heart },
+  { value: "OTHER", icon: MoreHorizontal },
+] as const;
 
 interface MemberData {
   userId: string;
@@ -109,21 +117,33 @@ export default function GroupEditPage() {
           />
         </div>
 
-        {/* Group type */}
+        {/* Group type — pill selector */}
         <div>
-          <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
+          <label className="block text-sm font-medium text-[var(--color-text)] mb-1.5">
             {t("group.groupType")}
           </label>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
-          >
-            <option value="HOME">{t("group.types.HOME")}</option>
-            <option value="TRIP">{t("group.types.TRIP")}</option>
-            <option value="COUPLE">{t("group.types.COUPLE")}</option>
-            <option value="OTHER">{t("group.types.OTHER")}</option>
-          </select>
+          <div className="grid grid-cols-4 gap-2">
+            {groupTypes.map((gt) => {
+              const Icon = gt.icon;
+              const selected = type === gt.value;
+              return (
+                <button
+                  key={gt.value}
+                  type="button"
+                  onClick={() => setType(gt.value)}
+                  className={cn(
+                    "flex flex-col items-center gap-1.5 py-3 rounded-xl border text-xs font-medium transition-all duration-150",
+                    selected
+                      ? "bg-[var(--color-primary)] text-white border-transparent shadow-sm"
+                      : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border)] hover:border-[var(--color-primary)]"
+                  )}
+                >
+                  <Icon size={18} />
+                  {t(`group.types.${gt.value}`)}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Members */}

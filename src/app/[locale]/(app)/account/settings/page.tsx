@@ -1,10 +1,92 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "@/i18n/routing";
 import { currencies } from "@/lib/currencies";
+import { ChevronDown, Search, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
+
+function CustomSelect({
+  value, onChange, options, label, searchable = false,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: { value: string; label: string }[];
+  label: string;
+  searchable?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) { setOpen(false); setSearch(""); }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const selected = options.find((o) => o.value === value);
+  const filtered = search
+    ? options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()))
+    : options;
+
+  return (
+    <div>
+      <label className="block text-sm font-medium text-[var(--color-text)] mb-1">{label}</label>
+      <div className="relative" ref={ref}>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="w-full flex items-center justify-between border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)] text-[var(--color-text)] text-start hover:border-[var(--color-primary)] transition-colors"
+        >
+          <span className="truncate">{selected?.label ?? value}</span>
+          <ChevronDown size={14} className={cn("text-[var(--color-text-tertiary)] transition-transform", open && "rotate-180")} />
+        </button>
+        {open && (
+          <div className="absolute top-full left-0 right-0 mt-1 z-30 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow-[var(--shadow-elevated)] py-1 max-h-60 flex flex-col">
+            {searchable && (
+              <div className="px-2 py-1.5 border-b border-[var(--color-border)]">
+                <div className="relative">
+                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                  <input
+                    type="text" placeholder="Search..." value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full pl-7 pr-2 py-1.5 text-xs bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]"
+                    autoFocus
+                  />
+                </div>
+              </div>
+            )}
+            <div className="overflow-y-auto flex-1">
+              {filtered.map((o) => (
+                <button
+                  key={o.value}
+                  type="button"
+                  onClick={() => { onChange(o.value); setOpen(false); setSearch(""); }}
+                  className={cn(
+                    "w-full flex items-center gap-2 px-3.5 py-2 text-sm text-start hover:bg-[var(--color-hover)] transition-colors",
+                    value === o.value && "text-[var(--color-primary)] font-medium"
+                  )}
+                >
+                  {value === o.value && <Check size={14} className="shrink-0" />}
+                  <span className="truncate">{o.label}</span>
+                </button>
+              ))}
+              {filtered.length === 0 && (
+                <p className="px-3.5 py-2 text-sm text-[var(--color-text-tertiary)]">No results</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -189,53 +271,37 @@ export default function AccountSettingsPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
-              {t("defaultCurrency")}
-            </label>
-            <select
-              value={defaultCurrency}
-              onChange={(e) => setDefaultCurrency(e.target.value)}
-              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
-            >
-              {currencies.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.symbol} {c.code} — {locale === "fa" ? c.nameFa : c.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <CustomSelect
+            label={t("defaultCurrency")}
+            value={defaultCurrency}
+            onChange={setDefaultCurrency}
+            searchable
+            options={currencies.map((c) => ({
+              value: c.code,
+              label: `${c.symbol} ${c.code} — ${locale === "fa" ? c.nameFa : c.name}`,
+            }))}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
-              {t("timezone")}
-            </label>
-            <select
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
-            >
-              {Intl.supportedValuesOf("timeZone").map((tz) => (
-                <option key={tz} value={tz}>
-                  {tz}
-                </option>
-              ))}
-            </select>
-          </div>
+          <CustomSelect
+            label={t("timezone")}
+            value={timezone}
+            onChange={setTimezone}
+            searchable
+            options={Intl.supportedValuesOf("timeZone").map((tz) => ({
+              value: tz,
+              label: tz.replace(/_/g, " "),
+            }))}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--color-text)] mb-1">
-              {t("language")}
-            </label>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="w-full border border-[var(--color-border-strong)] rounded-xl px-3.5 py-2.5 text-sm bg-[var(--color-bg)]"
-            >
-              <option value="en">English</option>
-              <option value="fa">فارسی</option>
-            </select>
-          </div>
+          <CustomSelect
+            label={t("language")}
+            value={language}
+            onChange={setLanguage}
+            options={[
+              { value: "en", label: "English" },
+              { value: "fa", label: "فارسی (Persian)" },
+            ]}
+          />
         </div>
       </div>
 
