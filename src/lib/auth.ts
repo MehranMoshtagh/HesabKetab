@@ -62,4 +62,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  events: {
+    // When NextAuth creates a new user via OAuth, map fields to our schema
+    async createUser({ user }) {
+      if (!user.id) return;
+      const patches: { name?: string; avatar?: string } = {};
+      // Ensure name is set (Google sometimes omits, email local-part is a good fallback)
+      if (!user.name && user.email) {
+        patches.name = user.email.split("@")[0];
+      }
+      // Copy image → avatar (NextAuth writes to image, our app reads avatar)
+      if (user.image) {
+        patches.avatar = user.image;
+      }
+      if (Object.keys(patches).length > 0) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: patches,
+        });
+      }
+    },
+  },
 });

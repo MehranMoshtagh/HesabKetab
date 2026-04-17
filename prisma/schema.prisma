@@ -99,12 +99,13 @@ model VerificationToken {
 
 model User {
   id              String    @id @default(uuid())
-  name            String
+  name            String?
   email           String    @unique
   emailVerified   DateTime?
   phone           String?
   password        String?
   avatar          String?
+  image           String?
   defaultCurrency String    @default("USD")
   timezone        String    @default("UTC")
   language        Language  @default(en)

@@ -3,7 +3,7 @@ import { simplifyDebts, computeNetBalances } from "./simplify-debts";
 
 interface PairBalance {
   userId: string;
-  name: string;
+  name: string | null;
   avatar: string | null;
   amount: number; // positive = they owe you, negative = you owe them
 }
@@ -34,7 +34,7 @@ export async function getUserBalances(userId: string): Promise<{
 
   // Build pairwise balance map AND collect user info in one pass
   const balanceMap = new Map<string, number>();
-  const userInfoMap = new Map<string, { name: string; avatar: string | null }>();
+  const userInfoMap = new Map<string, { name: string | null; avatar: string | null }>();
 
   for (const exp of expenses) {
     const totalPaid = exp.payers.reduce((s, p) => s + Number(p.amount), 0);
@@ -71,7 +71,7 @@ export async function getUserBalances(userId: string): Promise<{
   }
 
   // No second query needed — user info already collected
-  const users: { id: string; name: string; avatar: string | null }[] = [];
+  const users: { id: string; name: string | null; avatar: string | null }[] = [];
   for (const [id, info] of userInfoMap) {
     users.push({ id, ...info });
   }
@@ -154,7 +154,7 @@ export async function getFriendBalance(
  * Compute group balances for all members, optionally simplified.
  */
 export async function getGroupBalances(groupId: string): Promise<{
-  members: { userId: string; name: string; avatar: string | null; balance: number }[];
+  members: { userId: string; name: string | null; avatar: string | null; balance: number }[];
   simplified: { from: string; fromName: string; to: string; toName: string; amount: number }[];
   simplifyEnabled: boolean;
 }> {

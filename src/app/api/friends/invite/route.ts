@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 
   const { error } = await sendFriendInviteEmail({
     to: email,
-    inviterName: inviter.name,
+    inviterName: inviter.name ?? "A friend",
     signUpUrl,
   });
 
