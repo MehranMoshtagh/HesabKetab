@@ -4,7 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
 import { Bell, ChevronDown, Globe, LogOut, Settings, Sun, Moon, Menu } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import type { Locale } from "@/i18n/config";
 import MobileDrawer from "./MobileDrawer";
 
@@ -66,6 +66,8 @@ export default function Navbar() {
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
   };
+
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   return (
     <nav className="sticky top-0 z-40 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
@@ -148,7 +150,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <MobileDrawer open={drawerOpen} onClose={closeDrawer} />
     </nav>
   );
 }

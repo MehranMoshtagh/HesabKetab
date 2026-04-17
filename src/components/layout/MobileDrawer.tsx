@@ -12,7 +12,7 @@ import {
   Mail,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/app-store";
 
@@ -27,10 +27,19 @@ export default function MobileDrawer({ open, onClose }: MobileDrawerProps) {
   const { friends, groups } = useAppStore();
   const [filter, setFilter] = useState("");
 
-  // Close on route change
+  // Stable ref to onClose so it doesn't trigger the pathname effect
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  // Close on route change ONLY (not on every render due to onClose identity)
+  const isFirstRender = useRef(true);
   useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    onCloseRef.current();
+  }, [pathname]);
 
   // Lock body scroll when open
   useEffect(() => {
