@@ -2,10 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Plus, HandCoins } from "lucide-react";
 import { useAppStore } from "@/stores/app-store";
 import { avatarColor, getInitial } from "@/lib/utils";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 import ExpenseListItem from "@/components/expenses/ExpenseListItem";
 import MonthHeader from "@/components/expenses/MonthHeader";
 
@@ -35,18 +35,11 @@ export default function FriendDetailPage() {
     ?.byPerson?.find((p) => p.userId === friendId);
   const balance = balanceFromInit?.amount ?? 0;
 
-  // Only fetch expenses (the one thing we don't have in the store)
-  const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
-  const [loadingExpenses, setLoadingExpenses] = useState(true);
-
-  useEffect(() => {
-    fetch(`/api/friends/${friendId}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (data?.expenses) setExpenses(data.expenses);
-      })
-      .finally(() => setLoadingExpenses(false));
-  }, [friendId]);
+  // Fetch expenses via cached hook — instant on revisit
+  const { data: friendData, loading: loadingExpenses } = useCachedFetch<{ expenses: ExpenseItem[] }>(
+    `/api/friends/${friendId}`
+  );
+  const expenses = friendData?.expenses ?? [];
 
   if (!friend) {
     return <div className="text-center py-8 text-[var(--color-text-tertiary)]">{t("common.error")}</div>;

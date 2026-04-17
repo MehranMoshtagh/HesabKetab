@@ -2,10 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Plus, HandCoins, Settings, ArrowRight } from "lucide-react";
 import { useAppStore } from "@/stores/app-store";
 import { Link } from "@/i18n/routing";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 import ExpenseListItem from "@/components/expenses/ExpenseListItem";
 import MonthHeader from "@/components/expenses/MonthHeader";
 
@@ -51,21 +51,10 @@ export default function GroupDetailPage() {
   // Instant: get group name from the store
   const groupFromStore = groups.find((g) => g.id === groupId);
 
-  const [data, setData] = useState<GroupData | null>(null);
-  const [balances, setBalances] = useState<GroupBalanceData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch(`/api/groups/${groupId}`).then((r) => (r.ok ? r.json() : null)),
-      fetch(`/api/balances/group/${groupId}`).then((r) => (r.ok ? r.json() : null)),
-    ])
-      .then(([groupData, balanceData]) => {
-        if (groupData) setData(groupData);
-        if (balanceData) setBalances(balanceData);
-      })
-      .finally(() => setLoading(false));
-  }, [groupId]);
+  // Cached fetches — show cached data instantly on revisit, refresh in background
+  const { data, loading: dataLoading } = useCachedFetch<GroupData>(`/api/groups/${groupId}`);
+  const { data: balances } = useCachedFetch<GroupBalanceData>(`/api/balances/group/${groupId}`);
+  const loading = dataLoading;
 
   // Show header instantly with store data while expenses load
   if (loading && !data) {

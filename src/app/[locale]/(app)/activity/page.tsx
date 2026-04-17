@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { Link } from "@/i18n/routing";
 import { RotateCcw } from "lucide-react";
+import { useCachedFetch, invalidateCache } from "@/hooks/useCachedFetch";
 
 interface ActivityItem {
   id: string;
@@ -42,21 +43,19 @@ const typeIcons: Record<string, string> = {
 export default function ActivityPage() {
   const t = useTranslations();
   const { data: session } = useSession();
-  const [activities, setActivities] = useState<ActivityItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const ACTIVITY_URL = "/api/activity?limit=50";
 
-  useEffect(() => {
-    fetch("/api/activity?limit=50")
-      .then((r) => r.json())
-      .then((data) => setActivities(Array.isArray(data) ? data : []))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: activityData, loading, refetch } = useCachedFetch<ActivityItem[]>(ACTIVITY_URL);
+  const activities = Array.isArray(activityData) ? activityData : [];
+  // Keep unused setter for local updates after restore
+  const [, setActivitiesLocal] = useState<ActivityItem[]>([]);
 
   const handleRestore = async (expenseId: string) => {
     await fetch(`/api/expenses/${expenseId}/restore`, { method: "POST" });
-    // Refresh
-    const data = await fetch("/api/activity?limit=50").then((r) => r.json());
-    setActivities(Array.isArray(data) ? data : []);
+    // Invalidate cache and refetch
+    invalidateCache(ACTIVITY_URL);
+    refetch();
+    setActivitiesLocal([]);
   };
 
   const formatActivity = (act: ActivityItem): string => {

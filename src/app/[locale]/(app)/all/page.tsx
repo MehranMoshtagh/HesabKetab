@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 import { Plus, HandCoins, ChevronDown, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { useAppStore } from "@/stores/app-store";
 import { cn } from "@/lib/utils";
@@ -64,28 +65,42 @@ export default function AllExpensesPage() {
     return () => document.removeEventListener("mousedown", handler);
   }, [showGroupPicker, showFriendPicker]);
 
-  const fetchExpenses = useCallback((page: number, gId?: string, fId?: string, days?: string) => {
-    setLoading(true);
-    let url = `/api/expenses?page=${page}&limit=50`;
-    if (gId) url += `&groupId=${gId}`;
-    if (fId) url += `&friendId=${fId}`;
-    if (days) {
+  // Build URL with filters — cache key changes when filters change
+  const [currentPage, setCurrentPage] = useState(1);
+  const expensesUrl = useMemo(() => {
+    let url = `/api/expenses?page=${currentPage}&limit=50`;
+    if (filterGroup) url += `&groupId=${filterGroup}`;
+    if (filterFriend) url += `&friendId=${filterFriend}`;
+    if (filterDate) {
       const since = new Date();
-      since.setDate(since.getDate() - parseInt(days));
+      since.setDate(since.getDate() - parseInt(filterDate));
       url += `&since=${since.toISOString().split("T")[0]}`;
     }
-    fetch(url)
-      .then((r) => r.json())
-      .then((data) => {
-        setExpenses(data.expenses ?? []);
-        setPagination(data.pagination ?? { page: 1, limit: 50, total: 0, totalPages: 0 });
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    return url;
+  }, [currentPage, filterGroup, filterFriend, filterDate]);
 
+  const { data: expensesData, loading: dataLoading } = useCachedFetch<{
+    expenses: ExpenseItem[];
+    pagination: Pagination;
+  }>(expensesUrl);
+
+  // Sync to local state
   useEffect(() => {
-    fetchExpenses(1, filterGroup || undefined, filterFriend || undefined, filterDate || undefined);
-  }, [fetchExpenses, filterGroup, filterFriend, filterDate]);
+    if (expensesData) {
+      setExpenses(expensesData.expenses ?? []);
+      setPagination(expensesData.pagination ?? { page: 1, limit: 50, total: 0, totalPages: 0 });
+      setLoading(false);
+    } else if (dataLoading && !expensesData) {
+      setLoading(true);
+    }
+  }, [expensesData, dataLoading]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterGroup, filterFriend, filterDate]);
+
+  const fetchExpenses = (page: number) => setCurrentPage(page);
 
   // Group by month
   const byMonth: Record<string, ExpenseItem[]> = {};
