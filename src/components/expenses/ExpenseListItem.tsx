@@ -125,6 +125,24 @@ export default function ExpenseListItem({ expense, onDeleted }: ExpenseListItemP
       {expanded && (
         <ExpenseDetail
           expenseId={expense.id}
+          commentCount={expense._count?.comments ?? 0}
+          preloaded={{
+            id: expense.id,
+            description: expense.description,
+            amount: expense.amount,
+            currency: expense.currency,
+            category: expense.category,
+            date: expense.date,
+            splitType: "EQUAL",
+            notes: null,
+            isPayment: expense.isPayment,
+            createdAt: expense.date,
+            createdBy: expense.createdBy,
+            payers: expense.payers.map((p) => ({ ...p, user: { ...p.user, avatar: null } })),
+            shares: expense.shares.map((s) => ({ ...s, user: { ...s.user, avatar: null } })),
+            group: null,
+            comments: [],
+          }}
           onDelete={() => {
             setExpanded(false);
             onDeleted?.();

@@ -17,6 +17,9 @@ interface ExpenseDetailProps {
   expenseId: string;
   onDelete?: () => void;
   onEdit?: () => void;
+  // Pre-loaded data from parent (avoids cold-start refetch)
+  preloaded?: FullExpense;
+  commentCount?: number;
 }
 
 interface FullExpense {
@@ -37,20 +40,33 @@ interface FullExpense {
   comments: Comment[];
 }
 
-export default function ExpenseDetail({ expenseId, onDelete }: ExpenseDetailProps) {
+export default function ExpenseDetail({ expenseId, onDelete, preloaded, commentCount = 0 }: ExpenseDetailProps) {
   const t = useTranslations();
   const { data: session } = useSession();
-  const [expense, setExpense] = useState<FullExpense | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [expense, setExpense] = useState<FullExpense | null>(
+    preloaded ? { ...preloaded, comments: preloaded.comments ?? [] } : null
+  );
+  const [loading, setLoading] = useState(!preloaded);
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
 
   useEffect(() => {
+    // If we have preloaded data and no comments to fetch, skip the API call entirely
+    if (preloaded && commentCount === 0) {
+      return;
+    }
+    // Otherwise fetch (either no preload, or comments exist)
     fetch(`/api/expenses/${expenseId}`)
       .then((r) => r.json())
-      .then(setExpense)
+      .then((data) => {
+        if (preloaded) {
+          setExpense((prev) => prev ? { ...prev, comments: data.comments ?? [] } : data);
+        } else {
+          setExpense(data);
+        }
+      })
       .finally(() => setLoading(false));
-  }, [expenseId]);
+  }, [expenseId, preloaded, commentCount]);
 
   const handlePostComment = async () => {
     if (!newComment.trim()) return;

@@ -46,6 +46,11 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
           <Link
             key={item.href}
             href={item.href}
+            onMouseEnter={() => {
+              // Prefetch data for each main nav target
+              if (item.href === "/all") fetch("/api/expenses?page=1&limit=50").catch(() => {});
+              if (item.href === "/activity") fetch("/api/activity?limit=50").catch(() => {});
+            }}
             className={cn(
               "flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm transition-all duration-200",
               pathname === item.href
@@ -99,6 +104,11 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             <Link
               key={group.id}
               href={`/groups/${group.id}`}
+              onMouseEnter={() => {
+                // Prefetch API data on hover — by the time user clicks, response is cached
+                fetch(`/api/groups/${group.id}`).catch(() => {});
+                fetch(`/api/balances/group/${group.id}`).catch(() => {});
+              }}
               className={cn(
                 "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all duration-200",
                 pathname === `/groups/${group.id}`
@@ -139,6 +149,9 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
             <Link
               key={friend.id}
               href={`/friends/${friend.id}`}
+              onMouseEnter={() => {
+                fetch(`/api/friends/${friend.id}`).catch(() => {});
+              }}
               className={cn(
                 "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm cursor-pointer transition-all duration-200",
                 pathname === `/friends/${friend.id}`
