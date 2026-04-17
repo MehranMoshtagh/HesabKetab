@@ -135,7 +135,7 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
               {t("common.noResults")}
             </p>
           )}
-          {filteredFriends.map((friend) => (
+          {filteredFriends.slice(0, filter ? 20 : 10).map((friend) => (
             <Link
               key={friend.id}
               href={`/friends/${friend.id}`}
@@ -152,6 +152,11 @@ export default function Sidebar({ groups = [], friends = [] }: SidebarProps) {
               <span className="truncate">{friend.name}</span>
             </Link>
           ))}
+          {!filter && filteredFriends.length > 10 && (
+            <p className="px-3 py-1.5 text-xs text-[var(--color-text-tertiary)]">
+              +{filteredFriends.length - 10} more — use search above
+            </p>
+          )}
         </div>
       </div>
 

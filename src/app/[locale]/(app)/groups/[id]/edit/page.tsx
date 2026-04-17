@@ -68,6 +68,11 @@ export default function GroupEditPage() {
   };
 
   const handleRemoveMember = async (userId: string) => {
+    const member = members.find((m) => m.userId === userId);
+    const name = member?.user?.name ?? "this member";
+    if (!confirm(
+      `Remove ${name} from this group?\n\nTheir existing expenses in this group will remain, but they won't see new expenses or be included in future splits.`
+    )) return;
     await fetch(`/api/groups/${groupId}/members/${userId}`, {
       method: "DELETE",
     });
@@ -75,7 +80,9 @@ export default function GroupEditPage() {
   };
 
   const handleDeleteGroup = async () => {
-    if (!confirm("Are you sure you want to delete this group?")) return;
+    if (!confirm(
+      "Delete this group?\n\nAll group expenses will be soft-deleted. Individual balances between members will remain. This action cannot be undone."
+    )) return;
     await fetch(`/api/groups/${groupId}`, { method: "DELETE" });
     router.push(`/${locale}/dashboard`);
   };

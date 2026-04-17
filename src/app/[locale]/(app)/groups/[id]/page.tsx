@@ -176,30 +176,28 @@ export default function GroupDetailPage() {
 
       {/* Right panel — group balances */}
       <div className="w-64 hidden lg:block space-y-4">
-        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-6">
-          <h3 className="text-xs font-medium text-[var(--color-text-tertiary)] uppercase tracking-wider mb-2">
+        <div className="bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-card)] border border-[var(--color-border)] p-5">
+          <h3 className="text-xs font-semibold text-[var(--color-text-tertiary)] mb-1">
             {t("group.groupBalances")}
           </h3>
-          <p className="text-xs text-[var(--color-text-tertiary)] mb-3">
+          <p className="text-[10px] text-[var(--color-text-tertiary)] mb-3">
             {balances?.simplifyEnabled
               ? t("group.simplifyOn")
               : t("group.simplifyOff")}
           </p>
 
-          {/* Per-member balances */}
-          <div className="space-y-2 mb-4">
-            {balances?.members.map((m) => (
-              <div key={m.userId} className="flex items-center justify-between rounded-lg px-1 py-1 hover:bg-[var(--color-hover)] transition-colors duration-150">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[var(--color-hover)] flex items-center justify-center text-xs font-semibold">
-                    {m.name[0]?.toUpperCase()}
-                  </div>
-                  <span className="text-sm text-[var(--color-text)] truncate max-w-[100px]">
-                    {m.name}
-                  </span>
+          {/* Per-member balances — capped at 6, aligned */}
+          <div className="space-y-1.5 mb-4">
+            {balances?.members.slice(0, 6).map((m) => (
+              <div key={m.userId} className="flex items-center gap-2 py-1">
+                <div className="w-6 h-6 rounded-full bg-[var(--color-hover)] flex items-center justify-center text-[10px] font-semibold text-[var(--color-text-secondary)] shrink-0">
+                  {m.name[0]?.toUpperCase()}
                 </div>
+                <span className="text-xs text-[var(--color-text)] truncate flex-1">
+                  {m.name}
+                </span>
                 <span
-                  className={`text-sm font-medium ${
+                  className={`text-xs font-semibold shrink-0 tabular-nums ${
                     m.balance > 0
                       ? "text-[var(--color-positive)]"
                       : m.balance < 0
@@ -215,6 +213,11 @@ export default function GroupDetailPage() {
                 </span>
               </div>
             ))}
+            {(balances?.members.length ?? 0) > 6 && (
+              <p className="text-[10px] text-[var(--color-text-tertiary)] px-1">
+                +{(balances?.members.length ?? 0) - 6} more members
+              </p>
+            )}
           </div>
 
           {/* Simplified debts */}
