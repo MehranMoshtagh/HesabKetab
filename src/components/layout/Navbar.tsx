@@ -2,10 +2,11 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/routing";
-import { Bell, ChevronDown, Globe, LogOut, Settings, Sun, Moon } from "lucide-react";
+import { Bell, ChevronDown, Globe, LogOut, Settings, Sun, Moon, Menu } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import type { Locale } from "@/i18n/config";
+import MobileDrawer from "./MobileDrawer";
 
 function useTheme() {
   const [theme, setThemeState] = useState<"light" | "dark" | "system">("system");
@@ -43,6 +44,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { isDark, setTheme } = useTheme();
 
@@ -66,14 +68,24 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
+    <nav className="sticky top-0 z-40 backdrop-blur-xl bg-[var(--color-glass)] border-b border-[var(--color-border)]">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link
-          href="/dashboard"
-          className="text-base font-semibold text-[var(--color-text)] tracking-tight"
-        >
-          {t("app.name")}
-        </Link>
+        <div className="flex items-center gap-1">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={() => setDrawerOpen(true)}
+            className="lg:hidden p-2 -ms-1 rounded-lg hover:bg-[var(--color-hover)] text-[var(--color-text-secondary)] transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+          <Link
+            href="/dashboard"
+            className="text-base font-semibold text-[var(--color-text)] tracking-tight"
+          >
+            {t("app.name")}
+          </Link>
+        </div>
 
         <div className="flex items-center gap-1">
           {/* Theme toggle */}
@@ -136,6 +148,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </nav>
   );
 }

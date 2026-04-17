@@ -76,8 +76,8 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Actions + Segmented Toggle ── */}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
-        <div className="flex gap-2 flex-1 sm:flex-none">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+        <div className="flex gap-2">
           {/* Add expense — filled primary */}
           <button
             onClick={() => openAddExpense()}
@@ -98,8 +98,8 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Segmented control */}
-        <div className="relative flex bg-[var(--color-bg)] rounded-xl p-1 border border-[var(--color-border)]">
+        {/* Segmented control — full-width on mobile */}
+        <div className="relative flex bg-[var(--color-bg)] rounded-xl p-1 border border-[var(--color-border)] w-full sm:w-auto">
           {/* Sliding pill */}
           <div
             className="absolute top-1 bottom-1 rounded-[10px] bg-[var(--color-surface)] shadow-[var(--shadow-card)] transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
@@ -110,7 +110,7 @@ export default function DashboardPage() {
           />
           <button
             onClick={() => setView("list")}
-            className={`relative z-10 flex items-center gap-1.5 px-4 py-1.5 rounded-[10px] text-sm font-medium transition-colors duration-200 ${
+            className={`relative z-10 flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-[10px] text-sm font-medium transition-colors duration-200 ${
               view === "list"
                 ? "text-[var(--color-text)]"
                 : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
@@ -121,7 +121,7 @@ export default function DashboardPage() {
           </button>
           <button
             onClick={() => setView("chart")}
-            className={`relative z-10 flex items-center gap-1.5 px-4 py-1.5 rounded-[10px] text-sm font-medium transition-colors duration-200 ${
+            className={`relative z-10 flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-[10px] text-sm font-medium transition-colors duration-200 ${
               view === "chart"
                 ? "text-[var(--color-text)]"
                 : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
