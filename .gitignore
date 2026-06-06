@@ -32,9 +32,14 @@ yarn-error.log*
 .env
 .env*.local
 
+# one-off Supabase → Neon migration artifacts (contain extracted prod data)
+/migration
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
